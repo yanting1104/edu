@@ -343,7 +343,7 @@
     <!-- 主網頁架構：左欄「學生名單」縮窄至 1.25fr，右欄「表現記錄區」拓寬至 10.75fr -->
     <main class="grid grid-cols-1 md:grid-cols-[1.25fr_10.75fr] gap-5 md:h-[620px] shrink-0 min-h-0 mb-6">
         
-        <!-- 左欄：學生名單管理區 (1.25fr 縮窄精確版) -->
+        <!-- Left Column: Student List Management Area (1.25fr width) -->
         <section class="flex flex-col h-full min-h-0">
             <div class="glass-panel rounded-2xl p-4 shadow-sm flex flex-col h-full min-h-0 justify-between">
                 <div>
@@ -369,8 +369,8 @@
                         <button onclick="loadDemoStudents()" class="text-[8px] bg-stone-200 text-stone-700 px-1 py-0.5 rounded hover:bg-stone-300 dark:bg-stone-800 dark:text-stone-300 transition-all">範例</button>
                     </div>
                     
-                    <!-- 手動貼上輸入框內容文字大小改為 text-xs -->
-                    <textarea id="text-input" class="w-full border border-amber-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-amber-400 bg-white/70 mb-3 h-[300px] resize-none p-2 text-xs" placeholder="格式範例：&#13;01 洪叡軒&#13;02 何聿倫"></textarea>
+                    <!-- 手動貼上輸入框內容文字大小改為 text-sm -->
+                    <textarea id="text-input" class="w-full border border-amber-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-amber-400 bg-white/70 mb-3 h-[300px] resize-none p-2 text-sm text-xs" placeholder="格式範例：&#13;01 洪叡軒&#13;02 何聿倫"></textarea>
                     
                     <!-- 「生成名牌」按鈕字體大小改為 text-sm，其內部的魔法棒圖示尺寸也同步更新為 text-sm -->
                     <button onclick="generateFromText()" class="w-full bg-amber-500 hover:bg-amber-600 text-white font-bold py-2 px-2 rounded-xl shadow-sm transition-all flex items-center justify-center gap-1 text-sm">
@@ -390,7 +390,7 @@
             </div>
         </section>
 
-        <!-- 右欄：表現記錄區 (寬度大幅加寬，內部分配調整為指定比例 66% : 17% : 17%) -->
+        <!-- Right Column: Performance Zones (66% : 17% : 17% width layout) -->
         <section class="flex flex-col h-full min-h-0">
             <div class="glass-panel rounded-2xl p-4 shadow-sm flex flex-col h-full min-h-0 gap-3">
                 <h2 class="text-lg font-bold text-[#78350f] shrink-0 flex items-center gap-2">
@@ -403,10 +403,10 @@
                     
                     <!-- 1. 好表現區 (翠綠色系) — 寬度設定為 66% -->
                     <div class="bg-emerald-50/50 border-2 border-emerald-100 rounded-2xl p-3 flex flex-col min-h-0 h-full justify-between w-full md:w-[66%]">
-                        <!-- 「好表現區」頂部標題容器改為 text-sm，其內部的不重複人數徽章字體大小也改為 text-sm -->
+                        <!-- 「好表現區」標題「好表現區 (主控名單常駐)」後方正式新增說明：「（點擊名牌左側笑臉新增）」 -->
                         <div class="flex items-center gap-1.5 mb-1.5 text-emerald-700 font-bold border-b border-emerald-100 pb-1.5 shrink-0 text-sm">
                             <i class="fa-regular fa-face-laugh-beam text-lg text-emerald-500"></i>
-                            <span>好表現區（主控名單常駐）點擊名牌左側笑臉加入</span>
+                            <span>好表現區 (主控名單常駐) <span class="text-xs font-normal text-emerald-600/80 ml-1 hidden sm:inline">（點擊名牌左側笑臉新增）</span></span>
                             <span id="good-count" class="ml-auto bg-emerald-100 text-emerald-800 px-1.5 py-0.5 rounded-full text-sm">0 人</span>
                         </div>
                         
@@ -443,7 +443,7 @@
 
                     <!-- 2. 待改進區 (粉紅色系) — 寬度設定為 17% -->
                     <div class="bg-rose-50/50 border-2 border-rose-100 rounded-2xl p-3 flex flex-col min-h-0 h-full justify-between w-full md:w-[17%]">
-                        <!-- 「待改進區」頂部標題容器改為 text-sm，其內部人數徽章字體大小也改為 text-sm -->
+                        <!-- 【關鍵修改】移除原本標題內部的說明，保持標題列極簡 -->
                         <div class="flex items-center gap-1.5 mb-1.5 text-rose-700 font-bold border-b border-rose-100 pb-1.5 shrink-0 text-sm">
                             <i class="fa-regular fa-face-sad-tear text-lg text-rose-500"></i>
                             <span>待改進區</span>
@@ -451,9 +451,10 @@
                         </div>
                         
                         <!-- 學生方塊放置區：維持單欄 (flex flex-col) 排列 -->
+                        <!-- 【關鍵修改】將提示文字從標題移至此 Placeholder，並將字體大小調整為 text-xs（與好表現同字體，無斜體） -->
                         <div id="bad-zone" class="drag-zone flex-grow overflow-y-auto flex flex-col gap-2.5 p-1 min-h-0 rounded-xl transition-all items-center justify-start content-start" ondragover="allowDrop(event)" ondragenter="dragEnter(event)" ondragleave="dragLeave(event)" ondrop="handleDrop(event, 'bad')">
-                            <div class="placeholder py-12 flex items-center justify-center text-rose-400 text-xs text-center italic">
-                                拖曳/點擊名牌右側哭臉加入
+                            <div class="placeholder py-12 flex items-center justify-center text-rose-400 text-xs text-center font-normal">
+                                (拖曳/點擊名牌右側哭臉新增)
                             </div>
                         </div>
 
@@ -483,16 +484,17 @@
 
                     <!-- 3. 課間上廁所區 (湖水藍色系) — 寬度設定為 17% -->
                     <div class="bg-sky-50/50 border-2 border-sky-100 rounded-2xl p-3 flex flex-col min-h-0 h-full justify-between w-full md:w-[17%]">
-                        <!-- 「課間上廁所區」頂部標題容器改為 text-sm，其內部人數徽章字體大小也改為 text-sm -->
+                        <!-- 【關鍵修改】移除原本標題內部的說明，保持標題列極簡 -->
                         <div class="flex items-center gap-1.5 mb-1.5 text-sky-700 font-bold border-b border-sky-100 pb-1.5 shrink-0 text-sm">
                             <i class="fa-solid fa-restroom text-lg text-sky-500"></i>
                             <span>課間上廁所</span>
                             <span id="toilet-count" class="ml-auto bg-sky-100 text-sky-800 px-1.5 py-0.5 rounded-full text-sm">0 人</span>
                         </div>
                         
+                        <!-- 【關鍵修改】將提示文字從標題移至此 Placeholder，並將字體大小調整為 text-xs（與好表現同字體，無斜體） -->
                         <div id="toilet-zone" class="drag-zone flex-grow overflow-y-auto flex flex-col gap-2.5 p-1 min-h-0 rounded-xl transition-all items-center justify-start content-start" ondragover="allowDrop(event)" ondragenter="dragEnter(event)" ondragleave="dragLeave(event)" ondrop="handleDrop(event, 'toilet')">
-                            <div class="placeholder py-12 flex items-center justify-center text-sky-400 text-xs text-center italic">
-                                拖曳名牌至此
+                            <div class="placeholder py-12 flex items-center justify-center text-sky-400 text-xs text-center font-normal">
+                                (拖曳名牌至此新增)
                             </div>
                         </div>
 
@@ -839,7 +841,7 @@
 
         // 8. 創建全新好表現區專屬卡片 (高度改為 h-11，名字為 text-base md:text-lg，座號 w-7 h-7、text-sm)
         // 且好表現區名牌的綠笑臉和紅笑臉調整為：平常隱藏，滑鼠移入時才浮現 (opacity-0 group-hover:opacity-100)
-        // 【關鍵修改】座號圓圈也如同待改進區及上廁所區一樣，懸停時轉為灰色垃圾桶，點選能遞減星星 1 次
+        // 座號圓圈也如同待改進區及上廁所區一樣，懸停時轉為灰色垃圾桶，點選能遞減星星 1 次
         function createUniversalCard(number, name) {
             totalCreatedCount++;
             const cardId = `student-card-${totalCreatedCount}`;
@@ -865,7 +867,7 @@
                     <i class="fa-regular fa-face-laugh-beam text-sm md:text-base"></i>
                 </button>
                 
-                <!-- 【關鍵修改】中央座號圓圈與灰色垃圾桶整合 -->
+                <!-- 中央座號圓圈與灰色垃圾桶整合 -->
                 <button class="delete-btn w-7 h-7 flex items-center justify-center rounded-full text-sm font-black ${bgCircleClass} hover:bg-stone-200 hover:text-stone-600 hover:border hover:border-stone-300 dark:hover:bg-stone-800 dark:hover:text-stone-300 dark:hover:border-stone-700 shrink-0 shadow-sm ml-2 mr-0.5 group/btn relative transition-all duration-200 pointer-events-auto focus:outline-none" title="遞減星星 1 次">
                     <span class="group-hover/btn:scale-0 transition-transform duration-200">${number}</span>
                     <i class="fa-regular fa-trash-can text-xs absolute opacity-0 group-hover/btn:opacity-100 transition-opacity duration-200"></i>
@@ -896,7 +898,7 @@
                 addStudentToZone(number, name, 'bad');
             });
 
-            // 【關鍵修改】點選好表現名牌的座號按鈕時，觸發遞減好表現星星
+            // 點選好表現名牌的座號按鈕時，觸發遞減好表現星星
             card.querySelector('.delete-btn').addEventListener('click', function(e) {
                 e.stopPropagation();
                 removeCardOrReduceCount(card, 'good');
@@ -1073,7 +1075,7 @@
         }
 
         // 非好表現區點擊垃圾桶：快速遞減次數，扣至 0 時將名牌從該專區消除
-        // 【關鍵修改】加入好表現區遞減（扣減星星 1 次）邏輯
+        // 加入好表現區遞減（扣減星星 1 次）邏輯
         function removeCardOrReduceCount(card, zoneType) {
             if (zoneType === 'good') {
                 let count = parseInt(card.getAttribute('data-count-good') || 0);
@@ -1108,7 +1110,7 @@
                         const ph = parent.querySelector('.placeholder');
                         if (ph) {
                             if (parent.id === 'good-zone') {
-                                ph.className = "placeholder col-span-4 py-12 flex items-center justify-center text-[#10b981] text-xs text-center italic";
+                                ph.className = "placeholder col-span-4 py-12 flex items-center justify-center text-emerald-400 text-xs text-center italic";
                             }
                             ph.style.display = 'flex';
                         }
@@ -1263,7 +1265,7 @@
             setTimeout(() => modal.classList.remove('opacity-0'), 10);
         }
 
-        // 當計時器到期確認後：遞減消除 1 次
+        // 當計時器到期確認後：待改進與上廁所區清空名牌副本
         function closeAlertModal() {
             const modal = document.getElementById('alert-modal');
             modal.classList.add('opacity-0');
@@ -1278,6 +1280,7 @@
         }
 
         // 遞減消除指定專區內的所有學生登記次數 1 次
+        // 好表現區時間到時：不刪除常駐名條，但各學生的好表現星星各遞減消除 1 次 (扣減 1 次)。
         function reduceZoneAllCardsOnce(zone) {
             const targetZone = document.getElementById(`${zone}-zone`);
             if (!targetZone) return;
