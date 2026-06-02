@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>班級經營互動看板</title>
     <!-- 設置網站瀏覽器分頁小圖示 (Favicon) -->
-    <link class="favicon" rel="icon" type="image/png" href="./貓臉logo1.png.png">
+    <link class="favicon" rel="icon" type="image/png" href="貓臉logo1.png">
     <!-- 引入 Tailwind CSS 提供現代化、響應式的排版 -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- 引入 Font Awesome 提供可愛的圖示 -->
@@ -122,6 +122,10 @@
         body.dark-mode #student-pool {
             background-color: rgba(22, 30, 49, 0.4);
         }
+        body.dark-mode .group\/circle:hover {
+            background-color: #334155 !important;
+            color: #fb7185 !important; /* 懸停時夜間變身成玫瑰粉紅垃圾桶，醒目好按 */
+        }
         body.dark-mode h1 {
             color: #d97706 !important; /* 柔和暗金，避免過亮 */
         }
@@ -232,28 +236,25 @@
             color: #38bdf8 !important;
         }
 
-        /* ==========================================
-           【關鍵修改】優化夜間模式下星星、閃電與水滴累計次數徽章的色調 
-           大幅提升飽和度、清晰度與夜視辨識度，且保證護眼不刺眼
-           ========================================== */
+        /* 優化夜間模式下星星、閃電與水滴累計次數徽章的色調 */
         body.dark-mode .star-badge {
-            background-color: #d97706 !important; /* 溫慢的琥珀亮金黃色底 */
+            background-color: #d97706 !important;
             border-color: #f59e0b !important;
-            color: #fffbeb !important; /* 高對比淺色文字 */
+            color: #fffbeb !important;
             text-shadow: 0 1px 2px rgba(0,0,0,0.5);
             box-shadow: 0 2px 6px rgba(217, 119, 6, 0.3);
         }
         body.dark-mode .lightning-badge {
-            background-color: #ea580c !important; /* 醒目柔和的粉亮珊瑚橘紅色底 */
+            background-color: #ea580c !important;
             border-color: #f97316 !important;
-            color: #fff7ed !important; /* 高對比淺色文字 */
+            color: #fff7ed !important;
             text-shadow: 0 1px 2px rgba(0,0,0,0.5);
             box-shadow: 0 2px 6px rgba(234, 88, 12, 0.3);
         }
         body.dark-mode .toilet-badge {
-            background-color: #0284c7 !important; /* 安靜剔透的月光湖水藍色底 */
+            background-color: #0284c7 !important;
             border-color: #0ea5e9 !important;
-            color: #f0f9ff !important; /* 高對比淺色文字 */
+            color: #f0f9ff !important;
             text-shadow: 0 1px 2px rgba(0,0,0,0.5);
             box-shadow: 0 2px 6px rgba(2, 132, 199, 0.3);
         }
@@ -261,10 +262,18 @@
         /* 午休模式下非作用中分頁按鈕配色優化 */
         body.dark-mode .tab-inactive-dark {
             background-color: #1e2638 !important;
-            color: #a7f3d0 !important; /* 淺翡翠綠文字 */
+            color: #a7f3d0 !important;
         }
         body.dark-mode .tab-inactive-dark:hover {
             background-color: #2d364f !important;
+        }
+
+        /* ==========================================
+           【關鍵修改】夜間模式下專區名牌座號圓圈（微互動組件）在 hover 狀態下的暗灰色系反白
+           ========================================== */
+        body.dark-mode .group\/circle:hover {
+            background-color: #334155 !important;
+            color: #fb7185 !important; /* 懸停時夜間變身成玫瑰粉紅垃圾桶，醒目好按 */
         }
     </style>
 </head>
@@ -296,57 +305,80 @@
     </header>
 
     <!-- Main Grid Section -->
-    <main class="grid grid-cols-1 md:grid-cols-[3.5fr_8.5fr] gap-5 md:h-[580px] shrink-0 min-h-0 mb-6">
+    <!-- 將左右主要欄位的比例改為 3.2:8.8 (利用 CSS Grid 的 3.2fr 與 8.8fr) -->
+    <main class="grid grid-cols-1 lg:grid-cols-[3.2fr_8.8fr] gap-5 lg:h-[600px] shrink-0 min-h-0 mb-6">
         
-        <!-- Left Column: Student List Area -->
+        <!-- Left Column: Student List Area (學生資訊管理 - 佔 3.2 比例) -->
         <section class="flex flex-col h-full min-h-0">
             <div class="glass-panel rounded-2xl p-4 shadow-sm flex flex-col h-full min-h-0">
-                <h2 class="text-lg font-bold text-[#78350f] mb-2.5 flex items-center justify-between shrink-0">
+                <!-- 「學生資訊管理」標題 -->
+                <h2 class="text-lg font-bold text-[#78350f] mb-3 flex items-center justify-between shrink-0 border-b border-amber-100 pb-2">
                     <span class="flex items-center gap-2">
                         <i class="fa-solid fa-users text-[#d97706]"></i>
-                        學生姓名區
-                    </span>
-                    <span id="student-count" class="text-xs bg-amber-100 text-amber-800 px-2 py-0.5 rounded-full font-normal">
-                        共 0 人
+                        學生資訊管理
                     </span>
                 </h2>
                 
-                <div class="flex gap-1.5 mb-2.5 text-xs font-semibold shrink-0">
-                    <button id="btn-tab-excel" onclick="switchImportTab('excel')" class="flex-1 py-1 px-2 rounded-lg bg-amber-500 text-white shadow-sm transition-all">Excel匯入</button>
-                    <button id="btn-tab-text" onclick="switchImportTab('text')" class="flex-1 py-1 px-2 rounded-lg bg-amber-100 text-amber-800 hover:bg-amber-200 transition-all">手動貼上</button>
-                    <button onclick="loadDemoStudents()" class="py-1 px-2 rounded-lg bg-stone-200 text-stone-700 hover:bg-stone-300 dark:bg-stone-800 dark:text-stone-300 dark:hover:bg-stone-700 transition-all">預設範例</button>
-                </div>
+                <!-- 內部重構為 3:7 比例 (即 lg:grid-cols-[3fr_7fr]，使最左側控制台精細縮減，名牌區得到大幅延伸) -->
+                <div class="grid grid-cols-1 lg:grid-cols-[3fr_7fr] gap-4 flex-grow min-h-0">
+                    
+                    <!-- 第一欄：控制台 (Excel匯入、手動貼上/範例、輸入框、總人數統計) - 佔 30% 內部寬度 -->
+                    <div class="flex flex-col gap-3 justify-between h-full overflow-y-auto pr-1">
+                        <div class="space-y-3">
+                            <!-- Excel 匯入按鈕 -->
+                            <div id="import-excel-area" class="shrink-0">
+                                <div class="border-2 border-dashed border-amber-200 rounded-xl p-1.5 text-center bg-amber-50/50 hover:bg-amber-50 transition-colors cursor-pointer relative">
+                                    <input type="file" id="excel-file-input" accept=".xlsx, .xls, .csv" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer" onchange="handleExcelUpload(event)">
+                                    <i class="fa-regular fa-file-excel text-base text-emerald-600 mb-0.5"></i>
+                                    <p class="text-[10px] text-gray-600 font-bold leading-tight">Excel/CSV 匯入</p>
+                                </div>
+                            </div>
 
-                <!-- Excel Import Area -->
-                <div id="import-excel-area" class="mb-2.5 shrink-0">
-                    <div class="border-2 border-dashed border-amber-200 rounded-xl p-3 text-center bg-amber-50/50 hover:bg-amber-50 transition-colors cursor-pointer relative">
-                        <input type="file" id="excel-file-input" accept=".xlsx, .xls, .csv" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer" onchange="handleExcelUpload(event)">
-                        <i class="fa-regular fa-file-excel text-2xl text-emerald-600 mb-1"></i>
-                        <p class="text-[11px] text-gray-500">點擊或拖曳 Excel/CSV 檔案至此</p>
-                        <p class="text-[9px] text-gray-400 mt-0.5">(第一欄為座號，第二欄為姓名)</p>
-                    </div>
-                </div>
+                            <!-- 手動貼上與手動輸入框 -->
+                            <div>
+                                <div class="flex items-center justify-between mb-1">
+                                    <label class="text-sm font-bold text-amber-800">手動貼上：</label>
+                                    <button onclick="loadDemoStudents()" class="text-[8px] bg-stone-200 text-stone-700 px-1 py-0.5 rounded hover:bg-stone-300 dark:bg-stone-800 dark:text-stone-300 transition-all">範例</button>
+                                </div>
+                                <textarea id="text-input" class="w-full text-xs p-1.5 border border-amber-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-amber-400 bg-white/70 mb-1.5 h-[300px] resize-none leading-normal" placeholder="格式：&#13;01 洪叡軒&#13;02 何聿倫"></textarea>
+                                
+                                <!-- 解析並生成按鈕 -->
+                                <button onclick="generateFromText()" class="w-full bg-amber-500 hover:bg-amber-600 text-white text-[11px] font-bold py-1.5 px-1.5 rounded-xl shadow-sm transition-all flex items-center justify-center gap-0.5">
+                                    <i class="fa-solid fa-wand-magic-sparkles text-[10px]"></i> 解析生成名牌
+                                </button>
+                            </div>
+                        </div>
 
-                <!-- Plain Text Import Area -->
-                <div id="import-text-area" class="space-y-2 mb-2.5 shrink-0 hidden">
-                    <textarea id="text-input" rows="3" class="w-full text-xs p-2 border border-amber-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-amber-400 bg-white/70" placeholder="格式範例：&#13;01 王小明&#13;02 李大同"></textarea>
-                    <button onclick="generateFromText()" class="w-full bg-amber-500 hover:bg-amber-600 text-white text-xs font-bold py-1.5 px-3 rounded-xl shadow-sm transition-all">
-                        解析並生成學生方塊
-                    </button>
-                </div>
-
-                <div class="flex-grow border border-amber-100 bg-amber-50/30 rounded-xl p-2.5 overflow-y-auto min-h-0">
-                    <div id="student-pool" class="grid grid-cols-2 gap-2">
-                        <div class="col-span-full py-12 text-center text-gray-400 text-xs">
-                            <i class="fa-solid fa-arrow-up text-lg mb-2 block animate-bounce"></i>
-                            請先匯入學生名單以生成方塊
+                        <!-- 自動彙整人數統計 (居於左下) -->
+                        <div class="border-t border-amber-100 pt-2.5 mt-auto shrink-0 text-center">
+                            <p class="text-[10px] text-gray-400 font-medium">班級名單統計</p>
+                            <div id="left-student-count" class="text-sm font-black text-amber-800 bg-amber-100/60 rounded-xl py-0.5 mt-0.5 select-none">
+                                共 0 人
+                            </div>
                         </div>
                     </div>
+
+                    <!-- 第二欄及第三欄（合併）：學生名牌放置區 - 佔 70% 內部寬度 -->
+                    <div class="flex flex-col h-full min-h-0 bg-amber-50/30 border border-amber-100 rounded-xl p-2.5">
+                        <!-- 標題文字為「學生名牌」 -->
+                        <div class="text-xs font-bold text-[#78350f] mb-2 flex items-center justify-between shrink-0">
+                            <span><i class="fa-solid fa-grip text-amber-500 mr-1"></i>學生名牌</span>
+                            <span class="text-[10px] text-gray-400 font-normal">可拖曳或使用邊角按鈕點擊</span>
+                        </div>
+                        <!-- 容器改為裝格的雙欄顯示 (grid-cols-2) -->
+                        <div id="student-pool" class="grid grid-cols-2 gap-1.5 overflow-y-auto flex-grow min-h-0 pr-1">
+                            <div class="col-span-full py-12 text-center text-gray-400 text-xs">
+                                <i class="fa-solid fa-arrow-left text-lg mb-2 block animate-bounce"></i>
+                                請在左欄匯入名單以生成方塊
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
             </div>
         </section>
 
-        <!-- Right Column: Performance Zones Area -->
+        <!-- Right Column: Performance Zones Area (表現紀錄區 - 佔 8.8 比例) -->
         <section class="flex flex-col h-full min-h-0">
             <div class="glass-panel rounded-2xl p-4 shadow-sm flex flex-col h-full min-h-0 gap-3">
                 <h2 class="text-lg font-bold text-[#78350f] shrink-0 flex items-center gap-2">
@@ -354,21 +386,23 @@
                     表現記錄區
                 </h2>
 
-                <!-- 三分小區左右橫向排列：關鍵修改，欄位比例精確設定為 58% : 21% : 21% -->
+                <!-- 三分小區左右橫向排列：欄位比例精確設定為 58% : 21% : 21% -->
                 <div class="flex flex-col md:flex-row gap-4 flex-grow min-h-0 w-full">
                     
                     <!-- 1. 好表現區 (翠綠色系) — 寬度佔比 58% -->
                     <div class="bg-emerald-50/50 border-2 border-emerald-100 rounded-2xl p-3 flex flex-col min-h-0 h-full justify-between w-full md:w-[58%]">
-                        <div class="flex items-center gap-1.5 mb-1.5 text-emerald-700 font-bold border-b border-emerald-100 pb-1.5 shrink-0 text-xs">
+                        <!-- 標題字體大小改為 sm (text-xs 改為 text-sm) -->
+                        <div class="flex items-center gap-1.5 mb-1.5 text-emerald-700 font-bold border-b border-emerald-100 pb-1.5 shrink-0 text-sm">
                             <i class="fa-regular fa-face-laugh-beam text-lg text-emerald-500"></i>
                             <span>好表現區</span>
                             <span id="good-count" class="ml-auto text-[10px] bg-emerald-100 text-emerald-800 px-1.5 py-0.5 rounded-full">0 人</span>
                         </div>
                         
-                        <!-- 學生方塊放置區設定為三欄 Grid (grid grid-cols-3 gap-2)，且對齊項調整為 items-start content-start 以實現完美的橫排與高整合度 -->
+                        <!-- 學生方塊放置區設定為三欄 Grid -->
+                        <!-- 說明改為「拖曳名牌/點擊名牌左側笑臉新增至此」 -->
                         <div id="good-zone" class="drag-zone flex-grow overflow-y-auto grid grid-cols-3 gap-2 p-1 min-h-0 rounded-xl transition-all items-start justify-start content-start" ondragover="allowDrop(event)" ondragenter="dragEnter(event)" ondragleave="dragLeave(event)" ondrop="handleDrop(event, 'good')">
                             <div class="placeholder col-span-3 py-12 flex items-center justify-center text-emerald-400 text-xs text-center italic">
-                                拖曳學生至此
+                                拖曳名牌/點擊名牌左側笑臉新增至此
                             </div>
                         </div>
 
@@ -398,16 +432,18 @@
 
                     <!-- 2. 待改進區 (粉紅色系，預設4分鐘) — 寬度佔比 21% -->
                     <div class="bg-rose-50/50 border-2 border-rose-100 rounded-2xl p-3 flex flex-col min-h-0 h-full justify-between w-full md:w-[21%]">
-                        <div class="flex items-center gap-1.5 mb-1.5 text-rose-700 font-bold border-b border-rose-100 pb-1.5 shrink-0 text-xs">
+                        <!-- 標題字體大小改為 sm (text-xs 改為 text-sm) -->
+                        <div class="flex items-center gap-1.5 mb-1.5 text-rose-700 font-bold border-b border-rose-100 pb-1.5 shrink-0 text-sm">
                             <i class="fa-regular fa-face-sad-tear text-lg text-rose-500"></i>
                             <span>待改進區</span>
                             <span id="bad-count" class="ml-auto text-[10px] bg-rose-100 text-rose-800 px-1.5 py-0.5 rounded-full">0 人</span>
                         </div>
                         
                         <!-- 學生方塊放置區：維持單欄 (flex flex-col) 排列 -->
+                        <!-- 說明改為「拖曳名牌/點擊名牌右側哭臉新增至此」 -->
                         <div id="bad-zone" class="drag-zone flex-grow overflow-y-auto flex flex-col gap-2 p-1 min-h-0 rounded-xl transition-all items-center justify-start content-start" ondragover="allowDrop(event)" ondragenter="dragEnter(event)" ondragleave="dragLeave(event)" ondrop="handleDrop(event, 'bad')">
                             <div class="placeholder py-12 flex items-center justify-center text-rose-400 text-xs text-center italic">
-                                拖曳學生至此
+                                拖曳名牌/點擊名牌右側哭臉新增至此
                             </div>
                         </div>
 
@@ -437,16 +473,18 @@
 
                     <!-- 3. 課間上廁所區 (湖水藍色系，預設2分鐘) — 寬度佔比 21% -->
                     <div class="bg-sky-50/50 border-2 border-sky-100 rounded-2xl p-3 flex flex-col min-h-0 h-full justify-between w-full md:w-[21%]">
-                        <div class="flex items-center gap-1.5 mb-1.5 text-sky-700 font-bold border-b border-sky-100 pb-1.5 shrink-0 text-xs">
+                        <!-- 標題字體大小改為 sm (text-xs 改為 text-sm) -->
+                        <div class="flex items-center gap-1.5 mb-1.5 text-sky-700 font-bold border-b border-sky-100 pb-1.5 shrink-0 text-sm">
                             <i class="fa-solid fa-restroom text-lg text-sky-500"></i>
                             <span>課間上廁所</span>
                             <span id="toilet-count" class="ml-auto text-[10px] bg-sky-100 text-sky-800 px-1.5 py-0.5 rounded-full">0 人</span>
                         </div>
                         
                         <!-- 學生方塊放置區：維持單欄 (flex flex-col) 排列 -->
+                        <!-- 說明改為「拖曳名牌至此」 -->
                         <div id="toilet-zone" class="drag-zone flex-grow overflow-y-auto flex flex-col gap-2 p-1 min-h-0 rounded-xl transition-all items-center justify-start content-start" ondragover="allowDrop(event)" ondragenter="dragEnter(event)" ondragleave="dragLeave(event)" ondrop="handleDrop(event, 'toilet')">
                             <div class="placeholder py-12 flex items-center justify-center text-sky-400 text-xs text-center italic">
-                                拖曳學生至此
+                                拖曳名牌至此
                             </div>
                         </div>
 
@@ -503,13 +541,13 @@
                 <table class="w-full border-collapse text-center">
                     <thead>
                         <tr id="hw-table-header" class="bg-amber-100/50 text-[#78350f] font-bold text-sm">
-                            <!-- 首欄：標題改為「登記」且設定左右、上下完美置中對齊 -->
-                            <th class="p-3 border-b border-r border-amber-200/80 min-w-[100px] sticky left-0 bg-amber-50 z-20 shadow-[2px_0_5px_rgba(0,0,0,0.02)] text-[#78350f] font-bold text-sm text-center align-middle">登記</th>
+                            <!-- 首欄表頭「登記」欄位加高，內距改為 py-6 px-3，以與下方加高的作業列完美對齊 -->
+                            <th class="py-6 px-3 border-b border-r border-amber-200/80 min-w-[100px] sticky left-0 bg-amber-50 z-20 shadow-[2px_0_5px_rgba(0,0,0,0.02)] text-[#78350f] font-bold text-sm text-center align-middle">登記</th>
                             <!-- 動態生成的學生座號+姓名欄位會插在這裡 -->
                         </tr>
                     </thead>
                     <tbody id="hw-table-body" class="divide-y divide-amber-90 text-xs md:text-sm">
-                        <!-- 動態生成的作業列與核取儲存格會在這裡呈現 -->
+                        <!-- 動態生成的作業列與核取儲格會在這裡呈現 -->
                         <tr>
                             <td class="p-8 text-gray-400 italic text-center" colspan="100%">
                                 <i class="fa-solid fa-circle-info mr-1"></i> 請先至上方匯入學生名單，並於右上角輸入作業名稱以啟用檢核表格。
@@ -604,7 +642,7 @@
         let confettiParticles = [];
         const confettiColors = ['#f43f5e', '#10b981', '#06b6d4', '#f59e0b', '#ec4899', '#3b82f6', '#ffffff', '#eab308'];
 
-        // 2. 依座號排序指定表現區域內的所有學生卡片 (宣告至頂層，徹底根除未定義報報問題)
+        // 2. 依座號排序指定表現區域內的所有學生卡片
         function sortZoneCards(zone) {
             const cards = Array.from(zone.querySelectorAll('.student-card'));
             cards.sort((a, b) => {
@@ -612,48 +650,12 @@
                 const numB = parseInt(b.getAttribute('data-number'), 10) || 0;
                 return numA - numB;
             });
-            // 由於好表現區現在是 grid 雙欄排列，使用 appendChild 依然能完美按 Grid 槽位順序排好！
+            // 由於好表現區現在是 grid 三欄排列，使用 appendChild 依然能完美按 Grid 槽位順序排好！
             cards.forEach(card => zone.appendChild(card));
         }
 
-        // 3. 切換匯入分頁 (Excel / 手動貼上)
-        function switchImportTab(type) {
-            const btnExcel = document.getElementById('btn-tab-excel');
-            const btnText = document.getElementById('btn-tab-text');
-            const areaExcel = document.getElementById('import-excel-area');
-            const areaText = document.getElementById('import-text-area');
-            const isDarkMode = document.body.classList.contains('dark-mode');
-
-            if (type === 'excel') {
-                // 選中 Excel 
-                btnExcel.className = "flex-1 py-1 px-2 rounded-lg bg-amber-500 text-white shadow-sm transition-all";
-                
-                if (isDarkMode) {
-                    btnText.className = "flex-1 py-1 px-2 rounded-lg tab-inactive-dark transition-all";
-                } else {
-                    btnText.className = "flex-1 py-1 px-2 rounded-lg bg-amber-100 text-amber-800 hover:bg-amber-200 transition-all";
-                }
-                
-                // 修正關鍵：原本 areaExcel.add 與 areaText.remove 導致 TypeError 崩潰，現已完美修正為正確的 classList
-                areaExcel.classList.remove('hidden');
-                areaText.classList.add('hidden');
-            } else {
-                // 選中手動貼上
-                btnText.className = "flex-1 py-1 px-2 rounded-lg bg-amber-500 text-white shadow-sm transition-all";
-                
-                if (isDarkMode) {
-                    btnExcel.className = "flex-1 py-1 px-2 rounded-lg tab-inactive-dark transition-all";
-                } else {
-                    btnExcel.className = "flex-1 py-1 px-2 rounded-lg bg-amber-100 text-amber-800 hover:bg-amber-200 transition-all";
-                }
-                
-                areaExcel.classList.add('hidden');
-                areaText.classList.remove('hidden');
-            }
-        }
-
         // ==========================================
-        // 【錯誤修正關鍵】將拖放事件相關處理函數提升（Hoist）宣告，確保 createStudentCard 初始化綁定時不會拋出 ReferenceError
+        // 【技術重點】將拖放事件相關處理函數提升（Hoist）宣告，確保在建立卡片綁定事件時不會有 ReferenceError
         // ==========================================
         let draggedElement = null;
 
@@ -664,23 +666,7 @@
             e.dataTransfer.effectAllowed = 'copyMove';
         }
 
-        function handleDragEnd(e) {
-            this.classList.remove('dragging');
-            draggedElement = null;
-            document.querySelectorAll('.drag-zone').forEach(zone => {
-                zone.classList.remove('drag-hover');
-                zone.classList.remove('good-zone-hover');
-                zone.classList.remove('bad-zone-hover');
-                zone.classList.remove('toilet-zone-hover');
-            });
-        }
-
-        function allowDrop(e) {
-            e.preventDefault();
-        }
-
-        // 修改：動態判斷並接聽拖曳事件
-        // 在夜間模式下，當拖曳名牌卡片懸停於指定區域上方時，會自動套用低亮度、舒適不傷眼的反白微光特效！
+        // 懸停時的反白特效
         function dragEnter(e) {
             e.preventDefault();
             const zone = e.currentTarget;
@@ -697,6 +683,10 @@
             } else {
                 zone.classList.add('drag-hover');
             }
+        }
+
+        function allowDrop(e) {
+            e.preventDefault();
         }
 
         function dragLeave(e) {
@@ -726,11 +716,21 @@
             addStudentToZone(number, name, zoneType, sourceCard);
         }
 
+        function handleDragEnd(e) {
+            this.classList.remove('dragging');
+            draggedElement = null;
+            document.querySelectorAll('.drag-zone').forEach(zone => {
+                zone.classList.remove('drag-hover');
+                zone.classList.remove('good-zone-hover');
+                zone.classList.remove('bad-zone-hover');
+                zone.classList.remove('toilet-zone-hover');
+            });
+        }
+
         // 4. 處理預設範例資料
         function loadDemoStudents() {
             const demoText = "1 洪叡軒\n1 何聿倫\n2 曾紹倫\n2 高嘉恩\n3 周紹群\n4 廖恩可\n5 陳熙文\n6 謝睿陽\n7 何仲偉\n7 陳柏琛\n9 王宥傑\n10 林詩芸\n11 吳苡樂\n12 陳蕾伊\n13 林亞歆\n13 黃佳營\n14 林雨霏\n15 周育欣\n16 吳依宸\n17 黃苡真\n18 陳泓鈺";
             document.getElementById('text-input').value = demoText;
-            switchImportTab('text');
             generateFromText();
             
             if (homeworkList.length === 0) {
@@ -739,7 +739,7 @@
             }
         }
 
-        // 5. 解析 Excel 檔案 (修正 Worksheet 與 Rows 傳遞之語法錯誤)
+        // 5. 解析 Excel 檔案
         function handleExcelUpload(event) {
             const file = event.target.files[0];
             if (!file) return;
@@ -750,7 +750,7 @@
                 const workbook = XLSX.read(data, {type: 'array'});
                 const firstSheetName = workbook.SheetNames[0];
                 const worksheet = workbook.Sheets[firstSheetName];
-                const rows = XLSX.utils.sheet_to_json(worksheet, {header: 1}); // 已修正為 worksheet
+                const rows = XLSX.utils.sheet_to_json(worksheet, {header: 1});
                 
                 let parsedStudents = [];
                 rows.forEach((row, index) => {
@@ -806,22 +806,27 @@
             }
         }
 
-        // 7. 渲染「學生姓名區」的學生方塊
-        font_style = null; // 防呆
+        // 7. 渲染「學生資訊管理」的學生方塊
         function renderStudentPool() {
             const pool = document.getElementById('student-pool');
             pool.innerHTML = '';
 
+            const sc = document.getElementById('student-count');
+            const lsc = document.getElementById('left-student-count');
+
             if (studentsList.length === 0) {
                 pool.innerHTML = `
                     <div class="col-span-full py-12 text-center text-gray-400 text-xs">
-                        請先匯入學生名單以生成方塊
+                        <i class="fa-solid fa-arrow-left text-lg mb-2 block animate-bounce"></i>
+                        請先在左欄匯入名單以生成方塊
                     </div>`;
-                document.getElementById('student-count').textContent = '共 0 人';
+                if (sc) sc.textContent = '共 0 人';
+                if (lsc) lsc.textContent = '共 0 人';
                 return;
             }
 
-            document.getElementById('student-count').textContent = `共 ${studentsList.length} 人`;
+            if (sc) sc.textContent = `共 ${studentsList.length} 人`;
+            if (lsc) lsc.textContent = `共 ${studentsList.length} 人`;
 
             studentsList.forEach(student => {
                 const card = createStudentCard(student.number, student.name);
@@ -829,16 +834,14 @@
             });
         }
 
-        // 8. 創建單一學生方塊 DOM 元素 (置中對齊：座號和姓名在名牌內部水平/垂直置中)
-        // 修改：移除 group-hover 導致的座號淡出與姓名 px 內距推移效果，確保在學生姓名區時座號與姓名完全靜止不變！
+        // 8. 創建單一學生方塊 DOM 元素
         function createStudentCard(number, name) {
             totalCreatedCount++;
             const uniqueId = `student-${totalCreatedCount}`;
 
             const card = document.createElement('div');
             card.id = uniqueId;
-            // 預備區方塊：字體與座號一同並列，並加入 justify-center 來完全置中，加上 rounded-xl 保持圓角
-            card.className = "student-card bg-white border border-amber-200 hover:border-amber-400 hover:shadow-md py-2 px-2.5 rounded-xl flex items-center justify-center gap-1.5 cursor-grab active:cursor-grabbing select-none transition-all text-xs font-semibold relative group";
+            card.className = "student-card bg-white border border-amber-200 hover:border-amber-400 hover:shadow-md py-1.5 px-1.5 rounded-xl flex items-center justify-center gap-1 cursor-grab active:cursor-grabbing select-none transition-all text-xs font-semibold relative group";
             card.setAttribute('draggable', 'true');
             card.setAttribute('data-number', number);
             card.setAttribute('data-name', name);
@@ -847,25 +850,23 @@
             const isEven = parseInt(number) % 2 === 0;
             const bgClass = isEven ? 'bg-amber-50 text-amber-800' : 'bg-orange-50 text-orange-900';
             
-            // 座號圓圈在 Flex 內部流，與姓名並列一同置中。
-            // 修正：已移除 `group-hover:opacity-0` 與 `group-hover:px-4`，讓圓圈與姓名保持 100% 靜態不閃爍。
             card.innerHTML = `
                 <!-- 左側快速分發：笑臉 -->
-                <button class="quick-btn-left absolute left-1 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-all text-emerald-500 hover:text-emerald-700 cursor-pointer z-20 p-1" title="一鍵加入好表現區">
-                    <i class="fa-regular fa-face-laugh-beam text-sm"></i>
+                <button class="quick-btn-left absolute left-0.5 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-all text-emerald-500 hover:text-emerald-700 cursor-pointer z-20 p-0.5" title="一鍵加入好表現區">
+                    <i class="fa-regular fa-face-laugh-beam text-xs"></i>
                 </button>
                 
-                <span class="w-5 h-5 flex items-center justify-center rounded-full text-[9px] font-bold ${bgClass} shrink-0 shadow-sm transition-all">
+                <span class="w-5 h-5 flex items-center justify-center rounded-full text-[10px] font-extrabold ${bgClass} shrink-0 shadow-sm transition-all">
                     ${number}
                 </span>
                 
-                <span class="truncate text-amber-950 font-bold px-1 transition-all">
+                <span class="truncate text-amber-950 font-bold px-0.5 transition-all">
                     ${name}
                 </span>
                 
                 <!-- 右側快速分發：哭臉 -->
-                <button class="quick-btn-right absolute right-1 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-all text-rose-500 hover:text-rose-700 cursor-pointer z-20 p-1" title="一鍵加入待改進區">
-                    <i class="fa-regular fa-face-sad-tear text-sm"></i>
+                <button class="quick-btn-right absolute right-0.5 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-all text-rose-500 hover:text-rose-700 cursor-pointer z-20 p-0.5" title="一鍵加入待改進區">
+                    <i class="fa-regular fa-face-sad-tear text-xs"></i>
                 </button>
             `;
 
@@ -880,22 +881,20 @@
 
             leftBtn.addEventListener('click', (e) => {
                 e.preventDefault();
-                e.stopPropagation(); // 阻止拖曳或點擊擴散
+                e.stopPropagation();
                 addStudentToZone(number, name, 'good', card);
             });
 
             rightBtn.addEventListener('click', (e) => {
                 e.preventDefault();
-                e.stopPropagation(); // 阻止拖曳或點擊擴散
+                e.stopPropagation();
                 addStudentToZone(number, name, 'bad', card);
             });
 
             return card;
         }
 
-        // ==========================================
-        // 【錯誤修正關鍵】補回並提升 `removeSingleCardCount` 的定義，徹底修正點擊垃圾桶時 taibeiTime 未定義或點擊崩潰
-        // ==========================================
+        // 9. 移除卡片次數或整張移除
         function removeSingleCardCount(card, zoneId) {
             let count = parseInt(card.getAttribute('data-count') || 1);
             if (count > 1) {
@@ -917,7 +916,6 @@
                 if (parent && parent.querySelectorAll('.student-card').length === 0) {
                     const ph = parent.querySelector('.placeholder');
                     if (ph) {
-                        // 修正：如果是在好表現區 (grid 三欄排列)，佔滿全寬 (col-span-3) 以維持 Placeholder 置中美感
                         if (parent.id === 'good-zone') {
                             ph.className = "placeholder col-span-3 py-12 flex items-center justify-center text-emerald-400 text-xs text-center italic";
                         }
@@ -928,36 +926,54 @@
             updateCounts();
         }
 
-        // 10. 當學生方塊被拖移至表現記錄區時，整體放大：寬度 w-40 (160px)、高度 h-12 (48px)，名字升級為 text-base md:text-lg，座號圓圈放大至 w-7 h-7、座號數字放大為 text-sm
-        // 同時在此完全還原並保留「座號與姓名手牽手並排置中」的完美置中，並保留 rounded-xl 圓角設定！
+        // 10. 將學生卡片移入表現看板專區，並調整為大名牌版面
         function moveCardToZone(card, zone) {
             const placeholder = zone.querySelector('.placeholder');
             if (placeholder) {
                 placeholder.style.display = 'none';
             }
             
-            // 先清理原來的緊密微型樣式
-            card.classList.remove('py-2', 'px-2.5', 'text-xs', 'justify-center');
+            // 獲取該卡片的座號與奇偶數狀態，用於生成對應的平時粉彩背景
+            const number = card.getAttribute('data-number');
+            const isEven = parseInt(number, 10) % 2 === 0;
+            const bgClass = isEven ? 'bg-amber-50 text-amber-800' : 'bg-orange-50 text-orange-900';
             
-            // 表現區置中對齊樣式設定，使用 flex 水平垂直絕對置中，並附加 group 實現懸浮效果，加上 rounded-xl 保持圓角 (微調寬高適應三欄結構)
+            // 移除原本的預備區緊湊樣式
+            card.classList.remove('py-1.5', 'px-1.5', 'text-xs', 'justify-center');
+            
+            // 套用大尺寸、在看板專區置中的名牌樣式
             card.className = "student-card bg-white border border-amber-200 hover:border-amber-400 hover:shadow-md py-2 px-3 text-base md:text-lg rounded-xl shadow-sm w-40 h-10 shrink-0 mx-auto flex items-center justify-center gap-2.5 group relative transition-all duration-300";
 
-            // 關鍵修改：進入表現記錄區後，不可再被拖曳（不論是 HTML5 還是觸控）
+            // 鎖定狀態：移入表現區後不允許二次拖曳
             card.setAttribute('draggable', 'false');
             card.classList.remove('cursor-grab', 'active:cursor-grabbing');
             card.classList.add('cursor-default');
 
-            // 移除快速按鈕 (若有) 避免右側欄出現重複的笑臉與哭臉快速分發鍵
+            // 清理原有的快捷笑臉/哭臉分發按鈕
             const leftBtn = card.querySelector('.quick-btn-left'); if (leftBtn) leftBtn.remove();
             const rightBtn = card.querySelector('.quick-btn-right'); if (rightBtn) rightBtn.remove();
 
-            // 座號與姓名自然排列
-            // 座號圓圈放大至 w-7 h-7，字型大小變為 text-sm font-black
+            // 座號圓圈放大邏輯：平時保留對齊原本奇偶數背景色的繽紛底色，滑鼠移過去時才漸變成灰色垃圾桶
             const numSpan = card.querySelector('span:first-child');
             if (numSpan) {
-                numSpan.className = numSpan.className.replace(/\b(absolute|left-[0-9.]+)\b/g, '').trim();
-                numSpan.classList.remove('w-5', 'h-5', 'text-[9px]');
-                numSpan.classList.add('w-7', 'h-7', 'text-sm', 'font-black', 'shrink-0');
+                // 平時保持 bgClass 樣式，只有在懸停時變成灰色背景（hover:bg-stone-200）並顯示垃圾桶
+                numSpan.className = `w-7 h-7 rounded-full flex items-center justify-center text-sm font-black shrink-0 shadow-sm transition-all cursor-pointer relative ${bgClass} hover:bg-stone-200 hover:text-stone-600 dark:hover:bg-slate-700 dark:hover:text-slate-200 group/circle z-10`;
+                numSpan.innerHTML = `
+                    <span class="group-hover/circle:hidden select-none">${number}</span>
+                    <i class="fa-regular fa-trash-can hidden group-hover/circle:block text-xs"></i>
+                `;
+                // 綁定點擊事件以消除/收回
+                numSpan.onclick = function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    const parent = card.parentElement;
+                    const zoneId = parent ? parent.id.split('-')[0] : '';
+                    if (zoneId) {
+                        removeSingleCardCount(card, zoneId);
+                    } else {
+                        card.remove();
+                    }
+                };
             }
 
             const nameSpan = card.querySelector('span:nth-child(2)');
@@ -967,45 +983,24 @@
                 nameSpan.classList.add('font-bold', 'truncate');
             }
 
-            if (!card.querySelector('.delete-btn')) {
-                const deleteBtn = document.createElement('button');
-                // 刪除按鈕配合名牌微調定位與大小，精確固定在 absolute right-2.5，滑鼠移入時才浮現
-                // 使用 addEventListener 處理，並拉高層級 z-50 與 pointer-events-auto 徹底防止遮擋與無反應
-                deleteBtn.className = "delete-btn text-red-400 hover:text-red-600 focus:outline-none transition-all absolute right-2.5 bg-white/90 pl-1 rounded opacity-0 group-hover:opacity-100 z-50 h-7 w-7 flex items-center justify-center pointer-events-auto";
-                deleteBtn.innerHTML = `<i class="fa-regular fa-trash-can text-sm"></i>`;
-                
-                deleteBtn.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    const parent = card.parentElement;
-                    const zoneId = parent ? parent.id.split('-')[0] : '';
-                    
-                    if (zoneId) {
-                        removeSingleCardCount(card, zoneId);
-                    } else {
-                        card.remove();
-                    }
-                });
-                card.appendChild(deleteBtn);
-            }
+            // 安全清理：徹底移去原本右側產生的懸浮 delete-btn，改由座號圓圈一體化代勞
+            const deleteBtn = card.querySelector('.delete-btn');
+            if (deleteBtn) deleteBtn.remove();
 
             zone.appendChild(card);
             sortZoneCards(zone);
         }
 
-        // 11. 分發與新增學生至指定放置區
+        // 11. 核心邏輯：登記學生表現至對應區域（並處理累計徽章與次數）
         function addStudentToZone(number, name, zoneType, sourceCard) {
             const isFromPool = sourceCard.parentElement.id === 'student-pool';
-            const wasInGood = sourceCard.parentElement && sourceCard.parentElement.id === 'good-zone';
-            const wasInBad = sourceCard.parentElement && sourceCard.parentElement.id === 'bad-zone';
-            const wasInToilet = sourceCard.parentElement && sourceCard.parentElement.id === 'toilet-zone';
             
             const goodZone = document.getElementById('good-zone');
             const badZone = document.getElementById('bad-zone');
             const toiletZone = document.getElementById('toilet-zone');
             const targetZone = zoneType === 'good' ? goodZone : (zoneType === 'bad' ? badZone : toiletZone);
 
-            // 清理可能殘留的其他徽章，避免跨區重疊顯示錯誤
+            // 清理多餘的其他徽章
             if (!isFromPool) {
                 const star = sourceCard.querySelector('.star-badge'); if (star) star.remove();
                 const lightning = sourceCard.querySelector('.lightning-badge'); if (lightning) lightning.remove();
@@ -1083,7 +1078,7 @@
                     sourceCard.setAttribute('data-count', '1');
                 }
             } else {
-                // 課間上廁所區 (次數符號更新為水滴「fa-droplet」)
+                // 課間上廁所區 (水滴)
                 const existingCard = toiletZone.querySelector(`.student-card[data-number="${number}"][data-name="${name}"]`);
                 if (existingCard) {
                     let count = parseInt(existingCard.getAttribute('data-count') || 1);
@@ -1123,16 +1118,15 @@
             updateCounts();
         }
 
-        // 12. 觸控拖曳模擬處理
+        // 12. 行動裝置觸控拖曳模擬器 (Touch Drag & Drop Emulation)
         function setupTouchDrag(card) {
             let activeTouch = false;
             let startX, startY;
             let ghostNode = null;
 
             card.addEventListener('touchstart', function(e) {
-                // 關鍵修改：如果已經被設為不可拖曳，則直接 return 退出觸控拖動
                 if (card.getAttribute('draggable') === 'false') return;
-                if (e.target.closest('.delete-btn')) return;
+                if (e.target.closest('.delete-btn') || e.target.closest('.group\\/circle')) return;
                 
                 activeTouch = true;
                 const touch = e.touches[0];
@@ -1204,7 +1198,7 @@
             });
         }
 
-        // 13. 好表現、待改進與課間上廁所人數統計 (以不重複學生人數計算)
+        // 13. 即時人數統計
         function updateCounts() {
             const goodZone = document.getElementById('good-zone');
             const badZone = document.getElementById('bad-zone');
@@ -1240,25 +1234,24 @@
             document.getElementById('toilet-count').textContent = `${uniqueToiletStudents.size} 人`;
         }
 
-
         // ==========================================
-        // 【新增功能】三小區獨立計時器運作邏輯
+        // 【計時模組】三區塊獨立計時器控制
         // ==========================================
 
-        // 套用自訂輸入時間 (分:秒) 至計時器
+        // 套用計時時間
         function applyZoneTime(zone) {
             pauseZoneTimer(zone);
             const mins = parseInt(document.getElementById(`input-mins-${zone}`).value) || 0;
             const secs = parseInt(document.getElementById(`input-secs-${zone}`).value) || 0;
             
             timers[zone].total = (mins * 60) + secs;
-            if (timers[zone].total <= 0) timers[zone].total = 10; // 保證最低限度倒數
+            if (timers[zone].total <= 0) timers[zone].total = 10; // 保證非0
             
             timers[zone].remaining = timers[zone].total;
             updateZoneTimerDisplay(zone);
         }
 
-        // 格式化渲染指定區域的計時器字串 (MM:SS)
+        // 更新計時器文字顯示 (MM:SS)
         function updateZoneTimerDisplay(zone) {
             const display = document.getElementById(`timer-display-${zone}`);
             const mins = Math.floor(timers[zone].remaining / 60);
@@ -1266,7 +1259,7 @@
             display.textContent = `${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
         }
 
-        // 開始與暫停一鍵切換
+        // 開始 / 暫停切換
         function toggleZoneTimer(zone) {
             if (timers[zone].running) {
                 pauseZoneTimer(zone);
@@ -1275,7 +1268,7 @@
             }
         }
 
-        // 開始計時並建立定時執行序
+        // 啟動倒數
         function startZoneTimer(zone) {
             if (timers[zone].remaining <= 0) {
                 timers[zone].remaining = timers[zone].total;
@@ -1303,7 +1296,7 @@
             }, 1000);
         }
 
-        // 暫停計時並還原按鈕配色
+        // 暫停計時
         function pauseZoneTimer(zone) {
             timers[zone].running = false;
             clearInterval(timers[zone].interval);
@@ -1320,23 +1313,22 @@
             if (text) text.textContent = "開始";
         }
 
-        // 重設為原始設定時間
+        // 重設計時
         function resetZoneTimer(zone) {
             pauseZoneTimer(zone);
             timers[zone].remaining = timers[zone].total;
             updateZoneTimerDisplay(zone);
         }
 
-        // 單區倒數計時完成處理程序：響起清脆鐘聲，並呼叫專屬模組通知
+        // 計時器歸零處理：播放風鈴鐘聲，並開啟彈出視窗
         function zoneTimerTimeout(zone) {
             pauseZoneTimer(zone);
             timers[zone].remaining = timers[zone].total;
             updateZoneTimerDisplay(zone);
 
-            // 響起鐘聲
+            // 播放瀏覽器內建 Web Audio 琶音
             playSynthesizedBell();
 
-            // 根據不同計時區域傳送對應的專屬精緻簡化文字與色彩類別 (修改為包含代表圖示、移除重複的「時間到！」大標題)
             let descText = "";
             let colorClass = "";
             let iconClass = "";
@@ -1344,40 +1336,37 @@
             if (zone === 'good') {
                 descText = "時間到！";
                 colorClass = "text-emerald-600";
-                iconClass = "fa-regular fa-face-laugh-beam"; // 笑臉代表圖示
+                iconClass = "fa-regular fa-face-laugh-beam";
             } else if (zone === 'bad') {
                 descText = "時間到！";
                 colorClass = "text-rose-600";
-                iconClass = "fa-regular fa-face-sad-tear"; // 哭臉代表圖示
+                iconClass = "fa-regular fa-face-sad-tear";
             } else if (zone === 'toilet') {
                 descText = "時間到！";
                 colorClass = "text-sky-600";
-                iconClass = "fa-solid fa-restroom"; // 廁所代表圖示
+                iconClass = "fa-solid fa-restroom";
             }
             openAlertModal(descText, colorClass, iconClass, zone);
         }
 
-        // 14. 專屬彈出視窗 (Modal 內部已精確微調與優化，頂部恆為左右跳動金色小鈴鐺)
+        // 14. 開啟提醒視窗 (Modal)
         function openAlertModal(desc, colorClass, iconClass, zone) {
             currentTimeoutZone = zone;
             const modal = document.getElementById('alert-modal');
             
-            // 關鍵修改：彈出視窗 Modal 頂部永遠固定為金色鈴鐺動態圖示 (fa-solid fa-bell text-amber-500)
             const bellIcon = document.getElementById('alert-icon-bell');
             if (bellIcon) {
                 bellIcon.className = "fa-solid fa-bell text-4xl text-amber-500";
             }
             
-            // 讀取該區計時器當前設定的分鐘數
             let timerMins = 0;
             if (zone !== 'default') {
                 timerMins = parseInt(document.getElementById(`input-mins-${zone}`).value) || 0;
             }
 
-            // 完美改變中央說明文字與顏色，並加上老師指定的各區代表色，設為超粗體 large 字級，移除其他干擾色
             const descEl = modal.querySelector('p');
             
-            // 依據不同計時區域，自訂並套用老師指定之圖示＋文字格式：「（該區代表圖示：fa-face-laugh-beam、fa-face-sad-tear、fa-restroom） 幾分鐘時間到！」
+            // 依據不同計時區域，套用指定之代表圖示與大字級說明
             if (zone === 'good') {
                 descEl.innerHTML = `<span class="flex items-center justify-center gap-2"><i class="fa-regular fa-face-laugh-beam"></i> ${timerMins}分鐘時間到！</span>`;
             } else if (zone === 'bad') {
@@ -1398,7 +1387,7 @@
             }, 10);
         }
 
-        // 關閉確認視窗並觸發消單
+        // 關閉提醒視窗，並執行「自動消除該區學生」
         function closeAlertModal() {
             const modal = document.getElementById('alert-modal');
             modal.classList.add('opacity-0');
@@ -1416,7 +1405,7 @@
             }, 300);
         }
 
-        // 自動扣減或消除指定表現小區中全體學生的登記次數
+        // 銷單：自動扣減或消除指定表現區內全體學生的登記次數
         function clearZoneAllCardsOnce(zone) {
             const targetZone = document.getElementById(`${zone}-zone`);
             const cards = Array.from(targetZone.querySelectorAll('.student-card'));
@@ -1443,7 +1432,7 @@
                 }
             });
 
-            // 還原 Placeholder 提示 (若該區學生已全被銷單消除)
+            // 還原 Placeholder 提示 (若該區學生已全被消除)
             if (targetZone.querySelectorAll('.student-card').length === 0) {
                 const placeholder = targetZone.querySelector('.placeholder');
                 if (placeholder) {
@@ -1457,18 +1446,16 @@
             updateCounts();
         }
 
-        // 🎉 【BINGO慶祝特效】 倒數五彩紙屑粒子產生器
+        // 🎉 【BINGO慶祝特效】 倒數五彩紙屑粒子產生器 (Canvas 繪圖)
         function startConfetti() {
             confettiActive = true;
             const canvas = document.getElementById('celebration-canvas');
             const ctx = canvas.getContext('2d');
             
-            // 勁態同步畫布與外部容器大小
             canvas.width = canvas.parentElement.offsetWidth;
             canvas.height = canvas.parentElement.offsetHeight;
             
             confettiParticles = [];
-            // 生成初始 80 顆五彩碎紙屑粒子
             for (let i = 0; i < 80; i++) {
                 confettiParticles.push(createConfettiParticle(canvas.width, canvas.height));
             }
@@ -1489,7 +1476,7 @@
                     ctx.fillRect(-p.width / 2, -p.height / 2, p.width, p.height);
                     ctx.restore();
                     
-                    // 重複利用墜落出界外的粒子
+                    // 粒子掉落至底部後，重新從頂端生成
                     if (p.y > canvas.height) {
                         confettiParticles[i] = createConfettiParticle(canvas.width, 0);
                     }
@@ -1499,7 +1486,7 @@
             requestAnimationFrame(animate);
         }
 
-        // 輔助函式：創建隨機五彩紙屑屬性
+        // 輔支函式：創建隨機五彩紙屑屬性
         function createConfettiParticle(maxWidth, startY) {
             return {
                 x: Math.random() * maxWidth,
@@ -1511,11 +1498,6 @@
                 rotation: Math.random() * Math.PI,
                 rotationSpeed: Math.random() * 0.1 - 0.05
             };
-        }
-
-        // 關閉並停止 BINGO! 慶祝
-        function stopConfetti() {
-            confettiActive = false;
         }
 
         // 14-2. 檢測學生是否全數繳交完成
@@ -1542,7 +1524,7 @@
             const studentInfo = document.getElementById('celebration-student-info');
             studentInfo.textContent = `${number}號 ${name}`;
             
-            // 播放喜慶琶音
+            // 播放琶音音效
             playCelebrationSound();
             
             overlay.classList.remove('hidden');
@@ -1552,7 +1534,6 @@
                 overlay.querySelector('div').classList.add('scale-100');
             }, 10);
             
-            // 開始飄五彩碎紙屑粒子
             startConfetti();
         }
 
@@ -1573,7 +1554,7 @@
             try {
                 const AudioContext = window.AudioContext || window.webkitAudioContext;
                 if (!AudioContext) return;
-                const ctx = new Date() ? new AudioContext() : null; // 安全相容
+                const ctx = new AudioContext();
                 const now = ctx.currentTime;
                 
                 const notes = [523.25, 659.25, 783.99, 1046.50];
@@ -1597,7 +1578,7 @@
             }
         }
 
-        // 純 Web Audio 合成高質感雙音風鈴聲 (相容各瀏覽器安全政策)
+        // 純 Web Audio 合成高質感雙音風鈴聲
         function playSynthesizedBell() {
             try {
                 const AudioContext = window.AudioContext || window.webkitAudioContext;
@@ -1635,9 +1616,8 @@
             }
         }
 
-
         // ==========================================
-        // 作業檢核區 專屬邏輯 (橫列為學生（直書），直欄為作業)
+        // 【作業檢核模組】作業登記系統
         // ==========================================
 
         // 新增作業項目
@@ -1675,65 +1655,64 @@
             renderHomeworkTable();
         }
 
-        // 切換作業色塊儲存格狀態 (點擊切換為勾勾或是叉叉)
+        // 切換單個儲存格的收繳狀態
         function toggleHwCell(number, name, hwName, cellElement) {
             const statusKey = `${number}-${name}_${hwName}`;
-            
-            // 讀取目前的收繳狀態（如果為 undefined，代表未完成/rose 紅底叉叉）
             const isUnfinished = homeworkStatus[statusKey] !== false; 
 
             if (isUnfinished) {
-                // 切換為已完成（綠底 check 勾勾）
+                // 切換為「已完成」（綠底勾勾）
                 homeworkStatus[statusKey] = false;
-                cellElement.className = "p-2.5 border-b border-r border-amber-100 bg-emerald-50 text-emerald-600 text-center font-bold text-sm cursor-pointer hover:bg-emerald-100 transition-colors select-none min-w-[48px] max-w-[48px] align-middle";
+                // 此處的 padding 由原本的 p-2.5 改成 py-5 px-2.5，維持列高的一致性
+                cellElement.className = "py-5 px-2.5 border-b border-r border-amber-100 bg-emerald-50 text-emerald-600 text-center font-bold text-sm cursor-pointer hover:bg-emerald-100 transition-colors select-none min-w-[48px] max-w-[48px] align-middle";
                 cellElement.innerHTML = `<i class="fa-solid fa-check scale-110"></i>`;
                 
-                // 檢查該生是否完成所有作業，若是，則觸發慶祝特效！
                 checkStudentAllHomeworkCompleted(number, name);
             } else {
-                // 切換回未完成（紅底 xmark 叉叉）
+                // 切換為「未完成」（紅底叉叉）
                 homeworkStatus[statusKey] = true;
-                cellElement.className = "p-2.5 border-b border-r border-amber-100 bg-rose-100 text-rose-600 text-center font-bold text-sm cursor-pointer hover:bg-rose-200 transition-colors select-none min-w-[48px] max-w-[48px] align-middle";
+                // 此處的 padding 由原本的 p-2.5 改成 py-5 px-2.5，維持列高的一致性
+                cellElement.className = "py-5 px-2.5 border-b border-r border-amber-100 bg-rose-100 text-rose-600 text-center font-bold text-sm cursor-pointer hover:bg-rose-200 transition-colors select-none min-w-[48px] max-w-[48px] align-middle";
                 cellElement.innerHTML = `<i class="fa-solid fa-xmark scale-110"></i>`;
             }
         }
 
-        // 繪製與同步作業檢核表格 (已更名為「登記」且還原第一直欄寬度為 100px，作業名稱大小恢復為原間距與大小)
+        // 繪製與重繪作業檢核表格
         function renderHomeworkTable() {
             const tableHeader = document.getElementById('hw-table-header');
             const tableBody = document.getElementById('hw-table-body');
 
-            // 1. 重構表頭：首欄固定為「登記」，寬度還原為 100px 且置中
+            // 1. 初始化表頭，首欄固定為「登記」並加高垂直內距為 py-6
             tableHeader.innerHTML = `
-                <th class="p-3 border-b border-r border-amber-200/80 min-w-[100px] sticky left-0 bg-amber-50 z-20 shadow-[2px_0_5px_rgba(0,0,0,0.02)] text-[#78350f] font-bold text-sm text-center align-middle">
+                <th class="py-6 px-3 border-b border-r border-amber-200/80 min-w-[100px] sticky left-0 bg-amber-50 z-20 shadow-[2px_0_5px_rgba(0,0,0,0.02)] text-[#78350f] font-bold text-sm text-center align-middle">
                     登記
                 </th>
             `;
 
+            // 生成每位學生的直書表頭
             studentsList.forEach(student => {
                 const th = document.createElement('th');
-                // 將 min-w 設為窄幅 48px，高度配合內容限制於精細的 80px，套用垂直與水平完美的 align-middle、text-center
                 th.className = "p-1 border-b border-r border-amber-200/80 min-w-[48px] max-w-[48px] bg-amber-100/30 text-[#78350f] font-bold text-center align-middle";
                 
                 const isEven = parseInt(student.number) % 2 === 0;
                 const bgClass = isEven ? 'bg-amber-100 text-amber-900' : 'bg-orange-100 text-orange-900';
                 
-                // 圓圈座號在最上，垂直中文名字直書在下方，字距維持在舒適比例 (0.1em)
+                // 【關鍵修改】將直書名牌的字體大小，調整為與表現紀錄區名牌相同的 text-base md:text-lg
                 th.innerHTML = `
-                    <div class="flex flex-col items-center justify-center gap-1 h-[80px] py-1 mx-auto">
+                    <div class="flex flex-col items-center justify-center gap-1.5 h-[120px] py-3 mx-auto">
                         <span class="w-5 h-5 flex items-center justify-center rounded-full text-[9px] font-bold ${bgClass} shrink-0 shadow-sm">${student.number}</span>
-                        <span class="vertical-header text-xs md:text-sm tracking-wide font-medium leading-none">${student.name}</span>
+                        <span class="vertical-header text-base md:text-lg tracking-wide font-medium leading-none">${student.name}</span>
                     </div>
                 `;
                 tableHeader.appendChild(th);
             });
 
-            // 2. 判斷是否有學生與作業
+            // 2. 判斷是否有資料
             if (studentsList.length === 0) {
                 tableBody.innerHTML = `
                     <tr>
                         <td class="p-10 text-gray-400 italic text-center" colspan="100%">
-                            <i class="fa-solid fa-circle-info mr-1"></i> 請先至上方「學生姓名區」匯入班級學生名單。
+                            <i class="fa-solid fa-circle-info mr-1"></i> 請先至上方「學生資訊管理」匯入班級學生名單。
                         </td>
                     </tr>
                 `;
@@ -1754,14 +1733,15 @@
 
             tableBody.innerHTML = '';
 
+            // 生成每項作業的一橫列，並建立核取儲存格
             homeworkList.forEach((hw, idx) => {
                 const tr = document.createElement('tr');
                 tr.className = "hover:bg-amber-50/40 transition-colors";
 
-                // 第一直欄：作業名稱 (固定最左側，滑動時不遮擋) — 寬度也同步還原為 140px，字體與刪除按鈕恢復原大小
-                // 重要優化：增加 text-center，並使用絕對定位處理刪除按鈕，讓作業項目名稱完美上下左右置中對齊
+                // 最左側固定欄 (作業項目與刪除鈕)
                 const hwTd = document.createElement('td');
-                hwTd.className = "p-2.5 border-b border-r border-amber-200 bg-white font-semibold text-[#78350f] sticky left-0 z-10 shadow-[2px_0_5px_rgba(0,0,0,0.02)] group min-w-[100px] text-center align-middle";
+                // 將 td 的內距從 p-2.5 增加為 py-5 px-2.5，提供兩倍的垂直高度與完美的水平比例
+                hwTd.className = "py-5 px-2.5 border-b border-r border-amber-200 bg-white font-semibold text-[#78350f] sticky left-0 z-10 shadow-[2px_0_5px_rgba(0,0,0,0.02)] group min-w-[100px] text-center align-middle";
                 hwTd.innerHTML = `
                     <div class="flex items-center justify-center gap-1.5 px-1 relative w-full h-full">
                         <span class="truncate text-xs md:text-sm font-bold mx-auto" title="${hw}">${hw}</span>
@@ -1772,18 +1752,20 @@
                 `;
                 tr.appendChild(hwTd);
 
+                // 為每位學生配置一格核對欄
                 studentsList.forEach(student => {
                     const cellTd = document.createElement('td');
                     const statusKey = `${student.number}-${student.name}_${hw}`;
                     
-                    // 為了避免狀態遺失，改採相容性更好的比對
-                    let finalUnfinished = homeworkStatus[statusKey] !== false;
+                    let finalUnfinished = homeworkStatus[student.number + '-' + student.name + '_' + hw] !== false;
 
                     if (finalUnfinished) {
-                        cellTd.className = "p-2.5 border-b border-r border-amber-100 bg-rose-100 text-rose-600 text-center font-bold text-sm cursor-pointer hover:bg-rose-200 transition-colors select-none min-w-[48px] max-w-[48px] align-middle";
+                        // 同樣將未完成儲存格的內距由 p-2.5 加大為 py-5 px-2.5
+                        cellTd.className = "py-5 px-2.5 border-b border-r border-amber-100 bg-rose-100 text-rose-600 text-center font-bold text-sm cursor-pointer hover:bg-rose-200 transition-colors select-none min-w-[48px] max-w-[48px] align-middle";
                         cellTd.innerHTML = `<i class="fa-solid fa-xmark scale-110"></i>`;
                     } else {
-                        cellTd.className = "p-2.5 border-b border-r border-amber-100 bg-emerald-50 text-emerald-600 text-center font-bold text-sm cursor-pointer hover:bg-emerald-100 transition-colors select-none min-w-[48px] max-w-[48px] align-middle";
+                        // 將已完成儲存格的內距由 p-2.5 加大為 py-5 px-2.5
+                        cellTd.className = "py-5 px-2.5 border-b border-r border-amber-100 bg-emerald-50 text-emerald-600 text-center font-bold text-sm cursor-pointer hover:bg-emerald-100 transition-colors select-none min-w-[48px] max-w-[48px] align-middle";
                         cellTd.innerHTML = `<i class="fa-solid fa-check scale-110"></i>`;
                     }
 
@@ -1799,7 +1781,7 @@
         }
 
         // ==========================================
-        // 【新增功能】夜間 / 日間模式切換邏輯 
+        // 【介面微調】切換日夜間/午休主題
         // ==========================================
         function toggleTheme() {
             const body = document.body;
@@ -1807,15 +1789,10 @@
             const icon = document.getElementById('theme-icon');
             const text = document.getElementById('theme-text');
             const isDark = body.classList.toggle('dark-mode');
-            
-            // 同步更新當前選中按鈕的狀態顏色
-            const activeTab = document.getElementById('import-excel-area').classList.contains('hidden') ? 'text' : 'excel';
-            switchImportTab(activeTab);
 
             if (isDark) {
                 icon.className = "fa-solid fa-sun text-yellow-400 text-sm md:text-base animate-spin-slow";
                 text.textContent = "日間正常模式";
-                // 美化按鈕在夜間模式下的背景
                 btn.style.backgroundColor = "rgba(30, 41, 59, 0.95)";
                 btn.style.color = "#f1f5f9";
             } else {
@@ -1827,14 +1804,13 @@
         }
 
         // ==========================================
-        // 【新增功能】UTC+08:00 台北標準時即時數位時鐘更新邏輯
+        // 【時鐘模組】即時更新 UTC+08:00 台北標準時間
         // ==========================================
         function updateUTClock() {
             const clockEl = document.getElementById('utc-clock');
             if (!clockEl) return;
 
             const now = new Date();
-            // 獲取當前設備的 UTC 毫秒數，並加上 8 小時偏移以確保鎖定 UTC+08:00
             const utcTime = now.getTime() + (now.getTimezoneOffset() * 60000);
             const taipeiTime = new Date(utcTime + (3600000 * 8));
 
@@ -1845,25 +1821,25 @@
             const minutes = String(taipeiTime.getMinutes()).padStart(2, '0');
             const seconds = String(taipeiTime.getSeconds()).padStart(2, '0');
             
-            // 星期數轉換為繁體中文對照
             const daysArr = ["日", "一", "二", "三", "四", "五", "六"];
             const dayOfWeek = daysArr[taipeiTime.getDay()];
 
-            // 拼裝出完整的年月日(星期)與時:分:秒
             clockEl.textContent = `${year}年${month}月${date}日 (週${dayOfWeek}) ${hours}:${minutes}:${seconds}`;
+        }
+
+        // 自訂一般警示視窗 fallback 顯示
+        function alertModalMessage(title, message) {
+            openAlertModal(message, 'text-amber-600', 'fa-solid fa-circle-info', 'default');
         }
 
         // 15. 初始化頁面載入與預設配置
         window.onload = function() {
-            // 載入預設學生
             loadDemoStudents();
 
-            // 初始化與套用三小區預設計時時間
             applyZoneTime('good');
             applyZoneTime('bad');
             applyZoneTime('toilet');
 
-            // 啟動並設定每秒更新的 UTC+08:00 即時時鐘
             updateUTClock();
             setInterval(updateUTClock, 1000);
         }
