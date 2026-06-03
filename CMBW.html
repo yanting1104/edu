@@ -702,7 +702,7 @@
         let totalCreatedCount = 0; // Unique ID generator
         let homeworkList = []; // Homework list (String array)
         let homeworkStatus = {}; // Homework status cache
-        let gasUrl = localStorage.getItem('gasUrl') || 'https://script.google.com/macros/s/AKfycbxkuNEtBgwBfpYwOORPeXeeZ4gaCIFvKJIztJfHcedMa_xWAQ0U1wLcJUFKRmDHu9bx/exec'; // Default GAS url
+        let gasUrl = localStorage.getItem('gasUrl') || 'https://script.google.com/macros/s/AKfycbxBNQX974kwKVpK2_qUBKJMHtrwmec4auaJl2UC6hm7vNJgW9totRcVYu-oRLLJ5HgK/exec'; // Default GAS url
 
         // Independent timer data structures
         let timers = {
@@ -746,7 +746,6 @@
             e.dataTransfer.effectAllowed = 'copyMove';
         }
 
-        // 拖曳結束
         function handleDragEnd(e) {
             this.classList.remove('dragging');
             draggedElement = null;
@@ -755,7 +754,7 @@
             });
         }
 
-        // 允許拖曳
+        // Allow drop
         function allowDrop(e) { e.preventDefault(); }
 
         function dragEnter(e) {
@@ -1423,7 +1422,7 @@
         async function executeSaveRecord(className) {
             closeConfirmModal();
 
-            // A. Reflection list (Format: 01洪叡軒(2), 02何聿倫(1))
+            // Reflection list (Format: 01洪叡軒(2), 02何聿倫(1))
             const badCards = document.getElementById('bad-zone').querySelectorAll('.student-card');
             const badRecordArray = Array.from(badCards).map(card => {
                 const num = card.getAttribute('data-number');
@@ -1432,7 +1431,7 @@
                 return `${num}${name}(${count})`;
             });
 
-            // B. Toilet break list (Format: 10林詩芸(1), 11吳苡樂(3))
+            // Toilet break list (Format: 10林詩芸(1), 11吳苡樂(3))
             const toiletCards = document.getElementById('toilet-zone').querySelectorAll('.student-card');
             const toiletRecordArray = Array.from(toiletCards).map(card => {
                 const num = card.getAttribute('data-number');
@@ -1441,7 +1440,7 @@
                 return `${num}${name}(${count})`;
             });
 
-            // C. Stars score calculations
+            // Stars score calculations
             const scoresPayload = {};
             let hasChanges = false;
 
@@ -1573,7 +1572,6 @@
             updateZoneTimerDisplay(zone);
         }
 
-        // 獨立區域計時器顯示
         function updateZoneTimerDisplay(zone) {
             const display = document.getElementById(`timer-display-${zone}`);
             const mins = Math.floor(timers[zone].remaining / 60);
