@@ -172,9 +172,6 @@
         body.dark-mode h1 {
             color: #d97706 !important; /* 柔和暗金，避免過亮 */
         }
-        body.dark-mode h2, body.dark-mode h3 {
-            color: #e2e8f0 !important; /* 一般標題採用 cold grey，不刺眼 */
-        }
         body.dark-mode .bg-emerald-50\/50 {
             background-color: rgba(4, 120, 87, 0.15) !important; /* 降低背景亮綠色 */
             border-color: rgba(16, 185, 129, 0.2) !important;
@@ -337,7 +334,7 @@
             <i class="fa-solid fa-graduation-cap text-[#f59e0b]"></i>
             班級經營互動看板
         </h1>
-        <p class="text-gray-500 text-xs md:text-[12px]">　</p>
+        <p class="text-gray-500 text-xs md:text-[12px]">互動式行為表現與作業檢核系統</p>
     </header>
 
     <!-- Layout structure: Left "Control Panel", Right "Performance Records" -->
@@ -676,7 +673,7 @@
                 <p id="celebration-student-info" class="text-xl font-extrabold text-yellow-100 drop-shadow-sm leading-tight shrink-0"></p>
             </div>
             <!-- Bottom button (完美切齊底部) -->
-            <button onclick="closeCelebration()" class="relative z-10 w-full bg-white hover:bg-yellow-100 text-orange-600 font-bold py-3 px-6 rounded-2xl shadow-lg hover:shadow-xl transition-all text-base focus:outline-none shrink-0">
+            <button onclick="closeCelebration()" class="relative z-10 w-full bg-white hover:bg-yellow-100 text-orange-600 font-bold py-3 px-6 rounded-2xl shadow-lg hover:shadow-xl transition-all text-base focus:none shrink-0">
                 超級棒！
             </button>
         </div>
@@ -702,7 +699,8 @@
         let totalCreatedCount = 0; // Unique ID generator
         let homeworkList = []; // Homework list (String array)
         let homeworkStatus = {}; // Homework status cache
-        let gasUrl = localStorage.getItem('gasUrl') || 'https://script.google.com/macros/s/AKfycbxBNQX974kwKVpK2_qUBKJMHtrwmec4auaJl2UC6hm7vNJgW9totRcVYu-oRLLJ5HgK/exec'; // Default GAS url
+        // 已更新為最新的 API 預設部署網址
+        let gasUrl = localStorage.getItem('gasUrl') || 'https://script.google.com/macros/s/AKfycbxBNQX974kwKVpK2_qUBKJMHtrwmec4auaJl2UC6hm7vNJgW9totRcVYu-oRLLJ5HgK/exec'; 
 
         // Independent timer data structures
         let timers = {
