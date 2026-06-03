@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>自然與生活科技 - 隨堂小測驗</title>
+    <!-- 引入 Google Fonts (注音與圓體風格) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@300..700&family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Noto Sans TC', 'Fredoka', 'sans-serif'],
+                    },
+                    colors: {
+                        // 黃綠色系品牌顏色（嫩芽綠、深林綠）
+                        brand: {
+                            50: '#f7fee7',  // lime-50
+                            100: '#ecfccb', // lime-100
+                            200: '#d9f99d', // lime-200
+                            400: '#a3e635', // lime-400
+                            500: '#84cc16', // lime-500
+                            600: '#65a30d', // lime-600
+                            800: '#3f6212', // lime-800
+                        },
+                        quizYellow: '#fef9c3', // yellow-100
+                        quizGreen: '#bbf7d0',  // green-200
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* 自訂可愛的點選外框動效 - 嫩綠色調 */
+        input[type="radio"]:checked + label {
+            border-color: #84cc16; /* brand-500 */
+            background-color: #f7fee7; /* brand-50 */
+            color: #3f6212; /* brand-800 */
+            transform: scale(1.02);
+        }
+        /* 按鈕果凍效果 */
+        .jelly-btn:active {
+            transform: scale(0.95);
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-brand-50 via-quizYellow to-brand-100 min-h-screen py-8 px-4 font-sans text-gray-800">
+
+    <div class="max-w-xl mx-auto bg-white rounded-3xl shadow-xl border-4 border-brand-200 overflow-hidden">
+        
+        <!-- 頂部可愛的 Banner 裝飾 - 綠意漸層 -->
+        <div class="bg-gradient-to-r from-brand-500 to-emerald-500 p-6 text-center text-white relative">
+            <div class="absolute top-2 left-3 text-xs bg-white/20 px-2 py-1 rounded-full">🌱 生態系的小測試</div>
+            <h1 class="text-2xl md:text-3xl font-bold mt-2 tracking-wide">🔍 課堂隨堂驗收</h1>
+            <p class="text-sm text-brand-50/90 mt-1">動動腦時間！看看今天能拿幾分呢？</p>
+        </div>
+
+        <!-- 網頁內容表單 -->
+        <div class="p-6 space-y-6">
+            
+            <!-- GAS 部署網址設定 (僅供老師使用，預設隱藏或收合，方便直接在網頁測試) -->
+            <div class="bg-lime-50 border border-lime-200 rounded-2xl p-4 text-xs space-y-2">
+                <div class="flex justify-between items-center cursor-pointer" onclick="toggleConfig()">
+                    <span class="font-bold text-lime-800 flex items-center gap-1">
+                        ⚙️ 連結 Google 試算表設定 (點擊展開/收合)
+                    </span>
+                    <span id="config-arrow" class="text-lime-600">▼</span>
+                </div>
+                <div id="config-body" class="space-y-2">
+                    <p class="text-lime-700">請在下方欄位填入您剛剛在 Google Apps Script 部署好的「網頁應用程式 URL」：</p>
+                    <input type="text" id="gas-url" class="w-full p-2 border border-lime-300 rounded-lg text-xs" 
+                           placeholder="https://script.google.com/macros/s/AKfycbyCrN19IOUNEbSZvAMdBH8odRpKVHg0zFleMnkqmixo2YpwjeeLLUSpuF1P29pDDxrY/exec"
+                           value="">
+                    <p class="text-[10px] text-lime-500 italic">※ 注意：若未填寫此欄，分數只會在本機網頁顯示，不會上傳至試算表。</p>
+                </div>
+            </div>
+
+            <!-- 學生基本資訊區 -->
+            <div class="bg-brand-50 p-5 rounded-2xl border-2 border-dashed border-brand-200 space-y-3">
+                <label for="student-name" class="block text-base font-bold text-brand-600">
+                    ✏️ 請輸入姓名：
+                </label>
+                <input type="text" id="student-name" 
+                       class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-brand-400 focus:outline-none text-base transition-all placeholder:text-gray-400" 
+                       placeholder="例如：王小明">
+            </div>
+
+            <!-- 第一題 -->
+            <div class="space-y-3">
+                <div class="flex items-start gap-2">
+                    <span class="bg-brand-500 text-white font-bold text-xs px-2.5 py-1 rounded-full mt-1">Q1</span>
+                    <h2 class="text-lg font-bold text-gray-800">蘋果是屬於下列何者？</h2>
+                </div>
+                <div class="grid grid-cols-2 gap-3">
+                    <div class="relative">
+                        <input type="radio" id="q1-opt1" name="q1" value="生產者" class="sr-only">
+                        <label for="q1-opt1" class="block text-center py-3 px-4 rounded-xl border-2 border-gray-200 cursor-pointer hover:border-brand-200 transition-all font-medium">
+                            A. 生產者
+                        </label>
+                    </div>
+                    <div class="relative">
+                        <input type="radio" id="q1-opt2" name="q1" value="一級消費者" class="sr-only">
+                        <label for="q1-opt2" class="block text-center py-3 px-4 rounded-xl border-2 border-gray-200 cursor-pointer hover:border-brand-200 transition-all font-medium">
+                            B. 一級消費者
+                        </label>
+                    </div>
+                    <div class="relative">
+                        <input type="radio" id="q1-opt3" name="q1" value="二級消費者" class="sr-only">
+                        <label for="q1-opt3" class="block text-center py-3 px-4 rounded-xl border-2 border-gray-200 cursor-pointer hover:border-brand-200 transition-all font-medium">
+                            C. 二級消費者
+                        </label>
+                    </div>
+                    <div class="relative">
+                        <input type="radio" id="q1-opt4" name="q1" value="分解者" class="sr-only">
+                        <label for="q1-opt4" class="block text-center py-3 px-4 rounded-xl border-2 border-gray-200 cursor-pointer hover:border-brand-200 transition-all font-medium">
+                            D. 分解者
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 第二題 -->
+            <div class="space-y-3 pt-2">
+                <div class="flex items-start gap-2">
+                    <span class="bg-emerald-500 text-white font-bold text-xs px-2.5 py-1 rounded-full mt-1">Q2</span>
+                    <h2 class="text-lg font-bold text-gray-800">下列何者是一級消費者？</h2>
+                </div>
+                <div class="grid grid-cols-2 gap-3">
+                    <div class="relative">
+                        <input type="radio" id="q2-opt1" name="q2" value="獅子" class="sr-only">
+                        <label for="q2-opt1" class="block text-center py-3 px-4 rounded-xl border-2 border-gray-200 cursor-pointer hover:border-brand-200 transition-all font-medium">
+                            A. 獅子
+                        </label>
+                    </div>
+                    <div class="relative">
+                        <input type="radio" id="q2-opt2" name="q2" value="老鷹" class="sr-only">
+                        <label for="q2-opt2" class="block text-center py-3 px-4 rounded-xl border-2 border-gray-200 cursor-pointer hover:border-brand-200 transition-all font-medium">
+                            B. 老鷹
+                        </label>
+                    </div>
+                    <div class="relative">
+                        <input type="radio" id="q2-opt3" name="q2" value="兔子" class="sr-only">
+                        <label for="q2-opt3" class="block text-center py-3 px-4 rounded-xl border-2 border-gray-200 cursor-pointer hover:border-brand-200 transition-all font-medium">
+                            C. 兔子
+                        </label>
+                    </div>
+                    <div class="relative">
+                        <input type="radio" id="q2-opt4" name="q2" value="狐狸" class="sr-only">
+                        <label for="q2-opt4" class="block text-center py-3 px-4 rounded-xl border-2 border-gray-200 cursor-pointer hover:border-brand-200 transition-all font-medium">
+                            D. 狐狸
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 錯誤提醒容器 -->
+            <div id="error-message" class="hidden p-3 bg-rose-50 text-rose-600 border border-rose-200 rounded-xl text-sm text-center font-medium">
+                ⚠️ 請填寫姓名並完成所有題目再交卷唷！
+            </div>
+
+            <!-- 送出按鈕 -->
+            <button onclick="submitQuiz()" id="btn-submit" class="jelly-btn w-full py-4 bg-gradient-to-r from-brand-500 to-emerald-500 hover:from-brand-600 hover:to-emerald-600 text-white font-bold text-lg rounded-2xl shadow-lg hover:shadow-xl transition-all duration-200">
+                🚀 交卷
+            </button>
+
+        </div>
+    </div>
+
+    <!-- 成績彈出視窗 (Modal) -->
+    <div id="result-modal" class="hidden fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4 z-50">
+        <div class="bg-white rounded-3xl w-full max-w-sm p-6 text-center border-4 border-brand-400 shadow-2xl relative overflow-hidden">
+            <!-- 裝飾用彩色碎紙片效果 -->
+            <div class="absolute top-0 inset-x-0 h-2 bg-gradient-to-r from-yellow-400 via-lime-400 to-emerald-400"></div>
+            
+            <h3 class="text-2xl font-bold text-gray-800 mt-4">🎉 測驗完成！</h3>
+            <p id="result-student-name" class="text-brand-600 font-bold mt-2 text-lg">王小明 同學</p>
+            
+            <!-- 分數大看板 -->
+            <div class="my-6 inline-block bg-brand-50 rounded-full p-6 border-4 border-double border-brand-400">
+                <span id="score-display" class="text-5xl font-extrabold text-brand-600">0</span>
+                <span class="text-xl font-bold text-brand-500">分</span>
+            </div>
+
+            <p id="result-feedback" class="text-gray-600 font-medium px-4">太棒了！繼續加油！</p>
+            
+            <!-- 上傳試算表狀態提示 -->
+            <div id="upload-status" class="mt-4 p-2 rounded-xl text-xs font-semibold"></div>
+
+            <button onclick="closeModal()" class="jelly-btn mt-6 w-full py-3 bg-brand-500 hover:bg-brand-600 text-white font-bold rounded-xl shadow-md transition-all">
+                好的，我知道了！
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // 切換設定欄位展開/收合
+        function toggleConfig() {
+            var body = document.getElementById('config-body');
+            var arrow = document.getElementById('config-arrow');
+            if (body.classList.contains('hidden')) {
+                body.classList.remove('hidden');
+                arrow.textContent = '▼';
+            } else {
+                body.classList.add('hidden');
+                arrow.textContent = '▲';
+            }
+        }
+        // 預設收合設定欄位
+        document.getElementById('config-body').classList.add('hidden');
+        document.getElementById('config-arrow').textContent = '▲';
+
+        // 關閉結果視窗
+        function closeModal() {
+            document.getElementById('result-modal').classList.add('hidden');
+            // 重設表單
+            document.getElementById('student-name').value = '';
+            var radios = document.querySelectorAll('input[type="radio"]');
+            radios.forEach(radio => radio.checked = false);
+        }
+
+        // 提交測驗與計算成績
+        function submitQuiz() {
+            var name = document.getElementById('student-name').value.trim();
+            var errorDiv = document.getElementById('error-message');
+            errorDiv.classList.add('hidden');
+
+            // 1. 驗證姓名是否填寫
+            if (!name) {
+                errorDiv.textContent = '⚠️ 請填寫「學生姓名」再交卷唷！';
+                errorDiv.classList.remove('hidden');
+                return;
+            }
+
+            // 2. 獲取單選題答案
+            var q1 = document.querySelector('input[name="q1"]:checked');
+            var q2 = document.querySelector('input[name="q2"]:checked');
+
+            if (!q1 || !q2) {
+                errorDiv.textContent = '⚠️ 請完成這兩道題目再交卷唷！';
+                errorDiv.classList.remove('hidden');
+                return;
+            }
+
+            // 3. 計算分數 (第一題答案: 生產者, 第二題答案: 兔子)
+            var score = 0;
+            if (q1.value === "生產者") {
+                score += 50;
+            }
+            if (q2.value === "兔子") {
+                score += 50;
+            }
+
+            // 4. 顯示成績 Modal 與學生姓名
+            document.getElementById('result-student-name').textContent = name + ' 同學';
+            document.getElementById('score-display').textContent = score;
+
+            // 5. 動態評語
+            var feedback = '';
+            if (score === 100) {
+                feedback = '🏆 太厲害了！你完全答對了，你是今天的自然小學霸！';
+            } else if (score === 50) {
+                feedback = '👍 答對一題囉！再稍微複習一下，下次一定能拿 100 分！';
+            } else {
+                feedback = '💪 沒關係！勝敗乃兵家常事，回去翻一下課本就能更熟練囉！';
+            }
+            document.getElementById('result-feedback').textContent = feedback;
+
+            // 顯示 Modal
+            document.getElementById('result-modal').classList.remove('hidden');
+
+            // 6. 將資料 POST 到 Google 試算表
+            var gasUrl = document.getElementById('gas-url').value.trim();
+            var uploadStatusDiv = document.getElementById('upload-status');
+
+            if (!gasUrl) {
+                uploadStatusDiv.className = "mt-4 p-2 bg-gray-100 text-gray-600 rounded-xl text-xs font-semibold";
+                uploadStatusDiv.textContent = "ℹ️ 本機測試模式：未設定 GAS 網址，資料不會上傳。";
+                return;
+            }
+
+            // 顯示正在傳送狀態
+            uploadStatusDiv.className = "mt-4 p-2 bg-amber-50 text-amber-600 rounded-xl text-xs font-semibold animate-pulse";
+            uploadStatusDiv.textContent = "⏳ 正在將成績傳送至雲端試算表...";
+
+            // 建立要發送的 JSON 內容
+            var payload = {
+                name: name,
+                score: score
+            };
+
+            // 使用 fetch 進行 POST 請求
+            fetch(gasUrl, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "text/plain;charset=utf-8" // 避免觸發 preflight 限制，GAS 可以順利接收 text 並在 doPost 解析
+                },
+                body: JSON.stringify(payload)
+            })
+            .then(response => {
+                if (response.ok) {
+                    return response.json();
+                } else {
+                    throw new Error("伺服器回應失敗");
+                }
+            })
+            .then(data => {
+                if (data.status === "success") {
+                    uploadStatusDiv.className = "mt-4 p-2 bg-emerald-50 text-emerald-600 rounded-xl text-xs font-semibold";
+                    uploadStatusDiv.textContent = "✅ 成績已成功寫入 Google 試算表！";
+                } else {
+                    uploadStatusDiv.className = "mt-4 p-2 bg-rose-50 text-rose-600 rounded-xl text-xs font-semibold";
+                    uploadStatusDiv.textContent = "❌ 上傳失敗: " + data.message;
+                }
+            })
+            .catch(error => {
+                console.error("Error:", error);
+                uploadStatusDiv.className = "mt-4 p-2 bg-rose-50 text-rose-600 rounded-xl text-xs font-semibold";
+                uploadStatusDiv.textContent = "❌ 網路連線或 CORS 設定錯誤，上傳失敗！";
+            });
+        }
+    </script>
+</body>
+</html>
