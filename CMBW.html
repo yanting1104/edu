@@ -746,6 +746,7 @@
             e.dataTransfer.effectAllowed = 'copyMove';
         }
 
+        // 拖曳結束
         function handleDragEnd(e) {
             this.classList.remove('dragging');
             draggedElement = null;
@@ -754,7 +755,7 @@
             });
         }
 
-        // Allow drop
+        // 允許拖曳
         function allowDrop(e) { e.preventDefault(); }
 
         function dragEnter(e) {
@@ -1422,7 +1423,7 @@
         async function executeSaveRecord(className) {
             closeConfirmModal();
 
-            // Reflection list (Format: 01洪叡軒(2), 02何聿倫(1))
+            // A. Reflection list (Format: 01洪叡軒(2), 02何聿倫(1))
             const badCards = document.getElementById('bad-zone').querySelectorAll('.student-card');
             const badRecordArray = Array.from(badCards).map(card => {
                 const num = card.getAttribute('data-number');
@@ -1431,7 +1432,7 @@
                 return `${num}${name}(${count})`;
             });
 
-            // Toilet break list (Format: 10林詩芸(1), 11吳苡樂(3))
+            // B. Toilet break list (Format: 10林詩芸(1), 11吳苡樂(3))
             const toiletCards = document.getElementById('toilet-zone').querySelectorAll('.student-card');
             const toiletRecordArray = Array.from(toiletCards).map(card => {
                 const num = card.getAttribute('data-number');
@@ -1440,7 +1441,7 @@
                 return `${num}${name}(${count})`;
             });
 
-            // Stars score calculations
+            // C. Stars score calculations
             const scoresPayload = {};
             let hasChanges = false;
 
@@ -1572,6 +1573,7 @@
             updateZoneTimerDisplay(zone);
         }
 
+        // 獨立區域計時器顯示
         function updateZoneTimerDisplay(zone) {
             const display = document.getElementById(`timer-display-${zone}`);
             const mins = Math.floor(timers[zone].remaining / 60);
