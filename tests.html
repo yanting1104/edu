@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>生鏽實驗記錄單</title>
+    <!-- 使用 Tailwind CSS 打造現代化美觀介面 -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&display=swap');
+        body {
+            font-family: 'Noto Sans TC', sans-serif;
+            transition: all 0.3s ease;
+        }
+        /* 錆色主題 */
+        .rust-theme-border { border-color: #f97316; }
+        .rust-theme-bg { background-color: #fffaf0; }
+        .rust-theme-text { color: #f97316; }
+        
+        /* 動畫 */
+        @keyframes fade-in {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-fade-in {
+            animation: fade-in 0.5s ease-out;
+        }
+        
+        /* 鏽蝕圖示效果 (模擬濾鏡) */
+        .rust-icon-filter {
+            filter: sepia(100%) saturate(300%) hue-rotate(-15deg);
+        }
+    </style>
+</head>
+<body class="bg-slate-50 min-h-screen flex items-center justify-center p-4 md:p-8">
+
+    <!-- 加寬的主容器 -->
+    <div class="bg-white w-full max-w-4xl rounded-2xl shadow-xl border-t-8 border-orange-500 p-6 md:p-8 transition-all duration-300">
+        
+        <!-- 表單標題區 (錆色圖示) -->
+        <div class="text-center mb-8">
+            <span class="text-5xl rust-icon-filter">⛓️⚙️🔨</span>
+            <h1 class="text-2xl md:text-3xl font-bold text-slate-800 mt-2">生鏽實驗記錄單</h1>
+            <p class="text-slate-500 mt-2 text-sm md:text-base">請仔細觀察實驗結果，並填寫下方紀錄單</p>
+        </div>
+
+        <!-- 學生輸入表單 -->
+        <form id="experimentForm" class="space-y-6">
+            
+            <!-- 班級座號與學生姓名並列 -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                    <label for="classId" class="block text-sm font-medium text-slate-700 mb-2">班級座號</label>
+                    <input type="text" id="classId" required placeholder="例如：50123" 
+                        class="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 outline-none transition-all">
+                    <p class="text-xs text-slate-400 mt-1">請輸入 5 位數，前三碼為班級、後兩碼為座號</p>
+                </div>
+                <div>
+                    <label for="name" class="block text-sm font-medium text-slate-700 mb-2">學生姓名</label>
+                    <input type="text" id="name" required placeholder="請輸入姓名" 
+                        class="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 outline-none transition-all">
+                </div>
+            </div>
+
+            <!-- 操作變因 (點選四選項) -->
+            <div>
+                <label class="block text-sm font-medium text-slate-700 mb-2">操作變因</label>
+                <div class="grid grid-cols-2 gap-4">
+                    <!-- 水 -->
+                    <label class="relative border-2 rounded-lg p-4 cursor-pointer flex items-center gap-3 transition hover:border-orange-500 hover:bg-orange-50 focus-within:ring-2 focus-within:ring-orange-500" for="variableWater">
+                        <input type="radio" id="variableWater" name="variable" value="水" required class="sr-only peer">
+                        <span class="text-3xl">💧</span>
+                        <div>
+                            <h4 class="font-bold text-slate-800 text-lg">水</h4>
+                        </div>
+                        <div class="absolute inset-0 border-2 border-orange-600 rounded-lg hidden peer-checked:block pointer-events-none"></div>
+                    </label>
+                    <!-- 空氣 -->
+                    <label class="relative border-2 rounded-lg p-4 cursor-pointer flex items-center gap-3 transition hover:border-orange-500 hover:bg-orange-50 focus-within:ring-2 focus-within:ring-orange-500" for="variableAir">
+                        <input type="radio" id="variableAir" name="variable" value="空氣" required class="sr-only peer">
+                        <span class="text-3xl">🌬️</span>
+                        <div>
+                            <h4 class="font-bold text-slate-800 text-lg">空氣</h4>
+                        </div>
+                        <div class="absolute inset-0 border-2 border-orange-600 rounded-lg hidden peer-checked:block pointer-events-none"></div>
+                    </label>
+                    <!-- 酸性水溶液 -->
+                    <label class="relative border-2 rounded-lg p-4 cursor-pointer flex items-center gap-3 transition hover:border-orange-500 hover:bg-orange-50 focus-within:ring-2 focus-within:ring-orange-500" for="variableAcid">
+                        <input type="radio" id="variableAcid" name="variable" value="酸性水溶液" required class="sr-only peer">
+                        <span class="text-3xl">🧪</span>
+                        <div>
+                            <h4 class="font-bold text-slate-800 text-lg">酸性水溶液</h4>
+                        </div>
+                        <div class="absolute inset-0 border-2 border-orange-600 rounded-lg hidden peer-checked:block pointer-events-none"></div>
+                    </label>
+                    <!-- 海水 -->
+                    <label class="relative border-2 rounded-lg p-4 cursor-pointer flex items-center gap-3 transition hover:border-orange-500 hover:bg-orange-50 focus-within:ring-2 focus-within:ring-orange-500" for="variableSalt">
+                        <input type="radio" id="variableSalt" name="variable" value="海水" required class="sr-only peer">
+                        <span class="text-3xl">🌊</span>
+                        <div>
+                            <h4 class="font-bold text-slate-800 text-lg">海水</h4>
+                        </div>
+                        <div class="absolute inset-0 border-2 border-orange-600 rounded-lg hidden peer-checked:block pointer-events-none"></div>
+                    </label>
+                </div>
+            </div>
+
+            <!-- 哪一組生鏽較嚴重 (點選兩選項) -->
+            <div>
+                <label class="block text-sm font-medium text-slate-700 mb-2">哪一組生鏽較嚴重？</label>
+                <div class="flex gap-4">
+                    <!-- 實驗組 -->
+                    <label class="relative flex-1 border-2 rounded-lg p-4 cursor-pointer flex items-center gap-3 transition hover:border-orange-500 hover:bg-orange-50 focus-within:ring-2 focus-within:ring-orange-500" for="severityExp">
+                        <input type="radio" id="severityExp" name="severity" value="實驗組" required class="sr-only peer">
+                        <span class="text-3xl">🧡</span>
+                        <div>
+                            <h4 class="font-bold text-slate-800 text-lg">實驗組</h4>
+                        </div>
+                        <div class="absolute inset-0 border-2 border-orange-600 rounded-lg hidden peer-checked:block pointer-events-none"></div>
+                    </label>
+                    <!-- 對照組 -->
+                    <label class="relative flex-1 border-2 rounded-lg p-4 cursor-pointer flex items-center gap-3 transition hover:border-orange-500 hover:bg-orange-50 focus-within:ring-2 focus-within:ring-orange-500" for="severityCtrl">
+                        <input type="radio" id="severityCtrl" name="severity" value="對照組" required class="sr-only peer">
+                        <span class="text-3xl">⚙️</span>
+                        <div>
+                            <h4 class="font-bold text-slate-800 text-lg">對照組</h4>
+                        </div>
+                        <div class="absolute inset-0 border-2 border-orange-600 rounded-lg hidden peer-checked:block pointer-events-none"></div>
+                    </label>
+                </div>
+            </div>
+
+            <!-- 困難與反思 -->
+            <div>
+                <label for="reflection" class="block text-sm font-medium text-slate-700 mb-2">困難與反思</label>
+                <textarea id="reflection" required placeholder="請寫下你在實驗中遇到的困難、解決方法或心得反思..." rows="4"
+                    class="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 outline-none transition-all resize-y"></textarea>
+            </div>
+
+            <!-- 送出按鈕 -->
+            <button type="submit" id="submitBtn" 
+                class="w-full bg-orange-500 hover:bg-orange-600 active:scale-[0.98] text-white font-bold py-4 px-6 rounded-lg shadow-md transition-all flex items-center justify-center gap-2 text-lg">
+                <span>🚀</span> 送出學習單
+            </button>
+        </form>
+
+        <!-- 自訂錯誤訊息框 (取代 Alert) -->
+        <div id="errorAlert" class="hidden mt-4 p-4 bg-rose-50 border border-rose-200 text-rose-800 rounded-lg flex items-center gap-2">
+            <span>❌</span>
+            <span id="errorText" class="text-sm">傳送失敗，請重試。</span>
+        </div>
+
+        <!-- 成功送出畫面 (保持隱藏) -->
+        <div id="successMsg" class="hidden text-center py-12 px-4 space-y-4 animate-fade-in">
+            <div class="inline-flex items-center justify-center w-20 h-20 bg-orange-100 text-orange-500 rounded-full text-4xl mb-2 animate-bounce rust-icon-filter">
+                🎉⛓️
+            </div>
+            <h2 class="text-2xl font-bold text-slate-800">太棒了！</h2>
+            <p class="text-slate-600 text-lg">你的生鏽實驗學習單已成功送出！</p>
+            <p class="text-slate-400 text-sm">數據已同步紀錄至老師的雲端試算表中。</p>
+            <button onclick="window.location.reload();" 
+                class="mt-6 px-6 py-2 bg-slate-100 hover:bg-slate-200 text-slate-600 font-medium rounded-full text-sm transition-all">
+                再填一份
+            </button>
+        </div>
+
+    </div>
+
+    <script>
+        // 🔗 您的專屬 Google Apps Script 網頁應用程式網址
+        const GAS_URL = 'https://script.google.com/macros/s/AKfycbzoIISvxZslAUXkZJyNijCuRls1E6Vj4zsRc1PuVpx4pDaLIzxVtn78bqc2PIV8RpLd4w/exec';
+
+        document.getElementById('experimentForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const submitBtn = document.getElementById('submitBtn');
+            const successMsg = document.getElementById('successMsg');
+            const form = document.getElementById('experimentForm');
+            const errorAlert = document.getElementById('errorAlert');
+            const errorText = document.getElementById('errorText');
+            
+            // 隱藏先前的錯誤
+            errorAlert.classList.add('hidden');
+            
+            // 1. 鎖定按鈕並顯示傳送中
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<span>⏳</span> 學習單傳送中...';
+            submitBtn.classList.remove('bg-orange-500', 'hover:bg-orange-600');
+            submitBtn.classList.add('bg-slate-400', 'cursor-not-allowed');
+            
+            // 2. 打包表單資料 (從 Radio 按鈕獲取值)
+            const variableValue = document.querySelector('input[name="variable"]:checked').value;
+            const severityValue = document.querySelector('input[name="severity"]:checked').value;
+
+            const payload = {
+                classId: document.getElementById('classId').value.trim(),
+                name: document.getElementById('name').value.trim(),
+                variable: variableValue,
+                severity: severityValue,
+                reflection: document.getElementById('reflection').value.trim()
+            };
+            
+            // 3. 發送資料到 Google Apps Script
+            fetch(GAS_URL, {
+                method: 'POST',
+                body: JSON.stringify(payload),
+                headers: {
+                    'Content-Type': 'text/plain' // 避免觸發 CORS 預檢限制
+                },
+                mode: 'no-cors' // 配合 GAS 的轉址機制
+            })
+            .then(() => {
+                // 4. 顯示成功畫面，隱藏表單
+                form.classList.add('hidden');
+                successMsg.classList.remove('hidden');
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                
+                // 還原按鈕狀態
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = '<span>🚀</span> 送出學習單';
+                submitBtn.classList.remove('bg-slate-400', 'cursor-not-allowed');
+                submitBtn.classList.add('bg-orange-500', 'hover:bg-orange-600');
+                
+                // 顯示自訂錯誤提示
+                errorText.innerText = '傳送失敗！請檢查網路連線，或通知老師確認 GAS 設定是否正確。';
+                errorAlert.classList.remove('hidden');
+            });
+        });
+    </script>
+</body>
+</html>
