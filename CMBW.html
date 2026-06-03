@@ -375,7 +375,7 @@
                     
                     <textarea id="text-input" class="w-full border border-amber-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-amber-400 bg-white/70 h-[100px] resize-none p-2 text-xs" placeholder="格式範例：&#13;01 洪叡軒&#13;02 何聿倫"></textarea>
                     
-                    <button onclick="generateFromText()" class="w-full bg-amber-500 hover:bg-amber-600 text-white font-bold py-1.5 px-2 rounded-xl shadow-sm transition-all flex items-center justify-center gap-1 text-xs shrink-0">
+                    <button id="btn-generate-cards" onclick="generateFromText()" class="w-full bg-amber-500 hover:bg-amber-600 text-white font-bold py-1.5 px-2 rounded-xl shadow-sm transition-all flex items-center justify-center gap-1 text-xs shrink-0">
                         <i class="fa-solid fa-wand-magic-sparkles text-[10px]"></i>生成名牌
                     </button>
 
@@ -586,7 +586,7 @@
                 <table class="w-full border-collapse text-center">
                     <thead>
                         <tr id="hw-table-header" class="bg-amber-100/50 text-[#78350f] font-bold text-sm">
-                            <th class="p-3 border-b border-r border-amber-200/80 min-w-[80px] max-w-[80px] sticky left-0 bg-amber-50 z-20 text-[#78350f] font-bold text-sm text-center align-middle">登記</th>
+                            <th class="p-3 border-b border-r border-amber-200/80 min-w-[80px] max-w-[80px] sticky left-0 bg-amber-50 z-20 text-[#78350f] font-bold text-lg text-center align-middle">登記</th>
                         </tr>
                     </thead>
                     <tbody id="hw-table-body" class="divide-y divide-amber-90 text-xs md:text-sm">
@@ -619,7 +619,7 @@
                 <!-- 彈出視窗內部頂部的鈴鐺/狀態圖示 -->
                 <i id="alert-icon-bell" class="fa-solid fa-bell text-4xl text-amber-500"></i>
             </div>
-            <p id="alert-modal-desc" class="text-gray-600 mb-6 font-medium text-lg">叮咚～時間到！</p>
+            <p id="alert-modal-desc" class="text-gray-600 mb-6 font-medium text-lg text-center">叮咚～時間到！</p>
             <p id="alert-modal-details" class="text-gray-500 text-sm mt-2 font-medium leading-relaxed"></p>
             <button onclick="closeAlertModal()" class="w-full bg-amber-500 hover:bg-amber-600 text-white font-bold py-3 px-6 rounded-xl shadow-lg hover:shadow-xl transition-all text-base focus:ring-4 focus:ring-amber-200 mt-4">
                 確認
@@ -858,29 +858,68 @@
             }
         }
 
-        // 6. 將名牌生成於好表現區
+        // =========================================================================
+        // 【核心修改】精密的差異比對名牌生成演算法
+        // 點擊「生成名牌」時，座號名字未變動的學生紀錄（好表現、扣分、上廁所、作業勾選狀態）會完全保留！
+        // =========================================================================
         function generateAllCardsIntoGoodZone() {
             const goodZone = document.getElementById('good-zone');
-            const cards = goodZone.querySelectorAll('.student-card');
-            cards.forEach(c => c.remove());
+            const badZone = document.getElementById('bad-zone');
+            const toiletZone = document.getElementById('toilet-zone');
 
-            const ph = goodZone.querySelector('.placeholder');
-            if (ph) ph.style.display = studentsList.length > 0 ? 'none' : 'flex';
+            // 建立新名單的特徵對照集（使用 `座號_姓名` 作為唯一識別碼）
+            const newStudentKeys = new Set(studentsList.map(s => `${s.number}_${s.name}`));
 
-            document.getElementById('student-count').textContent = `共 ${studentsList.length} 人`;
+            // 1. 移除已不在新名單中的學生紀錄 (各專區同步更新)
+            const removeOutdatedCards = (zone) => {
+                const cards = zone.querySelectorAll('.student-card');
+                cards.forEach(card => {
+                    const num = card.getAttribute('data-number');
+                    const name = card.getAttribute('data-name');
+                    const key = `${num}_${name}`;
+                    if (!newStudentKeys.has(key)) {
+                        card.remove();
+                    }
+                });
+            };
 
-            // 清空待改進區與上廁所區
-            document.getElementById('bad-zone').querySelectorAll('.student-card').forEach(c => c.remove());
-            document.getElementById('toilet-zone').querySelectorAll('.student-card').forEach(c => c.remove());
-            document.getElementById('bad-zone').querySelector('.placeholder').style.display = 'flex';
-            document.getElementById('toilet-zone').querySelector('.placeholder').style.display = 'flex';
+            removeOutdatedCards(goodZone);
+            removeOutdatedCards(badZone);
+            removeOutdatedCards(toiletZone);
 
+            // 2. 針對新名單中的學生進行「加入」與「對齊」
             studentsList.forEach(student => {
-                const card = createUniversalCard(student.number, student.name);
-                goodZone.appendChild(card);
+                // 檢查該學生在好表現區是否已有名牌
+                const existingCard = goodZone.querySelector(`.student-card[data-number="${student.number}"][data-name="${student.name}"]`);
+                if (!existingCard) {
+                    // 若無，則新增名牌（乾淨無星星狀態）
+                    const card = createUniversalCard(student.number, student.name);
+                    goodZone.appendChild(card);
+                }
             });
 
+            // 3. 處理各區域 Placeholder（提示字）的顯隱狀態
+            const goodCards = goodZone.querySelectorAll('.student-card');
+            const phGood = goodZone.querySelector('.placeholder');
+            if (phGood) phGood.style.display = goodCards.length > 0 ? 'none' : 'flex';
+
+            const badCards = badZone.querySelectorAll('.student-card');
+            const phBad = badZone.querySelector('.placeholder');
+            if (phBad) phBad.style.display = badCards.length > 0 ? 'none' : 'flex';
+
+            const toiletCards = toiletZone.querySelectorAll('.student-card');
+            const phToilet = toiletZone.querySelector('.placeholder');
+            if (phToilet) phToilet.style.display = toiletCards.length > 0 ? 'none' : 'flex';
+
+            // 4. 更新左側控制台的人數統計
+            document.getElementById('student-count').textContent = `共 ${studentsList.length} 人`;
+
+            // 5. 重新進行座號排序（保證名單排版工整）
             sortZoneCards(goodZone);
+            sortZoneCards(badZone);
+            sortZoneCards(toiletZone);
+            
+            // 6. 重新渲染作業檢核表 (若學生名字沒變，其先前作業狀態依然會完美綁定並呈現)
             renderHomeworkTable();
             updateCounts();
         }
