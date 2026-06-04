@@ -359,7 +359,7 @@
                     <div id="import-excel-area" class="shrink-0 relative">
                         <button class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-1.5 px-2 rounded-xl shadow-sm transition-all flex items-center justify-center gap-1.5 text-xs">
                             <i class="fa-regular fa-file-excel"></i>
-                            <span>Excel/CSV 匯入</span>
+                            <span>Excel 匯入</span>
                         </button>
                         <input type="file" id="excel-file-input" accept=".xlsx, .xls, .csv" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer" onchange="handleExcelUpload(event)">
                     </div>
@@ -412,12 +412,12 @@
                     
                     <!-- Set spreadsheet button (Pink 500) -->
                     <button onclick="showSetupSpreadsheetModal()" class="w-full bg-pink-500 hover:bg-pink-600 text-white font-bold py-1.5 px-2 rounded-xl shadow-sm transition-all flex items-center justify-center gap-1 text-xs shrink-0">
-                        <i class="fa-solid fa-file-invoice text-[10px]"></i>設置試算表格
+                        <i class="fa-solid fa-file-invoice text-[10px]"></i>設置試算表
                     </button>
                     
                     <!-- Save record button (Purple 600) -->
                     <button onclick="showSaveRecordModal()" class="w-full bg-purple-600 hover:bg-purple-700 text-white font-bold py-1.5 px-2 rounded-xl shadow-sm transition-all flex items-center justify-center gap-1 text-xs shrink-0">
-                        <i class="fa-solid fa-cloud-arrow-up text-[10px]"></i>儲存表現紀錄
+                        <i class="fa-solid fa-cloud-arrow-up text-[10px]"></i>儲存紀錄
                     </button>
                 </div>
             </div>
@@ -1357,12 +1357,12 @@
             classInput.value = "";
             
             cardPanel.className = "bg-white rounded-3xl p-6 md:p-8 max-w-md w-full mx-4 shadow-2xl border-4 border-purple-400 text-center transform scale-95 transition-transform duration-300";
-            iconWrapper.className = "w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-4 animate-bounce shrink-0";
+            iconWrapper.className = "w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-4 animate-bounce shrink-0";iconWrapper.className = "w-16 h-16 bg-purple-100 圓角全彈性專案中心對齊中心 mx-auto mb-4 動畫彈跳收縮-0";
             modalIcon.className = "fa-solid fa-cloud-arrow-up text-3xl text-purple-500";
             modalTitle.className = "text-xl font-bold text-purple-700 mb-3";
             modalTitle.innerHTML = "💾 儲存今日表現紀錄";
             descBox.className = "text-gray-600 mb-4 text-sm font-semibold leading-relaxed text-left bg-purple-50/50 p-4 rounded-2xl border border-purple-100";
-            descBox.innerHTML = "即將把目前的日常好表現星星、待改進扣分與課間上廁所資料打包，並自動記錄至您輸入班級的專屬工作表最新一列中！";
+            descBox.innerHTML = "即將把目前的好表現、待改進與課間上廁所的資料打包，並自動記錄至您輸入之班級的專屬工作表最新一列中！提醒您：按下儲存後，目前板面上的資訊會歸零喔！";
             actionBtn.className = "flex-1 bg-purple-600 hover:bg-purple-700 text-white font-bold py-2.5 px-4 rounded-xl shadow-md transition-all text-sm";
             actionBtn.textContent = "確定儲存資料";
             
