@@ -39,9 +39,7 @@
             background-color: #fef3c7 !important;
         }
         
-        /* ==========================================
-           【關鍵修改】尚未獲得登記、星星為 0 的名牌進行淡化與灰階處理
-           ========================================== */
+        /* 尚未獲得登記、星星為 0 的名牌進行淡化與灰階處理 */
         #good-zone .student-card[data-count-good="0"] {
             opacity: 0.3;
             filter: grayscale(50%);
@@ -51,9 +49,7 @@
             filter: grayscale(0%);
         }
 
-        /* ==========================================
-           【關鍵修改】統一且完美的圓形次數徽章樣式設定
-           ========================================== */
+        /* 統一且完美的圓形次數徽章樣式設定 */
         .badge-unified {
             width: 24px !important;
             height: 24px !important;
@@ -87,9 +83,7 @@
             color: #ffffff !important;
         }
 
-        /* ==========================================
-           午休夜間模式下，名牌懸停於各表現區時的反白樣式 (極低亮度、輕透粉彩微光，完全不刺眼)
-           ========================================== */
+        /* 午休夜間模式下，名牌懸停於各表現區時的反白樣式 */
         body.dark-mode .good-zone-hover {
             border-color: #10b981 !important;
             background-color: rgba(16, 185, 129, 0.08) !important;
@@ -111,12 +105,10 @@
         ::-webkit-scrollbar-track {
             background: #fdf6ec;
             border-radius: 4px;
-            transition: background-color 0.4s ease;
         }
         ::-webkit-scrollbar-thumb {
             background: #e2e8f0;
             border-radius: 4px;
-            transition: background-color 0.4s ease;
         }
         ::-webkit-scrollbar-thumb:hover {
             background: #cbd5e1;
@@ -137,24 +129,13 @@
             to { transform: rotate(360deg); }
         }
 
-        /* ==========================================
-           【午休夜間模式】深色主題 CSS 覆蓋樣式 
-           ========================================== */
+        /* 【午休夜間模式】深色主題 CSS 覆蓋樣式 */
         body.dark-mode {
-            background-color: #0f1015; /* 更深沉優雅的深夜黑，適合安靜午休 */
-            color: #94a3b8; /* 調降文字整體亮度至柔和灰 */
-        }
-        body.dark-mode ::-webkit-scrollbar-track {
-            background: #0f1015;
-        }
-        body.dark-mode ::-webkit-scrollbar-thumb {
-            background: #1e293b;
-        }
-        body.dark-mode ::-webkit-scrollbar-thumb:hover {
-            background: #334155;
+            background-color: #0f1015;
+            color: #94a3b8;
         }
         body.dark-mode .glass-panel {
-            background: rgba(17, 22, 37, 0.9); /* 深色夜視面板 */
+            background: rgba(17, 22, 37, 0.9);
             border-color: #1e2536;
             color: #cbd5e1;
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
@@ -166,22 +147,19 @@
         body.dark-mode .student-card span.text-amber-950 {
             color: #cbd5e1 !important;
         }
-        body.dark-mode #student-pool {
-            background-color: rgba(22, 30, 49, 0.4);
-        }
         body.dark-mode h1 {
-            color: #d97706 !important; /* 柔和暗金，避免過亮 */
+            color: #d97706 !important;
         }
         body.dark-mode .bg-emerald-50\/50 {
-            background-color: rgba(4, 120, 87, 0.15) !important; /* 降低背景亮綠色 */
+            background-color: rgba(4, 120, 87, 0.15) !important;
             border-color: rgba(16, 185, 129, 0.2) !important;
         }
         body.dark-mode .bg-rose-50\/50 {
-            background-color: rgba(190, 18, 60, 0.12) !important; /* 降低背景玫瑰紅 */
+            background-color: rgba(190, 18, 60, 0.12) !important;
             border-color: rgba(244, 63, 94, 0.2) !important;
         }
         body.dark-mode .bg-sky-50\/50 {
-            background-color: rgba(14, 116, 144, 0.12) !important; /* 降低背景湖水藍 */
+            background-color: rgba(14, 116, 144, 0.12) !important;
             border-color: rgba(6, 182, 212, 0.2) !important;
         }
         body.dark-mode input, body.dark-mode textarea {
@@ -189,118 +167,7 @@
             color: #cbd5e1 !important;
             border-color: #2d364f !important;
         }
-        body.dark-mode .bg-amber-50 {
-            background-color: #2a1e12 !important; /* 棕色底調暗 */
-            color: #fde047 !important;
-            border-color: #382818 !important;
-        }
-        body.dark-mode .bg-amber-100\/30 {
-            background-color: rgba(217, 119, 6, 0.08) !important;
-        }
-        body.dark-mode th.sticky, 
-        body.dark-mode td.sticky {
-            background-color: #111625 !important;
-            color: #94a3b8 !important;
-        }
-        body.dark-mode td, body.dark-mode th {
-            border-color: #202636 !important;
-        }
         
-        /* 精準調降夜間模式「待改進區」的計時器與控制區塊之底色亮度 */
-        body.dark-mode .bg-rose-100 {
-            background-color: rgba(244, 63, 94, 0.12) !important; 
-            border-color: rgba(244, 63, 94, 0.15) !important;
-            color: #fb7185 !important; /* 柔和粉霧玫瑰紅 */
-        }
-        body.dark-mode .bg-emerald-50 {
-            background-color: rgba(16, 185, 129, 0.12) !important;
-            color: #10b981 !important;
-        }
-        body.dark-mode .bg-sky-50 {
-            background-color: rgba(6, 182, 212, 0.12) !important;
-            color: #06b6d4 !important;
-        }
-        body.dark-mode .text-emerald-600 {
-            color: #10b981 !important;
-        }
-        body.dark-mode .text-rose-600 {
-            color: #fb7185 !important; /* 對齊柔和紅 */
-        }
-        body.dark-mode .text-sky-600 {
-            color: #06b6d4 !important;
-        }
-        body.dark-mode .text-stone-700 {
-            color: #94a3b8 !important;
-        }
-        body.dark-mode .bg-stone-100 {
-            background-color: #1e2638 !important;
-            color: #cbd5e1 !important;
-            border-color: #2d364f !important;
-        }
-        body.dark-mode .bg-orange-100 {
-            background-color: #2d1303 !important; /* 深學、橘色調 */
-            color: #fed7aa !important;
-        }
-        body.dark-mode .bg-amber-100\/50 {
-            background-color: rgba(217, 119, 6, 0.12) !important;
-        }
-        body.dark-mode .bg-amber-100 {
-            background-color: #24190b !important;
-            color: #fef08a !important;
-        }
-        body.dark-mode .bg-orange-50 {
-            background-color: #1f1008 !important;
-            color: #ffedd5 !important;
-        }
-        
-        /* 好表現與上廁所區計數與按鈕背景之夜間 low brightness 調整 */
-        body.dark-mode .bg-emerald-100 {
-            background-color: rgba(16, 185, 129, 0.15) !important;
-            color: #34d399 !important; /* 柔和翡翠綠 */
-        }
-        body.dark-mode .bg-sky-100 {
-            background-color: rgba(14, 165, 233, 0.15) !important;
-            color: #38bdf8 !important; /* 柔和星空藍 */
-        }
-        
-        /* 專區計時大數字在夜間模式下的專屬柔和發光對齊 */
-        body.dark-mode #timer-display-good {
-            color: #34d399 !important;
-        }
-        body.dark-mode #timer-display-bad {
-            color: #fb7185;
-        }
-        body.dark-mode #timer-display-toilet {
-            color: #38bdf8 !important;
-        }
-
-        /* ==========================================
-           【關鍵修改】優間模式下星星、閃電與水滴累計次數徽章的色調 
-           大幅提升飽和度、清晰度與夜視辨識度，且保證護眼不刺眼
-           ========================================== */
-        body.dark-mode .star-badge {
-            background-color: #d97706 !important; /* 溫慢的琥珀亮金黃色底 */
-            border-color: #f59e0b !important;
-            color: #fffbeb !important; /* 高對比淺色文字 */
-            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
-            box-shadow: 0 2px 6px rgba(217, 119, 6, 0.3);
-        }
-        body.dark-mode .lightning-badge {
-            background-color: #ea580c !important; /* 醒目柔和的粉亮珊瑚橘紅色底 */
-            border-color: #f97316 !important;
-            color: #fff7ed !important; /* 高對比淺色文字 */
-            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
-            box-shadow: 0 2px 6px rgba(234, 88, 12, 0.3);
-        }
-        body.dark-mode .toilet-badge {
-            background-color: #0284c7 !important; /* 安靜剔透的月光湖水藍色底 */
-            border-color: #0ea5e9 !important;
-            color: #f0f9ff !important; /* 高對比淺色文字 */
-            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
-            box-shadow: 0 2px 6px rgba(2, 132, 199, 0.3);
-        }
-        
-        /* 使用隱藏捲軸 */
         .no-scrollbar::-webkit-scrollbar {
             display: none;
         }
@@ -314,7 +181,7 @@
 
     <!-- Left UTC clock -->
     <div class="absolute top-4 left-4 md:top-6 md:left-6 z-50">
-        <div class="glass-panel py-2 px-3.5 rounded-full shadow-md flex items-center gap-2 font-bold text-xs md:text-sm bg-white/95 select-none transition-all">
+        <div class="glass-panel py-2 px-3.5 rounded-full shadow-md flex items-center gap-2 font-bold text-xs md:text-sm bg-white/95 select-none">
             <i class="fa-regular fa-clock text-amber-500"></i>
             <span id="utc-clock">載入時間中...</span>
         </div>
@@ -337,7 +204,7 @@
         <p class="text-gray-500 text-xs md:text-[12px]">　</p>
     </header>
 
-    <!-- Layout structure: Left "Control Panel", Right "Performance Records" -->
+    <!-- Layout structure -->
     <main class="grid grid-cols-1 md:grid-cols-[1.25fr_10.75fr] gap-5 md:h-[635px] shrink-0 min-h-0 mb-6">
         
         <!-- Left Side: Control Panel -->
@@ -355,7 +222,7 @@
                         <span>學生名單</span>
                     </h3>
                     
-                    <!-- Excel Import Button (Emerald green) -->
+                    <!-- Excel Import Button -->
                     <div id="import-excel-area" class="shrink-0 relative">
                         <button class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-1.5 px-2 rounded-xl shadow-sm transition-all flex items-center justify-center gap-1.5 text-xs">
                             <i class="fa-regular fa-file-excel"></i>
@@ -376,7 +243,6 @@
                         <i class="fa-solid fa-wand-magic-sparkles text-[10px]"></i>生成名牌
                     </button>
 
-                    <!-- Student count statistics -->
                     <div class="text-center shrink-0 mt-1">
                         <p class="text-gray-400 font-medium text-[10px]">班級人數統計</p>
                         <div id="student-count" class="font-black text-amber-800 bg-amber-100/60 rounded-xl py-1 mt-0.5 select-none text-xs">
@@ -393,7 +259,6 @@
                     </h3>
                     <input type="text" id="gas-url-input" class="w-full border border-amber-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-amber-400 bg-white/70 p-1.5 text-xs" placeholder="輸入 GAS 網頁應用程式網址">
                     
-                    <!-- Link button (Slate 500 gray) -->
                     <button onclick="connectGas()" class="w-full bg-slate-500 hover:bg-slate-600 text-white font-bold py-1.5 px-2 rounded-xl shadow-sm transition-all flex items-center justify-center gap-1 text-xs shrink-0">
                         <i class="fa-solid fa-link text-[10px]"></i>後端連結
                     </button>
@@ -410,20 +275,22 @@
                         <span>數據紀錄</span>
                     </h3>
                     
-                    <!-- Set spreadsheet button (Pink 500) -->
+                    <!-- 【文字修改】設置試算表 -->
                     <button onclick="showSetupSpreadsheetModal()" class="w-full bg-pink-500 hover:bg-pink-600 text-white font-bold py-1.5 px-2 rounded-xl shadow-sm transition-all flex items-center justify-center gap-1 text-xs shrink-0">
                         <i class="fa-solid fa-file-invoice text-[10px]"></i>設置試算表
                     </button>
                     
-                    <!-- Save record button (Purple 600) -->
+                    <!-- 【文字修改】儲存紀錄 -->
                     <button onclick="showSaveRecordModal()" class="w-full bg-purple-600 hover:bg-purple-700 text-white font-bold py-1.5 px-2 rounded-xl shadow-sm transition-all flex items-center justify-center gap-1 text-xs shrink-0">
                         <i class="fa-solid fa-cloud-arrow-up text-[10px]"></i>儲存紀錄
                     </button>
+                    
+                    <!-- 控制台的獨立「開啟試算表」按鈕已依要求在此移除 -->
                 </div>
             </div>
         </section>
 
-        <!-- Right Side: Performance Record Area (width 65% : 17.5% : 17.5%) -->
+        <!-- Right Side: Performance Record Area -->
         <section class="flex flex-col h-full min-h-0">
             <div class="glass-panel rounded-2xl p-4 shadow-sm flex flex-col h-full min-h-0 gap-3">
                 <h2 class="text-lg font-bold text-[#78350f] shrink-0 flex items-center gap-2">
@@ -431,27 +298,22 @@
                     表現記錄區
                 </h2>
 
-                <!-- Three subzones horizontally aligned -->
                 <div class="flex flex-col md:flex-row gap-4 flex-grow min-h-0 w-full">
                     
-                    <!-- 1. Good performance area (Emerald, 65%) -->
+                    <!-- 1. Good performance area -->
                     <div class="bg-emerald-50/50 border-2 border-emerald-100 rounded-2xl p-3 flex flex-col min-h-0 h-full justify-between w-full md:w-[65%]">
-                        <!-- Subzone header -->
                         <div class="flex items-center gap-1.5 mb-1.5 text-emerald-700 font-bold border-b border-emerald-100 pb-1.5 shrink-0 text-lg">
                             <i class="fa-regular fa-face-laugh-beam text-lg text-emerald-500"></i>
                             <span>好表現區 <span class="text-xs font-normal text-emerald-600/80 ml-1 hidden sm:inline">（點擊名牌左側笑臉新增）</span></span>
                             <span id="good-count" class="ml-auto bg-emerald-100 text-emerald-800 px-1.5 py-0.5 rounded-full text-sm">0 人</span>
                         </div>
                         
-                        <!-- Student card pool -->
                         <div id="good-zone" class="drag-zone flex-grow overflow-y-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-4 gap-3 p-1.5 pt-2 pb-2 rounded-xl transition-all items-start justify-start content-start" ondragover="allowDrop(event)" ondragenter="dragEnter(event)" ondragleave="dragLeave(event)" ondrop="handleDrop(event, 'good')">
-                            <!-- Column placeholder -->
                             <div class="placeholder col-span-4 py-16 flex items-center justify-center text-emerald-400 text-xs text-center italic">
                                 <i class="fa-solid fa-arrow-left mr-1 animate-bounce"></i> 請從左側匯入學生名單以直接在此生成名牌
                             </div>
                         </div>
 
-                        <!-- Timer section -->
                         <div class="border-t border-emerald-100/70 pt-2.5 mt-2 shrink-0 bg-white/40 dark:bg-slate-900/20 p-2 rounded-xl">
                             <div class="flex items-center justify-center gap-1 text-[10px] mb-1.5 font-medium">
                                 <span class="text-emerald-800 dark:text-emerald-300">設定：</span>
@@ -461,7 +323,6 @@
                                 <span class="text-emerald-700">秒</span>
                                 <button onclick="applyZoneTime('good')" class="ml-1 bg-emerald-100 dark:bg-emerald-950 text-emerald-800 dark:text-emerald-200 px-1.5 py-0.5 rounded text-[9px] font-extrabold hover:bg-emerald-200 transition-all">套用</button>
                             </div>
-                            <!-- Control controls -->
                             <div class="flex flex-row items-center justify-center gap-3 bg-emerald-50 dark:bg-emerald-950/40 px-2.5 py-1.5 rounded-xl border border-emerald-100/50">
                                 <div id="timer-display-good" class="text-lg md:text-xl font-black text-emerald-700 dark:text-emerald-400 font-mono tracking-wider leading-none">05:00</div>
                                 <div class="flex gap-1 shrink-0">
@@ -476,23 +337,20 @@
                         </div>
                     </div>
 
-                    <!-- 2. Reflected area (Rose, 17.5%) -->
+                    <!-- 2. Reflected area -->
                     <div class="bg-rose-50/50 border-2 border-rose-100 rounded-2xl p-3 flex flex-col min-h-0 h-full justify-between w-full md:w-[17.5%]">
-                        <!-- Subzone header -->
                         <div class="flex items-center gap-1.5 mb-1.5 text-rose-700 font-bold border-b border-rose-100 pb-1.5 shrink-0 text-lg">
                             <i class="fa-regular fa-face-sad-tear text-lg text-rose-500"></i>
                             <span>待改進區</span>
                             <span id="bad-count" class="ml-auto bg-rose-100 text-rose-800 px-1.5 py-0.5 rounded-full text-sm">0 人</span>
                         </div>
                         
-                        <!-- Student card pool -->
                         <div id="bad-zone" class="drag-zone flex-grow overflow-y-auto flex flex-col gap-2.5 p-1.5 pt-4 pb-2 rounded-xl transition-all items-center justify-start content-start" ondragover="allowDrop(event)" ondragenter="dragEnter(event)" ondragleave="dragLeave(event)" ondrop="handleDrop(event, 'bad')">
                             <div class="placeholder py-12 flex items-center justify-center text-rose-400 text-xs text-center font-normal">
                                 (拖曳/點擊名牌右側哭臉新增)
                             </div>
                         </div>
 
-                        <!-- Timer section -->
                         <div class="border-t border-rose-100/70 pt-2.5 mt-2 shrink-0 bg-white/40 dark:bg-slate-900/20 p-2 rounded-xl">
                             <div class="flex items-center justify-center gap-1 text-[10px] mb-1.5 font-medium">
                                 <span class="text-rose-800 dark:text-rose-300">設定：</span>
@@ -502,7 +360,6 @@
                                 <span class="text-rose-700">秒</span>
                                 <button onclick="applyZoneTime('bad')" class="ml-1 bg-rose-100 dark:bg-rose-950 text-rose-800 dark:text-rose-200 px-1.5 py-0.5 rounded text-[9px] font-extrabold hover:bg-rose-200 transition-all">套用</button>
                             </div>
-                            <!-- Control controls -->
                             <div class="flex flex-row items-center justify-center gap-3 bg-rose-50/50 dark:bg-rose-950/15 px-2.5 py-1.5 rounded-xl border border-rose-100/70">
                                 <div id="timer-display-bad" class="text-lg md:text-xl font-black text-rose-700 dark:text-rose-400 font-mono tracking-wider leading-none">04:00</div>
                                 <div class="flex gap-1 shrink-0">
@@ -517,23 +374,19 @@
                         </div>
                     </div>
 
-                    <!-- 3. Toilet break area (Sky, 17.5%) -->
                     <div class="bg-sky-50/50 border-2 border-sky-100 rounded-2xl p-3 flex flex-col min-h-0 h-full justify-between w-full md:w-[17.5%]">
-                        <!-- Subzone header -->
                         <div class="flex items-center gap-1.5 mb-1.5 text-sky-700 font-bold border-b border-sky-100 pb-1.5 shrink-0 text-lg">
                             <i class="fa-solid fa-restroom text-lg text-sky-500"></i>
                             <span>課間上廁所</span>
                             <span id="toilet-count" class="ml-auto bg-sky-100 text-sky-800 px-1.5 py-0.5 rounded-full text-sm">0 人</span>
                         </div>
                         
-                        <!-- Student card pool -->
                         <div id="toilet-zone" class="drag-zone flex-grow overflow-y-auto flex flex-col gap-2.5 p-1.5 pt-4 pb-2 rounded-xl transition-all items-center justify-start content-start" ondragover="allowDrop(event)" ondragenter="dragEnter(event)" ondragleave="dragLeave(event)" ondrop="handleDrop(event, 'toilet')">
                             <div class="placeholder py-12 flex items-center justify-center text-sky-400 text-xs text-center font-normal">
                                 (拖曳名牌至此新增)
                             </div>
                         </div>
 
-                        <!-- Timer section -->
                         <div class="border-t border-sky-100/70 pt-2.5 mt-2 shrink-0 bg-white/40 dark:bg-slate-900/20 p-2 rounded-xl">
                             <div class="flex items-center justify-center gap-1 text-[10px] mb-1.5 font-medium">
                                 <span class="text-sky-800 dark:text-sky-300">設定：</span>
@@ -543,7 +396,6 @@
                                 <span class="text-sky-700">秒</span>
                                 <button onclick="applyZoneTime('toilet')" class="ml-1 bg-sky-100 dark:bg-sky-950 text-sky-800 dark:text-sky-200 px-1.5 py-0.5 rounded text-[9px] font-extrabold hover:bg-sky-200 transition-all">套用</button>
                             </div>
-                            <!-- Control controls -->
                             <div class="flex flex-row items-center justify-center gap-3 bg-sky-50 dark:bg-sky-950/40 px-2.5 py-1.5 rounded-xl border border-sky-100/50">
                                 <div id="timer-display-toilet" class="text-lg md:text-xl font-black text-sky-700 dark:text-sky-400 font-mono tracking-wider leading-none">02:00</div>
                                 <div class="flex gap-1 shrink-0">
@@ -563,7 +415,6 @@
         </section>
     </main>
 
-    <!-- Homework checklist -->
     <section class="w-full shrink-0">
         <div class="glass-panel rounded-2xl p-5 shadow-sm flex flex-col bg-white/90">
             <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4 mb-4 pb-3 border-b border-amber-100">
@@ -609,25 +460,27 @@
         </div>
     </section>
 
-    <!-- Custom alert modal (Aligned specification: w-full max-w-[360px] h-[350px] and Flex split, no static scale transform) -->
+    <!-- 訊息提示視窗 -->
     <div id="alert-modal" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center hidden opacity-0 transition-opacity duration-300">
         <div class="bg-white rounded-3xl p-6 md:p-8 w-full max-w-[360px] h-[350px] shadow-2xl border-4 border-amber-400 text-center transform transition-transform duration-300 flex flex-col justify-between items-center">
-            <!-- Top content wrap -->
             <div class="flex flex-col items-center justify-center flex-grow w-full">
                 <div class="w-20 h-20 bg-amber-100 rounded-full flex items-center justify-center mx-auto mb-4 animate-bounce shrink-0">
                     <i id="alert-icon-bell" class="fa-solid fa-bell text-4xl text-amber-500"></i>
                 </div>
                 <p id="alert-modal-desc" class="text-gray-600 font-bold text-lg md:text-xl text-center leading-snug mb-2"></p>
-                <p id="alert-modal-details" class="text-gray-500 text-sm font-medium leading-relaxed max-h-[80px] overflow-y-auto no-scrollbar"></p>
+                <p id="alert-modal-details" class="text-gray-500 text-sm font-medium leading-relaxed max-h-[80px] overflow-y-auto no-scrollbar w-full"></p>
             </div>
-            <!-- Bottom button -->
-            <button id="alert-modal-btn" onclick="closeAlertModal()" class="w-full bg-amber-500 hover:bg-amber-600 text-white font-bold py-3 px-6 rounded-2xl shadow-lg hover:shadow-xl transition-all text-base focus:ring-4 focus:ring-amber-200 mt-2 shrink-0">
-                確認
-            </button>
+            
+            <!-- Button Container -->
+            <div id="alert-btn-container" class="w-full flex gap-2.5 mt-2 shrink-0">
+                <button id="alert-modal-btn" onclick="closeAlertModal()" class="flex-1 bg-amber-500 hover:bg-amber-600 text-white font-bold py-3 px-4 rounded-2xl shadow-lg transition-all text-sm">
+                    確認
+                </button>
+            </div>
         </div>
     </div>
 
-    <!-- Custom Confirm Modal (Pink outline & modal) -->
+    <!-- Custom Confirm Modal -->
     <div id="confirm-modal" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center hidden opacity-0 transition-opacity duration-300">
         <div class="bg-white rounded-3xl p-6 md:p-8 max-w-md w-full mx-4 shadow-2xl border-4 border-pink-400 text-center transform scale-95 transition-transform duration-300" id="confirm-card-panel">
             <div class="w-16 h-16 bg-pink-100 rounded-full flex items-center justify-center mx-auto mb-4 animate-pulse shrink-0" id="confirm-icon-wrapper">
@@ -635,9 +488,8 @@
             </div>
             <h3 class="text-xl font-bold text-pink-700 mb-3" id="confirm-modal-title">⚠️ 系統警告</h3>
             <p class="text-gray-600 mb-4 text-sm font-semibold leading-relaxed text-left bg-pink-50/50 p-4 rounded-2xl border border-pink-100" id="confirm-modal-desc-box">
-                此操作會將現有試算表的工作表內容清空，並在首行重新建立「時間、待改進學生、課間上廁所學生」與您上方輸入的所有學生姓名欄位！
+                此操作會將現有試算表的工作表內容清空...
             </p>
-            <!-- Class Input Box -->
             <div class="mb-5 text-left">
                 <label class="block text-xs font-bold text-gray-500 mb-1.5">請輸入您要設定的班級 (例: 301, 502):</label>
                 <input type="text" id="confirm-class-input" class="w-full border border-pink-200 rounded-xl py-2 px-3 focus:outline-none focus:ring-2 focus:ring-pink-400 text-sm font-semibold text-gray-700 bg-white" placeholder="請填寫班級名稱">
@@ -653,26 +505,21 @@
         </div>
     </div>
 
-    <!-- 🎉 Celebration BINGO overlay (【已修復】尺寸寬高強制鎖死為 w-full max-w-[360px] h-[350px]，不含縮放) 🎉 -->
+    <!-- Celebration BINGO overlay -->
     <div id="celebration-overlay" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-[60] flex items-center justify-center hidden opacity-0 transition-opacity duration-500">
         <div class="relative text-center transition-transform duration-500 w-full max-w-[360px] h-[350px] p-6 md:p-8 bg-gradient-to-br from-amber-500 via-orange-500 to-yellow-400 rounded-3xl shadow-2xl border-4 border-white text-white flex flex-col justify-between items-center">
-            <!-- Fireworks Canvas -->
             <canvas id="celebration-canvas" class="absolute inset-0 w-full h-full pointer-events-none rounded-2xl"></canvas>
             
-            <!-- Top container -->
             <div class="relative z-10 flex flex-col items-center justify-center flex-grow w-full">
-                <!-- Gold trophy animate (w-20 h-20) -->
                 <div class="w-20 h-20 bg-white/20 rounded-full flex items-center justify-center mx-auto mb-4 animate-bounce shrink-0">
                     <i class="fa-solid fa-trophy text-4xl text-yellow-300"></i>
                 </div>
-                <!-- BINGO Medal -->
                 <div class="inline-block bg-yellow-300 text-amber-950 font-black px-4 py-1 rounded-full text-xs mb-3 tracking-widest shadow-md animate-pulse shrink-0">
                     ⭐ BINGO! ⭐
                 </div>
                 <h2 class="text-2xl font-black mb-1 tracking-wide text-white drop-shadow-md leading-tight shrink-0">作業全數完成！</h2>
                 <p id="celebration-student-info" class="text-xl font-extrabold text-yellow-100 drop-shadow-sm leading-tight shrink-0"></p>
             </div>
-            <!-- Bottom button (完美切齊底部) -->
             <button onclick="closeCelebration()" class="relative z-10 w-full bg-white hover:bg-yellow-100 text-orange-600 font-bold py-3 px-6 rounded-2xl shadow-lg hover:shadow-xl transition-all text-base focus:none shrink-0">
                 超級棒！
             </button>
@@ -685,42 +532,34 @@
         <p id="loading-text" class="text-white font-medium text-sm">正在與試算表同步中，請稍候...</p>
     </div>
 
-    <!-- Hidden audio element -->
     <audio id="alarm-sound" src="https://assets.mixkit.co/active_storage/sfx/2869/2869-84.wav" preload="auto"></audio>
 
     <footer class="mt-8 mb-4 text-center text-[11px] text-gray-400 shrink-0">
         <p>© 班級經營互動看板作者 — 雁婷老師</p>
     </footer>
 
-    <!-- Main JS logic controls -->
     <script {nonce}="">
-        // 1. Initialize data and state (Predefined GAS URL setting)
-        let studentsList = []; // Students list {number, name}
-        let totalCreatedCount = 0; // Unique ID generator
-        let homeworkList = []; // Homework list (String array)
-        let homeworkStatus = {}; // Homework status cache
-        // 已更新為最新的 API 預設部署網址
-        let gasUrl = localStorage.getItem('gasUrl') || 'https://script.google.com/macros/s/AKfycbxBNQX974kwKVpK2_qUBKJMHtrwmec4auaJl2UC6hm7vNJgW9totRcVYu-oRLLJ5HgK/exec'; 
+        let studentsList = []; 
+        let totalCreatedCount = 0; 
+        let homeworkList = []; 
+        let homeworkStatus = {}; 
+        let gasUrl = localStorage.getItem('gasUrl') || 'https://script.google.com/macros/s/AKfycbxsjXAb-iyjmlOXKeY6HUucf9B1HmvaP1OBU-lRQK2QyXgrd7VPZSeXeSHzZUlhzBog/exec'; 
+        
+        // 核心機制：建立暫存班級名稱的全域變數，保證儲存完成彈窗能精確取得
+        let currentSavedClassName = "";
 
-        // Independent timer data structures
         let timers = {
             good: { remaining: 300, total: 300, running: false, interval: null },
             bad: { remaining: 240, total: 240, running: false, interval: null },
             toilet: { remaining: 120, total: 120, running: false, interval: null }
         };
 
-        // Track timer timeout zones
         let currentTimeoutZone = null;
-        
-        // Track confirm action type ('init' or 'record')
         let currentConfirmAction = null;
-
-        // Fireworks canvas parameters
         let confettiActive = false;
         let confettiParticles = [];
         const confettiColors = ['#f43f5e', '#10b981', '#06b6d4', '#f59e0b', '#ec4899', '#3b82f6', '#ffffff'];
 
-        // 2. Sort student cards inside target zone
         function sortZoneCards(zone) {
             const cards = Array.from(zone.querySelectorAll('.student-card'));
             cards.sort((a, b) => {
@@ -731,19 +570,14 @@
             cards.forEach(card => zone.appendChild(card));
         }
 
-        // ==========================================
-        // Drag & Drop handlers
-        // ==========================================
         let draggedElement = null;
-
         function handleDragStart(e) {
-            if (this.getAttribute('draggable') === 'false') return;
+            if (this.getAttribute('draggable') === 'false' || e.target.closest('button')) return;
             draggedElement = this;
             this.classList.add('dragging');
             e.dataTransfer.setData('text/plain', this.id);
             e.dataTransfer.effectAllowed = 'copyMove';
         }
-
         function handleDragEnd(e) {
             this.classList.remove('dragging');
             draggedElement = null;
@@ -751,15 +585,11 @@
                 zone.classList.remove('drag-hover', 'good-zone-hover', 'bad-zone-hover', 'toilet-zone-hover');
             });
         }
-
-        // Allow drop
         function allowDrop(e) { e.preventDefault(); }
-
         function dragEnter(e) {
             e.preventDefault();
             const zone = e.currentTarget;
-            const isDarkMode = document.body.classList.contains('dark-mode');
-            if (isDarkMode) {
+            if (document.body.classList.contains('dark-mode')) {
                 if (zone.id === 'good-zone') zone.classList.add('good-zone-hover');
                 else if (zone.id === 'bad-zone') zone.classList.add('bad-zone-hover');
                 else if (zone.id === 'toilet-zone') zone.classList.add('toilet-zone-hover');
@@ -767,30 +597,20 @@
                 zone.classList.add('drag-hover');
             }
         }
-
-        // Leave drag zone
         function dragLeave(e) {
             const zone = e.currentTarget;
             zone.classList.remove('drag-hover', 'good-zone-hover', 'bad-zone-hover', 'toilet-zone-hover');
         }
-
-        // Handle drop event
         function handleDrop(e, zoneType) {
             e.preventDefault();
             const zone = e.currentTarget;
             zone.classList.remove('drag-hover', 'good-zone-hover', 'bad-zone-hover', 'toilet-zone-hover');
-
             const id = e.dataTransfer.getData('text/plain');
             const sourceCard = document.getElementById(id);
             if (!sourceCard) return;
-
-            const number = sourceCard.getAttribute('data-number');
-            const name = sourceCard.getAttribute('data-name');
-
-            addStudentToZone(number, name, zoneType);
+            addStudentToZone(sourceCard.getAttribute('data-number'), sourceCard.getAttribute('data-name'), zoneType);
         }
 
-        // 3. Handle default demo data load
         function loadDemoStudents() {
             const demoText = "1 洪叡軒\n1 何聿倫\n2 高嘉恩\n2 曾紹倫\n3 周紹群\n4 廖恩可\n5 陳熙文\n6 謝睿陽\n7 何仲偉\n7 陳柏琛\n9 王宥傑\n10 林詩芸\n11 吳苡樂\n12 陳蕾伊\n13 林亞歆\n13 黃佳營\n14 林雨霏\n15 周育欣\n16 吳依宸\n17 黃苡真\n18 陳泓鈺";
             document.getElementById('text-input').value = demoText;
@@ -801,7 +621,6 @@
             }
         }
 
-        // 4. Excel File Parser
         function handleExcelUpload(event) {
             const file = event.target.files[0];
             if (!file) return;
@@ -809,10 +628,8 @@
             reader.onload = function(e) {
                 const data = new Uint8Array(e.target.result);
                 const workbook = XLSX.read(data, {type: 'array'});
-                const firstSheetName = workbook.SheetNames[0];
-                const worksheet = workbook.Sheets[firstSheetName];
+                const worksheet = workbook.Sheets[workbook.SheetNames[0]];
                 const rows = XLSX.utils.sheet_to_json(worksheet, {header: 1});
-                
                 let parsedStudents = [];
                 rows.forEach(row => {
                     if (row.length >= 2 && row[0] !== undefined && row[1] !== undefined) {
@@ -821,7 +638,6 @@
                         if (number && name) parsedStudents.push({ number, name });
                     }
                 });
-
                 if (parsedStudents.length > 0) {
                     studentsList = parsedStudents;
                     generateAllCardsIntoGoodZone();
@@ -832,29 +648,22 @@
             reader.readAsArrayBuffer(file);
         }
 
-        // 5. Parse manual copy text input
         function generateFromText() {
             const text = document.getElementById('text-input').value.trim();
             if (!text) {
                 alertModalMessage("提示", "請輸入學生座號與姓名資料！", "warning");
                 return;
             }
-
             const lines = text.split('\n');
             let parsedStudents = [];
-
             lines.forEach(line => {
                 line = line.trim();
                 if (!line) return;
-
                 const parts = line.split(/[\s,，\t]+/);
                 if (parts.length >= 2) {
-                    const number = parts[0];
-                    const name = parts.slice(1).join(' ');
-                    parsedStudents.push({ number, name });
+                    parsedStudents.push({ number: parts[0], name: parts.slice(1).join(' ') });
                 }
             });
-
             if (parsedStudents.length > 0) {
                 studentsList = parsedStudents;
                 generateAllCardsIntoGoodZone();
@@ -863,233 +672,110 @@
             }
         }
 
-        // =========================================================================
-        // Smart Diff Student Cards reconciliation algorithm
-        // =========================================================================
         function generateAllCardsIntoGoodZone() {
             const goodZone = document.getElementById('good-zone');
             const badZone = document.getElementById('bad-zone');
             const toiletZone = document.getElementById('toilet-zone');
-
-            // Unique key `No_Name` set
             const newStudentKeys = new Set(studentsList.map(s => `${s.number}_${s.name}`));
 
-            // 1. Remove outdated records from each subzone
             const removeOutdatedCards = (zone) => {
-                const cards = zone.querySelectorAll('.student-card');
-                cards.forEach(card => {
-                    const num = card.getAttribute('data-number');
-                    const name = card.getAttribute('data-name');
-                    const key = `${num}_${name}`;
-                    if (!newStudentKeys.has(key)) {
-                        card.remove();
-                    }
+                zone.querySelectorAll('.student-card').forEach(card => {
+                    if (!newStudentKeys.has(`${card.getAttribute('data-number')}_${card.getAttribute('data-name')}`)) card.remove();
                 });
             };
+            removeOutdatedCards(goodZone); removeOutdatedCards(badZone); removeOutdatedCards(toiletZone);
 
-            removeOutdatedCards(goodZone);
-            removeOutdatedCards(badZone);
-            removeOutdatedCards(toiletZone);
-
-            // 2. Add or reconcile students
             studentsList.forEach(student => {
-                const existingCard = goodZone.querySelector(`.student-card[data-number="${student.number}"][data-name="${student.name}"]`);
-                if (!existingCard) {
-                    const card = createUniversalCard(student.number, student.name);
-                    goodZone.appendChild(card);
+                if (!goodZone.querySelector(`.student-card[data-number="${student.number}"][data-name="${student.name}"]`)) {
+                    goodZone.appendChild(createUniversalCard(student.number, student.name));
                 }
             });
 
-            // 3. Toggle placeholders
-            const goodCards = goodZone.querySelectorAll('.student-card');
-            const phGood = goodZone.querySelector('.placeholder');
-            if (phGood) phGood.style.display = goodCards.length > 0 ? 'none' : 'flex';
+            if (goodZone.querySelector('.placeholder')) goodZone.querySelector('.placeholder').style.display = goodZone.querySelectorAll('.student-card').length > 0 ? 'none' : 'flex';
+            if (badZone.querySelector('.placeholder')) badZone.querySelector('.placeholder').style.display = badZone.querySelectorAll('.student-card').length > 0 ? 'none' : 'flex';
+            if (toiletZone.querySelector('.placeholder')) toiletZone.querySelector('.placeholder').style.display = toiletZone.querySelectorAll('.student-card').length > 0 ? 'none' : 'flex';
 
-            const badCards = badZone.querySelectorAll('.student-card');
-            const phBad = badZone.querySelector('.placeholder');
-            if (phBad) phBad.style.display = badCards.length > 0 ? 'none' : 'flex';
-
-            const toiletCards = toiletZone.querySelectorAll('.student-card');
-            const phToilet = toiletZone.querySelector('.placeholder');
-            if (phToilet) phToilet.style.display = toiletCards.length > 0 ? 'none' : 'flex';
-
-            // 4. Update count badge
             document.getElementById('student-count').textContent = `共 ${studentsList.length} 人`;
-
-            // 5. Trigger sorting
-            sortZoneCards(goodZone);
-            sortZoneCards(badZone);
-            sortZoneCards(toiletZone);
-            
-            // 6. Rerender homework table
-            renderHomeworkTable();
-            updateCounts();
+            sortZoneCards(goodZone); sortZoneCards(badZone); sortZoneCards(toiletZone);
+            renderHomeworkTable(); updateCounts();
         }
 
-        // 7. Create card element
         function createUniversalCard(number, name) {
             totalCreatedCount++;
-            const cardId = `student-card-${totalCreatedCount}`;
-
             const card = document.createElement('div');
-            card.id = cardId;
+            card.id = `student-card-${totalCreatedCount}`;
             card.setAttribute('draggable', 'true');
             card.setAttribute('data-number', number);
             card.setAttribute('data-name', name);
             card.setAttribute('data-count-good', '0');
-
-            const isEven = parseInt(number) % 2 === 0;
-            const bgCircleClass = isEven ? 'bg-amber-100 text-amber-800' : 'bg-orange-100 text-orange-900';
-
+            const bgCircleClass = (parseInt(number) % 2 === 0) ? 'bg-amber-100 text-amber-800' : 'bg-orange-100 text-orange-900';
             card.className = "student-card bg-white border border-amber-200 hover:border-amber-400 hover:shadow-md rounded-xl shadow-sm w-40 h-11 shrink-0 mx-auto flex items-center justify-center gap-1.5 group relative transition-all duration-300 cursor-grab active:cursor-grabbing text-base";
-
             card.innerHTML = `
-                <!-- Left wing: smile face -->
-                <button class="quick-good-btn absolute left-1.5 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-opacity text-emerald-500 hover:text-emerald-600 cursor-pointer z-30 p-1" title="增加好表現星星">
+                <button class="quick-good-btn absolute left-1.5 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-opacity text-emerald-500 hover:text-emerald-600 cursor-pointer z-30 p-1">
                     <i class="fa-regular fa-face-laugh-beam text-sm md:text-base"></i>
                 </button>
-                
-                <!-- Center seat no and trash bin button -->
-                <button class="delete-btn w-7 h-7 flex items-center justify-center rounded-full text-sm font-black ${bgCircleClass} hover:bg-stone-200 hover:text-stone-600 hover:border hover:border-stone-300 dark:hover:bg-stone-800 dark:hover:text-stone-300 dark:hover:border-stone-700 shrink-0 shadow-sm ml-2 mr-0.5 group/btn relative transition-all duration-200 pointer-events-auto focus:outline-none" title="遞減星星 1 次">
+                <button class="delete-btn w-7 h-7 flex items-center justify-center rounded-full text-sm font-black ${bgCircleClass} hover:bg-stone-200 hover:text-stone-600 relative transition-all duration-200 pointer-events-auto group/btn focus:outline-none">
                     <span class="group-hover/btn:scale-0 transition-transform duration-200">${number}</span>
                     <i class="fa-regular fa-trash-can text-xs absolute opacity-0 group-hover/btn:opacity-100 transition-opacity duration-200"></i>
                 </button>
-                
                 <span class="truncate text-amber-950 font-bold text-base md:text-lg max-w-[70px]">${name}</span>
-                
-                <!-- Right wing: cry face -->
-                <button class="quick-bad-btn absolute right-1.5 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-opacity text-rose-500 hover:text-rose-600 cursor-pointer z-20 p-1" title="快速加入待改進區">
+                <button class="quick-bad-btn absolute right-1.5 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-opacity text-rose-500 hover:text-rose-600 cursor-pointer z-20 p-1">
                     <i class="fa-regular fa-face-sad-tear text-sm md:text-base"></i>
                 </button>
             `;
-
-            // Event bindings
             card.addEventListener('dragstart', handleDragStart);
             card.addEventListener('dragend', handleDragEnd);
             setupTouchDrag(card);
-
-            card.querySelector('.quick-good-btn').addEventListener('click', function(e) {
-                e.stopPropagation();
-                addStarToCard(card);
-            });
-
-            card.querySelector('.quick-bad-btn').addEventListener('click', function(e) {
-                e.stopPropagation();
-                addStudentToZone(number, name, 'bad');
-            });
-
-            card.querySelector('.delete-btn').addEventListener('click', function(e) {
-                e.stopPropagation();
-                removeCardOrReduceCount(card, 'good');
-            });
-
+            card.querySelector('.quick-good-btn').addEventListener('click', (e) => { e.stopPropagation(); addStarToCard(card); });
+            card.querySelector('.quick-bad-btn').addEventListener('click', (e) => { e.stopPropagation(); addStudentToZone(number, name, 'bad'); });
+            card.querySelector('.delete-btn').addEventListener('click', (e) => { e.stopPropagation(); removeCardOrReduceCount(card, 'good'); });
             return card;
         }
 
-        // 8. Create Zone card
         function createZoneCard(number, name, zoneType, count) {
             const card = document.createElement('div');
-            const cardId = `student-zone-card-${zoneType}-${number}`;
-            card.id = cardId;
-            card.setAttribute('draggable', 'false');
+            card.id = `student-zone-card-${zoneType}-${number}`;
             card.setAttribute('data-number', number);
             card.setAttribute('data-name', name);
-            
-            const isEven = parseInt(number) % 2 === 0;
-            const bgCircleClass = isEven ? 'bg-amber-100 text-amber-800' : 'bg-orange-100 text-orange-900';
-
+            const bgCircleClass = (parseInt(number) % 2 === 0) ? 'bg-amber-100 text-amber-800' : 'bg-orange-100 text-orange-900';
             card.className = "student-card bg-white border border-amber-200 hover:border-amber-400 hover:shadow-md rounded-xl shadow-sm w-40 h-11 shrink-0 mx-auto flex items-center justify-center gap-1.5 group relative transition-all duration-300 cursor-default text-base";
-
+            
             if (zoneType === 'bad') {
                 card.setAttribute('data-count-bad', count);
-                card.innerHTML = `
-                    <button class="delete-btn w-7 h-7 flex items-center justify-center rounded-full text-sm font-black ${bgCircleClass} hover:bg-stone-200 hover:text-stone-600 hover:border hover:border-stone-300 dark:hover:bg-stone-800 dark:hover:text-stone-300 dark:hover:border-stone-700 shrink-0 shadow-sm ml-2 mr-0.5 group/btn relative transition-all duration-200 pointer-events-auto focus:outline-none" title="消除一次">
-                        <span class="group-hover/btn:scale-0 transition-transform duration-200">${number}</span>
-                        <i class="fa-regular fa-trash-can text-xs absolute opacity-0 group-hover/btn:opacity-100 transition-opacity duration-200"></i>
-                    </button>
-
-                    <span class="truncate text-amber-950 font-bold text-base md:text-lg max-w-[70px]">${name}</span>
-                    
-                    <div class="lightning-badge badge-unified animate-pulse">
-                        <i class="fa-solid fa-bolt text-[7px] text-yellow-700 mr-0.5"></i><span class="badge-count">${count}</span>
-                    </div>
-                `;
+                card.innerHTML = `<button class="delete-btn w-7 h-7 flex items-center justify-center rounded-full text-sm font-black ${bgCircleClass} hover:bg-stone-200 hover:text-stone-600 shrink-0 shadow-sm ml-2 group/btn relative transition-all duration-200"><span class="group-hover/btn:scale-0">${number}</span><i class="fa-regular fa-trash-can text-xs absolute opacity-0 group-hover/btn:opacity-100"></i></button><span class="truncate text-amber-950 font-bold max-w-[70px]">${name}</span><div class="lightning-badge badge-unified animate-pulse"><i class="fa-solid fa-bolt text-[7px] text-yellow-700 mr-0.5"></i><span class="badge-count">${count}</span></div>`;
             } else if (zoneType === 'toilet') {
                 card.setAttribute('data-count-toilet', count);
-                card.innerHTML = `
-                    <button class="delete-btn w-7 h-7 flex items-center justify-center rounded-full text-sm font-black ${bgCircleClass} hover:bg-stone-200 hover:text-stone-600 hover:border hover:border-stone-300 dark:hover:bg-stone-800 dark:hover:text-stone-300 dark:hover:border-stone-700 shrink-0 shadow-sm ml-2 mr-0.5 group/btn relative transition-all duration-200 pointer-events-auto focus:outline-none" title="消除一次">
-                        <span class="group-hover/btn:scale-0 transition-transform duration-200">${number}</span>
-                        <i class="fa-regular fa-trash-can text-xs absolute opacity-0 group-hover/btn:opacity-100 transition-opacity duration-200"></i>
-                    </button>
-
-                    <span class="truncate text-amber-950 font-bold text-base md:text-lg max-w-[70px]">${name}</span>
-                    
-                    <div class="toilet-badge badge-unified animate-pulse">
-                        <i class="fa-solid fa-droplet text-[7px] text-sky-100 mr-0.5"></i><span class="badge-count">${count}</span>
-                    </div>
-                `;
+                card.innerHTML = `<button class="delete-btn w-7 h-7 flex items-center justify-center rounded-full text-sm font-black ${bgCircleClass} hover:bg-stone-200 hover:text-stone-600 shrink-0 shadow-sm ml-2 group/btn relative transition-all duration-200"><span class="group-hover/btn:scale-0">${number}</span><i class="fa-regular fa-trash-can text-xs absolute opacity-0 group-hover/btn:opacity-100"></i></button><span class="truncate text-amber-950 font-bold max-w-[70px]">${name}</span><div class="toilet-badge badge-unified animate-pulse"><i class="fa-solid fa-droplet text-[7px] text-sky-100 mr-0.5"></i><span class="badge-count">${count}</span></div>`;
             }
-
-            card.querySelector('.delete-btn').addEventListener('click', function(e) {
-                e.stopPropagation();
-                removeCardOrReduceCount(card, zoneType);
-            });
-
+            card.querySelector('.delete-btn').addEventListener('click', (e) => { e.stopPropagation(); removeCardOrReduceCount(card, zoneType); });
             return card;
         }
 
-        // 9. Dispatch student to zone
         function addStudentToZone(number, name, zoneType) {
             const targetZone = document.getElementById(`${zoneType}-zone`);
             if (!targetZone) return;
-
-            const ph = targetZone.querySelector('.placeholder');
-            if (ph) ph.style.display = 'none';
-
+            if (targetZone.querySelector('.placeholder')) targetZone.querySelector('.placeholder').style.display = 'none';
             const existingCard = targetZone.querySelector(`.student-card[data-number="${number}"][data-name="${name}"]`);
 
             if (zoneType === 'good') {
+                if (existingCard) addStarToCard(existingCard);
+            } else {
+                const countAttr = zoneType === 'bad' ? 'data-count-bad' : 'data-count-toilet';
+                const badgeClass = zoneType === 'bad' ? '.lightning-badge' : '.toilet-badge';
                 if (existingCard) {
-                    addStarToCard(existingCard);
-                }
-            } else if (zoneType === 'bad') {
-                if (existingCard) {
-                    let count = parseInt(existingCard.getAttribute('data-count-bad') || 1);
-                    count++;
-                    existingCard.setAttribute('data-count-bad', count);
-                    let badge = existingCard.querySelector('.lightning-badge');
-                    if (badge) {
-                        badge.querySelector('.badge-count').textContent = count;
-                    }
+                    let count = parseInt(existingCard.getAttribute(countAttr) || 1) + 1;
+                    existingCard.setAttribute(countAttr, count);
+                    existingCard.querySelector(`${badgeClass} .badge-count`).textContent = count;
                 } else {
-                    const card = createZoneCard(number, name, 'bad', 1);
-                    targetZone.appendChild(card);
-                }
-            } else if (zoneType === 'toilet') {
-                if (existingCard) {
-                    let count = parseInt(existingCard.getAttribute('data-count-toilet') || 1);
-                    count++;
-                    existingCard.setAttribute('data-count-toilet', count);
-                    let badge = existingCard.querySelector('.toilet-badge');
-                    if (badge) {
-                        badge.querySelector('.badge-count').textContent = count;
-                    }
-                } else {
-                    const card = createZoneCard(number, name, 'toilet', 1);
-                    targetZone.appendChild(card);
+                    targetZone.appendChild(createZoneCard(number, name, zoneType, 1));
                 }
             }
-
-            sortZoneCards(targetZone);
-            updateCounts();
+            sortZoneCards(targetZone); updateCounts();
         }
 
-        // Add star to card
         function addStarToCard(card) {
-            let count = parseInt(card.getAttribute('data-count-good') || 0);
-            count++;
+            let count = parseInt(card.getAttribute('data-count-good') || 0) + 1;
             card.setAttribute('data-count-good', count);
-
             let badge = card.querySelector('.star-badge');
             if (!badge) {
                 badge = document.createElement('div');
@@ -1101,543 +787,358 @@
             }
         }
 
-        // Remove card or reduce count
         function removeCardOrReduceCount(card, zoneType) {
             if (zoneType === 'good') {
                 let count = parseInt(card.getAttribute('data-count-good') || 0);
                 if (count > 0) {
-                    count--;
-                    card.setAttribute('data-count-good', count);
+                    count--; card.setAttribute('data-count-good', count);
                     const badge = card.querySelector('.star-badge');
-                    if (badge) {
-                        if (count === 0) {
-                            badge.remove();
-                        } else {
-                            badge.querySelector('.badge-count').textContent = count;
-                        }
-                    }
+                    if (badge) { if (count === 0) badge.remove(); else badge.querySelector('.badge-count').textContent = count; }
                 }
             } else {
                 const countAttr = zoneType === 'bad' ? 'data-count-bad' : 'data-count-toilet';
                 let count = parseInt(card.getAttribute(countAttr) || 1);
-                
                 if (count > 1) {
-                    count--;
-                    card.setAttribute(countAttr, count);
-                    const badgeClass = zoneType === 'bad' ? '.lightning-badge' : '.toilet-badge';
-                    const badge = card.querySelector(badgeClass);
-                    if (badge) {
-                        badge.querySelector('.badge-count').textContent = count;
-                    }
+                    count--; card.setAttribute(countAttr, count);
+                    card.querySelector(`${zoneType === 'bad' ? '.lightning-badge' : '.toilet-badge'} .badge-count`).textContent = count;
                 } else {
-                    const parent = card.parentElement;
-                    card.remove();
-                    if (parent && parent.querySelectorAll('.student-card').length === 0) {
-                        const ph = parent.querySelector('.placeholder');
-                        if (ph) {
-                            ph.style.display = 'flex';
-                        }
-                    }
+                    const parent = card.parentElement; card.remove();
+                    if (parent && parent.querySelectorAll('.student-card').length === 0 && parent.querySelector('.placeholder')) parent.querySelector('.placeholder').style.display = 'flex';
                 }
             }
             updateCounts();
         }
 
-        // Touch drag simulation helper
         function setupTouchDrag(card) {
-            let activeTouch = false;
-            let ghostNode = null;
-
+            let activeTouch = false, ghostNode = null;
             card.addEventListener('touchstart', function(e) {
-                if (card.getAttribute('draggable') === 'false') return;
-                if (e.target.closest('button')) return;
-                activeTouch = true;
-                const touch = e.touches[0];
-                ghostNode = card.cloneNode(true);
-                ghostNode.style.position = 'fixed';
-                ghostNode.style.width = card.offsetWidth + 'px';
-                ghostNode.style.height = card.offsetHeight + 'px';
-                ghostNode.style.opacity = '0.85';
-                ghostNode.style.pointerEvents = 'none';
-                ghostNode.style.zIndex = '1000';
-                ghostNode.style.left = (touch.clientX - card.offsetWidth / 2) + 'px';
-                ghostNode.style.top = (touch.clientY - card.offsetHeight / 2) + 'px';
-                document.body.appendChild(ghostNode);
-                card.classList.add('dragging');
+                if (card.getAttribute('draggable') === 'false' || e.target.closest('button')) return;
+                activeTouch = true; const touch = e.touches[0];
+                ghostNode = card.cloneNode(true); ghostNode.style.position = 'fixed';
+                ghostNode.style.width = card.offsetWidth + 'px'; ghostNode.style.height = card.offsetHeight + 'px';
+                ghostNode.style.opacity = '0.85'; ghostNode.style.pointerEvents = 'none'; ghostNode.style.zIndex = '1000';
+                ghostNode.style.left = (touch.clientX - card.offsetWidth / 2) + 'px'; ghostNode.style.top = (touch.clientY - card.offsetHeight / 2) + 'px';
+                document.body.appendChild(ghostNode); card.classList.add('dragging');
             }, { passive: true });
-
             card.addEventListener('touchmove', function(e) {
-                if (!activeTouch || !ghostNode) return;
-                const touch = e.touches[0];
-                ghostNode.style.left = (touch.clientX - ghostNode.offsetWidth / 2) + 'px';
-                ghostNode.style.top = (touch.clientY - ghostNode.offsetHeight / 2) + 'px';
+                if (!activeTouch || !ghostNode) return; const touch = e.touches[0];
+                ghostNode.style.left = (touch.clientX - ghostNode.offsetWidth / 2) + 'px'; ghostNode.style.top = (touch.clientY - ghostNode.offsetHeight / 2) + 'px';
             }, { passive: true });
-
             card.addEventListener('touchend', function(e) {
-                if (!activeTouch) return;
-                activeTouch = false;
-                card.classList.remove('dragging');
+                if (!activeTouch) return; activeTouch = false; card.classList.remove('dragging');
                 if (ghostNode) { ghostNode.remove(); ghostNode = null; }
-
                 const touch = e.changedTouches[0];
                 const elementUnder = document.elementFromPoint(touch.clientX, touch.clientY);
                 const targetZone = elementUnder ? elementUnder.closest('.drag-zone') : null;
-
                 if (targetZone) {
-                    const zoneType = targetZone.id === 'good-zone' ? 'good' : (targetZone.id === 'bad-zone' ? 'bad' : 'toilet');
-                    targetZone.querySelector('.placeholder').style.display = 'none';
-                    const number = card.getAttribute('data-number');
-                    const name = card.getAttribute('data-name');
-                    addStudentToZone(number, name, zoneType);
+                    addStudentToZone(card.getAttribute('data-number'), card.getAttribute('data-name'), targetZone.id === 'good-zone' ? 'good' : (targetZone.id === 'bad-zone' ? 'bad' : 'toilet'));
                 }
             });
         }
 
-        // Update counts
         function updateCounts() {
             document.getElementById('good-count').textContent = `${document.getElementById('good-zone').querySelectorAll('.student-card').length} 人`;
             document.getElementById('bad-count').textContent = `${document.getElementById('bad-zone').querySelectorAll('.student-card').length} 人`;
             document.getElementById('toilet-count').textContent = `${document.getElementById('toilet-zone').querySelectorAll('.student-card').length} 人`;
         }
 
-        // ==========================================
-        // GAS cloud communication & custom modals
-        // ==========================================
-        
-        // Save and connect GAS URL
         function connectGas() {
             const input = document.getElementById('gas-url-input');
             if (!input) return;
             const url = input.value.trim();
-            if (!url) {
-                alertModalMessage("提示", "請輸入有效的 Google Apps Script 網頁應用程式 URL！", "connect");
-                return;
-            }
-            gasUrl = url;
-            localStorage.setItem('gasUrl', url);
-            updateGasStatusUI();
+            if (!url) { alertModalMessage("提示", "請輸入有效的 Google Apps Script 網頁應用程式 URL！", "connect"); return; }
+            gasUrl = url; localStorage.setItem('gasUrl', url); updateGasStatusUI();
             alertModalMessage("已連結", "成功設定並儲存 GAS 雲端部署網址！", "connect");
         }
 
-        // Update connection status UI
         function updateGasStatusUI() {
             const statusEl = document.getElementById('gas-status');
             if (!statusEl) return;
             if (gasUrl) {
                 statusEl.className = "text-center text-[10px] font-bold text-emerald-600 mt-0.5 flex items-center justify-center gap-1";
                 statusEl.innerHTML = `<i class="fa-solid fa-circle-check"></i> 已連結雲端`;
+                document.getElementById('gas-url-input').value = gasUrl;
             } else {
-                statusEl.className = "text-center text-[10px] font-bold text-amber-600 mt-0.5 flex items-center justify-center gap-1";
-                statusEl.innerHTML = `<i class="fa-solid fa-circle-exclamation animate-pulse"></i> 尚未連結`;
+                statusEl.className = "text-center text-[10px] font-bold text-rose-500 mt-0.5 flex items-center justify-center gap-1";
+                statusEl.innerHTML = `<i class="fa-solid fa-circle-exclamation"></i> 尚未連結後端`;
             }
         }
 
-        // Control loading spinner
         function showLoading(show, text = "") {
             const overlay = document.getElementById('loading-overlay');
-            const textEl = document.getElementById('loading-text');
             if (!overlay) return;
-            if (text) textEl.textContent = text;
-            if (show) {
-                overlay.classList.remove('hidden');
-                setTimeout(() => overlay.classList.remove('opacity-0'), 10);
-            } else {
-                overlay.classList.add('opacity-0');
-                setTimeout(() => overlay.classList.add('hidden'), 300);
-            }
+            if (text) document.getElementById('loading-text').textContent = text;
+            if (show) { overlay.classList.remove('hidden'); setTimeout(() => overlay.classList.remove('opacity-0'), 10); }
+            else { overlay.classList.add('opacity-0'); setTimeout(() => overlay.classList.add('hidden'), 300); }
         }
 
-        // Universal Fetch with exponential backoff
-        async function fetchWithRetry(url, options, maxRetries = 5) {
+        async function fetchWithRetry(url, options, maxRetries = 3) {
             let delay = 1000;
             for (let i = 0; i < maxRetries; i++) {
                 try {
                     const response = await fetch(url, options);
-                    if (response.ok) {
-                        return await response.json();
-                    }
-                } catch (err) {
-                    if (i === maxRetries - 1) throw err;
-                }
-                await new Promise(resolve => setTimeout(resolve, delay));
-                delay *= 2;
+                    if (response.ok) return await response.json();
+                } catch (err) { if (i === maxRetries - 1) throw err; }
+                await new Promise(resolve => setTimeout(resolve, delay)); delay *= 1.5;
             }
-            throw new Error("發送資料到試算表失敗，連線超時。");
+            throw new Error("與後端同步失敗");
         }
 
-        // Send POST to GAS (plain text to bypass preflight)
         async function sendPostToGas(payload) {
-            if (!gasUrl) {
-                alertModalMessage("尚未設定後端", "請先於控制台貼上您的 GAS 網址並點選後端連結！", "warning");
-                return null;
-            }
+            if (!gasUrl) { alertModalMessage("尚未設定後端", "請先於控制台貼上您的 GAS 網址並點選後端連結！", "warning"); return null; }
             showLoading(true, "正與 Google 試算表連線中...");
             try {
-                const options = {
-                    method: 'POST',
-                    mode: 'cors',
-                    headers: {
-                        'Content-Type': 'text/plain;charset=utf-8'
-                    },
-                    body: JSON.stringify(payload)
-                };
+                const options = { method: 'POST', mode: 'cors', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify(payload) };
                 const data = await fetchWithRetry(gasUrl, options);
-                showLoading(false);
-                return data;
+                showLoading(false); return data;
             } catch (err) {
                 showLoading(false);
-                alertModalMessage("連線錯誤", "無法成功傳送數據至試算表。\n請檢查網路連線或確保 GAS 部署時將權限設為「所有人」。", "error");
+                alertModalMessage("連線錯誤", "無法傳送數據至試算表。請確認網路或 GAS 權限。", "error");
                 return null;
             }
         }
 
-        // Click "設置試算表格" to trigger warning modal (Pink)
-        function showSetupSpreadsheetModal() {
-            if (!gasUrl) {
-                alertModalMessage("提示", "請先於控制台設定您的 GAS 部署網址並完成後端連結！", "warning");
-                return;
+        // 【純後端動態開啟試算表機制】：不需要 LocalStorage 即可動態與 GAS 通訊直達對應班級
+        async function openSpreadsheetTab() {
+            if (!gasUrl) { 
+                alertModalMessage("尚未設定後端", "請先於控制台貼上您的 GAS 網址並點選後端連結！", "warning"); 
+                return; 
             }
-            if (studentsList.length === 0) {
-                alertModalMessage("名單為空", "請先手動產生或匯入學生名單，才能將名單部署至試算表！", "warning");
-                return;
+
+            // 直接讀取剛剛暫存下來、或是畫面上輸入的班級
+            let className = currentSavedClassName || document.getElementById('confirm-class-input')?.value.trim() || "";
+
+            showLoading(true, "正在線上取得您的 Google 試算表專屬直達連結...");
+
+            try {
+                const payload = { action: "getUrl", className: className };
+                const options = { 
+                    method: 'POST', 
+                    mode: 'cors', 
+                    headers: { 'Content-Type': 'text/plain;charset=utf-8' }, 
+                    body: JSON.stringify(payload) 
+                };
+                
+                const response = await fetch(gasUrl, options);
+                const data = await response.json();
+                showLoading(false);
+
+                if (data && data.status === "success" && data.spreadsheetUrl) {
+                    // 精確直達對應班級分頁標籤！
+                    window.open(data.spreadsheetUrl, '_blank');
+                } else {
+                    alertModalMessage("開啟失敗", data.message || "後端目前尚未設定試算表，請先點選「設置試算表」！", "error");
+                }
+            } catch (err) {
+                showLoading(false);
+                alert("無法從 GAS 後端抓取網址，即將為您導向 Google 雲端硬碟首頁。");
+                window.open("https://drive.google.com/", '_blank');
             }
-            
-            // Set action to 'init'
-            currentConfirmAction = 'init';
-            
-            const cardPanel = document.getElementById('confirm-card-panel');
-            const iconWrapper = document.getElementById('confirm-icon-wrapper');
-            const modalIcon = document.getElementById('confirm-modal-icon');
-            const modalTitle = document.getElementById('confirm-modal-title');
-            const descBox = document.getElementById('confirm-modal-desc-box');
-            const actionBtn = document.getElementById('confirm-action-btn');
-            const classInput = document.getElementById('confirm-class-input');
-            
-            // Clear input
-            classInput.value = "";
-            
-            cardPanel.className = "bg-white rounded-3xl p-6 md:p-8 max-w-md w-full mx-4 shadow-2xl border-4 border-pink-400 text-center transform scale-95 transition-transform duration-300";
-            iconWrapper.className = "w-16 h-16 bg-pink-100 rounded-full flex items-center justify-center mx-auto mb-4 animate-pulse shrink-0";
-            modalIcon.className = "fa-solid fa-triangle-exclamation text-3xl text-pink-500";
-            modalTitle.className = "text-xl font-bold text-pink-700 mb-3";
-            modalTitle.innerHTML = "⚠️ 系統警告";
-            descBox.className = "text-gray-600 mb-4 text-sm font-semibold leading-relaxed text-left bg-pink-50/50 p-4 rounded-2xl border border-pink-100";
-            descBox.innerHTML = "此操作會將現有試算表的工作表內容清空，並在首行重新建立「時間、待改進學生、課間上廁所學生」與您上方輸入的所有學生姓名欄位！";
-            actionBtn.className = "flex-1 bg-pink-500 hover:bg-pink-600 text-white font-bold py-2.5 px-4 rounded-xl shadow-md transition-all text-sm";
-            actionBtn.textContent = "確定重設試算表資料";
-            
-            const modal = document.getElementById('confirm-modal');
-            modal.classList.remove('hidden');
-            setTimeout(() => modal.classList.remove('opacity-0'), 10);
         }
 
-        // Click "儲存表現紀錄" to trigger confirmation modal (Purple)
-        function showSaveRecordModal() {
-            if (!gasUrl) {
-                alertModalMessage("提示", "請先於控制台設定您的 GAS 部署網址並完成後端連結！", "warning");
-                return;
-            }
-            if (studentsList.length === 0) {
-                alertModalMessage("名單為空", "目前看板中無任何學生，無法傳送紀錄！", "warning");
-                return;
-            }
+        // 設置試算表
+        function showSetupSpreadsheetModal() {
+            if (!gasUrl) { alertModalMessage("提示", "請先於控制台設定您的 GAS 部署網址並完成後端連結！", "warning"); return; }
+            if (studentsList.length === 0) { alertModalMessage("名單為空", "請先手動產生或匯入學生名單，才能將名單部署至試算表！", "warning"); return; }
+            currentConfirmAction = 'init';
             
-            // Set action to 'record'
-            currentConfirmAction = 'record';
-            
-            const cardPanel = document.getElementById('confirm-card-panel');
-            const iconWrapper = document.getElementById('confirm-icon-wrapper');
-            const modalIcon = document.getElementById('confirm-modal-icon');
-            const modalTitle = document.getElementById('confirm-modal-title');
-            const descBox = document.getElementById('confirm-modal-desc-box');
-            const actionBtn = document.getElementById('confirm-action-btn');
-            const classInput = document.getElementById('confirm-class-input');
-            
-            // Clear input
-            classInput.value = "";
-            
-            cardPanel.className = "bg-white rounded-3xl p-6 md:p-8 max-w-md w-full mx-4 shadow-2xl border-4 border-purple-400 text-center transform scale-95 transition-transform duration-300";
-            iconWrapper.className = "w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-4 animate-bounce shrink-0";iconWrapper.className = "w-16 h-16 bg-purple-100 圓角全彈性專案中心對齊中心 mx-auto mb-4 動畫彈跳收縮-0";
-            modalIcon.className = "fa-solid fa-cloud-arrow-up text-3xl text-purple-500";
-            modalTitle.className = "text-xl font-bold text-purple-700 mb-3";
-            modalTitle.innerHTML = "💾 儲存今日表現紀錄";
-            descBox.className = "text-gray-600 mb-4 text-sm font-semibold leading-relaxed text-left bg-purple-50/50 p-4 rounded-2xl border border-purple-100";
-            descBox.innerHTML = "即將打包目前的好表現、待改進與課間上廁所的資料，並自動記錄至您輸入之班級的專屬工作表最新一列中！提醒您：按下儲存後，目前板面上的資訊會歸零喔！";
-            actionBtn.className = "flex-1 bg-purple-600 hover:bg-purple-700 text-white font-bold py-2.5 px-4 rounded-xl shadow-md transition-all text-sm";
-            actionBtn.textContent = "確定儲存資料";
+            document.getElementById('confirm-card-panel').className = "bg-white rounded-3xl p-6 md:p-8 max-w-md w-full mx-4 shadow-2xl border-4 border-pink-400 text-center flex flex-col";
+            document.getElementById('confirm-icon-wrapper').className = "w-16 h-16 bg-pink-100 rounded-full flex items-center justify-center mx-auto mb-4 animate-pulse shrink-0";
+            document.getElementById('confirm-modal-icon').className = "fa-solid fa-triangle-exclamation text-3xl text-pink-500";
+            document.getElementById('confirm-modal-title').textContent = "⚠️ 設置試算表";
+            document.getElementById('confirm-modal-desc-box').innerHTML = "此操作會將現有試算表的工作表內容清空，並在首行重新建立「時間、待改進學生、課間上廁所學生」與您上方輸入的所有學生姓名欄位！";
+            document.getElementById('confirm-action-btn').className = "flex-1 bg-pink-500 hover:bg-pink-600 text-white font-bold py-2.5 px-4 rounded-xl shadow-md text-sm transition-all";
+            document.getElementById('confirm-action-btn').textContent = "確定重設試算表資料";
+            document.getElementById('confirm-class-input').value = "";
             
             const modal = document.getElementById('confirm-modal');
-            modal.classList.remove('hidden');
-            setTimeout(() => modal.classList.remove('opacity-0'), 10);
+            modal.classList.remove('hidden'); setTimeout(() => modal.classList.remove('opacity-0'), 10);
+        }
+
+        // 儲存紀錄 (彈窗與文字已優化，增加目前板面資訊會歸零之提醒)
+        function showSaveRecordModal() {
+            if (!gasUrl) { alertModalMessage("提示", "請先於控制台設定您的 GAS 部署網址並完成後端連結！", "warning"); return; }
+            if (studentsList.length === 0) { alertModalMessage("名單為空", "目前看板中無任何學生，無法傳送紀錄！", "warning"); return; }
+            currentConfirmAction = 'record';
+            
+            document.getElementById('confirm-card-panel').className = "bg-white rounded-3xl p-6 md:p-8 max-w-md w-full mx-4 shadow-2xl border-4 border-purple-400 text-center flex flex-col";
+            document.getElementById('confirm-icon-wrapper').className = "w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-4 animate-bounce shrink-0";
+            document.getElementById('confirm-modal-icon').className = "fa-solid fa-cloud-arrow-up text-3xl text-purple-500";
+            document.getElementById('confirm-modal-title').textContent = "💾 儲存紀錄";
+            document.getElementById('confirm-modal-desc-box').innerHTML = "即將打包目前的好表現、待改進與課間上廁所的資料，並自動記錄至您輸入之班級的專屬工作表最新一列中！提醒您：按下儲存後，目前板面上的資訊會歸零喔！";
+            document.getElementById('confirm-action-btn').className = "flex-1 bg-purple-600 hover:bg-purple-700 text-white font-bold py-2.5 px-4 rounded-xl shadow-md text-sm transition-all";
+            document.getElementById('confirm-action-btn').textContent = "確定儲存資料";
+            document.getElementById('confirm-class-input').value = "";
+            
+            const modal = document.getElementById('confirm-modal');
+            modal.classList.remove('hidden'); setTimeout(() => modal.classList.remove('opacity-0'), 10);
         }
 
         function closeConfirmModal() {
             const modal = document.getElementById('confirm-modal');
-            modal.classList.add('opacity-0');
-            setTimeout(() => {
-                modal.classList.add('hidden');
-                currentConfirmAction = null;
-            }, 300);
+            modal.classList.add('opacity-0'); setTimeout(() => { modal.classList.add('hidden'); currentConfirmAction = null; }, 300);
         }
 
-        // Execute actions from confirm modal
         function executeConfirmAction() {
-            const classInput = document.getElementById('confirm-class-input');
-            const className = classInput.value.trim();
-            
-            if (!className) {
-                alertModalMessage("請輸入班級", "班級名稱不能留空喔！請輸入如 301 或 502。", "warning");
-                return;
-            }
-            
-            if (currentConfirmAction === 'init') {
-                executeInitSheet(className);
-            } else if (currentConfirmAction === 'record') {
-                executeSaveRecord(className);
-            }
+            const className = document.getElementById('confirm-class-input').value.trim();
+            if (!className) { alertModalMessage("請輸入班級", "班級名稱不能留空喔！請輸入如 301 或 502。", "warning"); return; }
+            if (currentConfirmAction === 'init') executeInitSheet(className);
+            else if (currentConfirmAction === 'record') executeSaveRecord(className);
         }
 
-        // Execute initialization (init)
         async function executeInitSheet(className) {
             closeConfirmModal();
-            const formattedStudents = studentsList.map(s => `${s.number} ${s.name}`);
-            
-            const payload = {
-                action: "init",
-                className: className,
-                students: formattedStudents
-            };
-
+            // 在成功完成前預先暫存班級名稱
+            currentSavedClassName = className;
+            const payload = { action: "init", className: className, students: studentsList.map(s => `${s.number} ${s.name}`) };
             const data = await sendPostToGas(payload);
             if (data && data.status === "success") {
-                alertModalMessage("設置完成", `已為班級【${className}】成功重新建立標題欄與各學生欄位！`, "success");
+                alertModalMessage("設置完成", `已為班級【${className}】成功建立獨立工作表標題與學生名冊欄位！`, "success");
             } else if (data) {
-                alertModalMessage("設置失敗", data.message || "初始化工作表失敗，請確認 GAS 執行狀況", "error");
+                alertModalMessage("設置失敗", data.message || "工作表建立失敗", "error");
             }
         }
 
-        // Execute save record (record)
         async function executeSaveRecord(className) {
             closeConfirmModal();
+            // 暫存本次寫入的班級名稱，以便下方「開啟試算表」按鈕使用
+            currentSavedClassName = className;
 
-            // Reflection list (Format: 01洪叡軒(2), 02何聿倫(1))
-            const badCards = document.getElementById('bad-zone').querySelectorAll('.student-card');
-            const badRecordArray = Array.from(badCards).map(card => {
-                const num = card.getAttribute('data-number');
-                const name = card.getAttribute('data-name');
-                const count = card.getAttribute('data-count-bad') || 1;
-                return `${num}${name}(${count})`;
-            });
-
-            // Toilet break list (Format: 10林詩芸(1), 11吳苡樂(3))
-            const toiletCards = document.getElementById('toilet-zone').querySelectorAll('.student-card');
-            const toiletRecordArray = Array.from(toiletCards).map(card => {
-                const num = card.getAttribute('data-number');
-                const name = card.getAttribute('data-name');
-                const count = card.getAttribute('data-count-toilet') || 1;
-                return `${num}${name}(${count})`;
-            });
-
-            // Stars score calculations
+            const badRecordArray = Array.from(document.getElementById('bad-zone').querySelectorAll('.student-card')).map(card => `${card.getAttribute('data-number')}${card.getAttribute('data-name')}(${card.getAttribute('data-count-bad') || 1})`);
+            const toiletRecordArray = Array.from(document.getElementById('toilet-zone').querySelectorAll('.student-card')).map(card => `${card.getAttribute('data-number')}${card.getAttribute('data-name')}(${card.getAttribute('data-count-toilet') || 1})`);
+            
             const scoresPayload = {};
             let hasChanges = false;
-
-            const goodCards = document.getElementById('good-zone').querySelectorAll('.student-card');
-            goodCards.forEach(card => {
-                const num = card.getAttribute('data-number');
-                const name = card.getAttribute('data-name');
-                const key = `${num} ${name}`;
-                
-                // Pure stars count (without deduction)
+            document.getElementById('good-zone').querySelectorAll('.student-card').forEach(card => {
                 const stars = parseInt(card.getAttribute('data-count-good') || 0);
-                
-                if (stars > 0) {
-                    scoresPayload[key] = stars;
-                    hasChanges = true;
-                }
+                if (stars > 0) { scoresPayload[`${card.getAttribute('data-number')} ${card.getAttribute('data-name')}`] = stars; hasChanges = true; }
             });
 
-            // If no updates
             if (!hasChanges && badRecordArray.length === 0 && toiletRecordArray.length === 0) {
                 alertModalMessage("無數據變更", "今日尚無登記任何加減分、待改進或上廁所項目，不需送出！", "info");
                 return;
             }
 
-            const payload = {
-                action: "record",
-                className: className,
-                needsReflection: badRecordArray.join(', '),
-                toiletBreak: toiletRecordArray.join(', '),
-                scores: scoresPayload
-            };
-
+            const payload = { action: "record", className: className, needsReflection: badRecordArray.join(', '), toiletBreak: toiletRecordArray.join(', '), scores: scoresPayload };
             const data = await sendPostToGas(payload);
+            
             if (data && data.status === "success") {
-                alertModalMessage("儲存成功", `班級【${className}】的計分與登記資料已順利記錄在對應欄位中！`, "success");
-                
-                // Clear UI scores and reset timers
-                resetZoneTimer('good');
-                resetZoneTimer('bad');
-                resetZoneTimer('toilet');
-                
-                // Clear reflection and toilet zone cards
+                // 儲存成功後，執行清除與歸零
+                resetZoneTimer('good'); resetZoneTimer('bad'); resetZoneTimer('toilet');
                 document.getElementById('bad-zone').querySelectorAll('.student-card').forEach(c => c.remove());
                 document.getElementById('toilet-zone').querySelectorAll('.student-card').forEach(c => c.remove());
                 document.getElementById('bad-zone').querySelector('.placeholder').style.display = 'flex';
                 document.getElementById('toilet-zone').querySelector('.placeholder').style.display = 'flex';
-                
-                // Reset good star counts
                 document.getElementById('good-zone').querySelectorAll('.student-card').forEach(card => {
                     card.setAttribute('data-count-good', '0');
-                    const badge = card.querySelector('.star-badge');
-                    if (badge) badge.remove();
+                    if (card.querySelector('.star-badge')) card.querySelector('.star-badge').remove();
                 });
-                
                 updateCounts();
+
+                // 彈出特殊的雙按鍵儲存成功視窗（點選「開啟試算表」便會主動向後端連動取得直達分頁連結）
+                alertModalMessage("儲存成功", `班級【${className}】的計分與登記資料已順利上傳至雲端！`, "save_success");
             } else if (data) {
                 alertModalMessage("儲存失敗", data.message || "發生未知錯誤", "error");
             }
         }
 
-
-        // Custom general alert modal controller (Unified specification: w-full max-w-[360px] h-[350px])
         function alertModalMessage(title, message, type = 'info') {
             const modal = document.getElementById('alert-modal');
+            const cardPanel = modal.querySelector('.bg-white');
             const desc = document.getElementById('alert-modal-desc');
             const details = document.getElementById('alert-modal-details');
             const iconBell = document.getElementById('alert-icon-bell');
             const iconWrapper = iconBell.parentElement;
-            const modalBtn = document.getElementById('alert-modal-btn');
-            const cardPanel = modal.querySelector('.bg-white');
+            const btnContainer = document.getElementById('alert-btn-container');
 
             desc.innerHTML = title;
-            
-            if (message) {
-                details.innerHTML = message.replace(/\n/g, '<br>');
-                details.classList.remove('hidden');
-            } else {
-                details.innerHTML = "";
-                details.classList.add('hidden');
-            }
+            details.innerHTML = message ? message.replace(/\n/g, '<br>') : "";
+            if (message) details.classList.remove('hidden'); else details.classList.add('hidden');
 
-            const baseClass = "bg-white rounded-3xl p-6 md:p-8 w-full max-w-[360px] h-[350px] shadow-2xl text-center transform scale-100 transition-transform duration-300 flex flex-col justify-between items-center border-4";
+            const baseClass = "bg-white rounded-3xl p-6 md:p-8 w-full max-w-[360px] h-[350px] shadow-2xl text-center flex flex-col justify-between items-center border-4";
+            btnContainer.innerHTML = `<button id="alert-modal-btn" onclick="closeAlertModal()" class="w-full bg-amber-500 hover:bg-amber-600 text-white font-bold py-3 px-6 rounded-2xl shadow-lg text-sm">確認</button>`;
+            const defaultBtn = document.getElementById('alert-modal-btn');
 
-            // Switch colors and animations
-            if (type === 'success') {
+            if (type === 'save_success') {
+                cardPanel.className = `${baseClass} border-purple-400`;
+                iconWrapper.className = "w-20 h-20 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-4 animate-bounce shrink-0";
+                iconBell.className = "fa-solid fa-circle-check text-4xl text-purple-500";
+                desc.className = "text-purple-700 font-bold text-lg md:text-xl text-center leading-snug mb-2 w-full truncate";
+                
+                // 點選右側直接呼叫動態後端查詢分頁函式，安全直達
+                btnContainer.innerHTML = `
+                    <button onclick="closeAlertModal()" class="flex-1 bg-stone-200 hover:bg-stone-300 text-stone-700 font-bold py-3 px-4 rounded-2xl shadow-md text-xs focus:outline-none">
+                        確認
+                    </button>
+                    <button onclick="openSpreadsheetTab()" class="flex-1 bg-purple-600 hover:bg-purple-700 text-white font-bold py-3 px-4 rounded-2xl shadow-md text-xs flex items-center justify-center gap-1 focus:outline-none">
+                        <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>開啟試算表
+                    </button>
+                `;
+            } else if (type === 'success') {
                 cardPanel.className = `${baseClass} border-emerald-400`;
                 iconWrapper.className = "w-20 h-20 bg-emerald-100 rounded-full flex items-center justify-center mx-auto mb-4 animate-bounce shrink-0";
                 iconBell.className = "fa-solid fa-circle-check text-4xl text-emerald-500";
                 desc.className = "text-emerald-700 font-bold text-lg md:text-xl text-center leading-snug mb-2 w-full truncate";
-                if (modalBtn) modalBtn.className = "w-full bg-emerald-500 hover:bg-emerald-600 text-white font-bold py-3 px-6 rounded-2xl shadow-lg hover:shadow-xl transition-all text-base focus:ring-4 focus:ring-emerald-200 mt-2 shrink-0 rounded-2xl";
+                defaultBtn.className = "w-full bg-emerald-500 hover:bg-emerald-600 text-white font-bold py-3 px-6 rounded-2xl shadow-lg text-sm";
             } else if (type === 'error') {
                 cardPanel.className = `${baseClass} border-rose-400`;
                 iconWrapper.className = "w-20 h-20 bg-rose-100 rounded-full flex items-center justify-center mx-auto mb-4 animate-pulse shrink-0";
                 iconBell.className = "fa-solid fa-circle-xmark text-4xl text-rose-500";
                 desc.className = "text-rose-700 font-bold text-lg md:text-xl text-center leading-snug mb-2 w-full truncate";
-                if (modalBtn) modalBtn.className = "w-full bg-rose-500 hover:bg-rose-600 text-white font-bold py-3 px-6 rounded-2xl shadow-lg hover:shadow-xl transition-all text-base focus:ring-4 focus:ring-rose-200 mt-2 shrink-0 rounded-2xl";
+                defaultBtn.className = "w-full bg-rose-500 hover:bg-rose-600 text-white font-bold py-3 px-6 rounded-2xl shadow-lg text-sm";
             } else if (type === 'connect') {
                 cardPanel.className = `${baseClass} border-slate-400`;
                 iconWrapper.className = "w-20 h-20 bg-slate-100 rounded-full flex items-center justify-center mx-auto mb-4 animate-bounce shrink-0";
                 iconBell.className = "fa-solid fa-lightbulb text-4xl text-slate-500";
                 desc.className = "text-slate-700 font-bold text-lg md:text-xl text-center leading-snug mb-2 w-full truncate";
-                if (modalBtn) modalBtn.className = "w-full bg-slate-500 hover:bg-slate-600 text-white font-bold py-3 px-6 shadow-lg hover:shadow-xl transition-all text-base focus:ring-4 focus:ring-slate-200 mt-2 shrink-0 rounded-2xl";
-            } else if (type === 'warning') {
-                cardPanel.className = `${baseClass} border-amber-400`;
-                iconWrapper.className = "w-20 h-20 bg-amber-100 rounded-full flex items-center justify-center mx-auto mb-4 animate-bounce shrink-0";
-                iconBell.className = "fa-solid fa-bell text-4xl text-amber-500";
-                desc.className = "font-black text-xl md:text-2xl text-center leading-snug mb-2 w-full";
-                if (modalBtn) modalBtn.className = "w-full bg-amber-500 hover:bg-amber-600 text-white font-bold py-3 px-6 rounded-2xl shadow-lg hover:shadow-xl transition-all text-base focus:ring-4 focus:ring-amber-200 mt-2 shrink-0 rounded-2xl";
+                defaultBtn.className = "w-full bg-slate-500 hover:bg-slate-600 text-white font-bold py-3 px-6 rounded-2xl shadow-lg text-sm";
             } else {
                 cardPanel.className = `${baseClass} border-amber-400`;
                 iconWrapper.className = "w-20 h-20 bg-amber-100 rounded-full flex items-center justify-center mx-auto mb-4 animate-bounce shrink-0";
                 iconBell.className = "fa-solid fa-bell text-4xl text-amber-500";
-                desc.className = "text-gray-600 font-bold text-lg md:text-xl text-center leading-snug mb-2 w-full";
-                if (modalBtn) modalBtn.className = "w-full bg-amber-500 hover:bg-amber-600 text-white font-bold py-3 px-6 rounded-2xl shadow-lg hover:shadow-xl transition-all text-base focus:ring-4 focus:ring-amber-200 mt-2 shrink-0 rounded-2xl";
+                desc.className = "font-black text-xl text-center leading-snug mb-2 w-full";
+                defaultBtn.className = "w-full bg-amber-500 hover:bg-amber-600 text-white font-bold py-3 px-6 rounded-2xl shadow-lg text-sm";
             }
 
-            modal.classList.remove('hidden');
-            setTimeout(() => modal.classList.remove('opacity-0'), 10);
+            modal.classList.remove('hidden'); setTimeout(() => modal.classList.remove('opacity-0'), 10);
         }
 
-        // Timer configurations
         function applyZoneTime(zone) {
             pauseZoneTimer(zone);
-            const mins = parseInt(document.getElementById(`input-mins-${zone}`).value) || 0;
-            const secs = parseInt(document.getElementById(`input-secs-${zone}`).value) || 0;
-            timers[zone].total = (mins * 60) + secs;
+            timers[zone].total = ((parseInt(document.getElementById(`input-mins-${zone}`).value) || 0) * 60) + (parseInt(document.getElementById(`input-secs-${zone}`).value) || 0);
             if (timers[zone].total <= 0) timers[zone].total = 10;
-            timers[zone].remaining = timers[zone].total;
-            updateZoneTimerDisplay(zone);
+            timers[zone].remaining = timers[zone].total; updateZoneTimerDisplay(zone);
         }
 
         function updateZoneTimerDisplay(zone) {
-            const display = document.getElementById(`timer-display-${zone}`);
-            const mins = Math.floor(timers[zone].remaining / 60);
-            const secs = timers[zone].remaining % 60;
-            display.textContent = `${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
+            const mins = Math.floor(timers[zone].remaining / 60), secs = timers[zone].remaining % 60;
+            document.getElementById(`timer-display-${zone}`).textContent = `${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
         }
 
-        // Toggle timer execution
-        function toggleZoneTimer(zone) {
-            if (timers[zone].running) pauseZoneTimer(zone);
-            else startZoneTimer(zone);
-        }
-
+        function toggleZoneTimer(zone) { if (timers[zone].running) pauseZoneTimer(zone); else startZoneTimer(zone); }
         function startZoneTimer(zone) {
             if (timers[zone].remaining <= 0) timers[zone].remaining = timers[zone].total;
             timers[zone].running = true;
-            const btn = document.getElementById('btn-toggle-' + zone);
-            const icon = document.getElementById('icon-toggle-' + zone);
-            const text = document.getElementById('text-toggle-' + zone);
-            btn.className = "bg-amber-500 hover:bg-amber-600 text-white text-[10px] py-1 px-2.5 rounded-lg flex items-center gap-0.5 font-bold transition-all";
-            icon.className = "fa-solid fa-pause";
-            text.textContent = "暫停";
-
+            document.getElementById(`icon-toggle-${zone}`).className = "fa-solid fa-pause";
+            document.getElementById(`text-toggle-${zone}`).textContent = "暫停";
             timers[zone].interval = setInterval(() => {
-                timers[zone].remaining--;
-                updateZoneTimerDisplay(zone);
-                if (timers[zone].remaining <= 0) {
-                    clearInterval(timers[zone].interval);
-                    zoneTimerTimeout(zone);
-                }
+                timers[zone].remaining--; updateZoneTimerDisplay(zone);
+                if (timers[zone].remaining <= 0) { clearInterval(timers[zone].interval); zoneTimerTimeout(zone); }
             }, 1000);
         }
-
         function pauseZoneTimer(zone) {
-            timers[zone].running = false;
-            clearInterval(timers[zone].interval);
-            const btn = document.getElementById('btn-toggle-' + zone);
-            const icon = document.getElementById('icon-toggle-' + zone);
-            const text = document.getElementById('text-toggle-' + zone);
-            if (!btn) return;
-            btn.className = (zone === 'good' ? 'bg-[#10b981] hover:bg-[#059669]' : (zone === 'bad' ? 'bg-rose-500 hover:bg-rose-600' : 'bg-sky-500 hover:bg-sky-600')) + " text-white text-[10px] py-1 px-2 rounded-lg flex items-center gap-0.5 font-bold transition-all";
-            icon.className = "fa-solid fa-play";
-            text.textContent = "開始";
+            timers[zone].running = false; clearInterval(timers[zone].interval);
+            if (!document.getElementById(`icon-toggle-${zone}`)) return;
+            document.getElementById(`icon-toggle-${zone}`).className = "fa-solid fa-play";
+            document.getElementById(`text-toggle-${zone}`).textContent = "開始";
         }
+        function resetZoneTimer(zone) { pauseZoneTimer(zone); timers[zone].remaining = timers[zone].total; updateZoneTimerDisplay(zone); }
 
-        function resetZoneTimer(zone) {
-            pauseZoneTimer(zone);
-            timers[zone].remaining = timers[zone].total;
-            updateZoneTimerDisplay(zone);
-        }
-
-        // Handle timer timeout (Sets text-xl md:text-2xl and font-black display)
         function zoneTimerTimeout(zone) {
-            pauseZoneTimer(zone);
-            timers[zone].remaining = timers[zone].total;
-            updateZoneTimerDisplay(zone);
+            pauseZoneTimer(zone); timers[zone].remaining = timers[zone].total; updateZoneTimerDisplay(zone);
             playSynthesizedBell();
-
-            let timerMins = parseInt(document.getElementById(`input-mins-${zone}`).value) || 0;
-            let iconHtml = zone === 'good' ? '<i class="fa-regular fa-face-laugh-beam"></i>' : (zone === 'bad' ? '<i class="fa-regular fa-face-sad-tear"></i>' : '<i class="fa-solid fa-restroom"></i>');
-            let colorClass = zone === 'good' ? 'text-emerald-600' : (zone === 'bad' ? 'text-rose-600' : 'text-sky-600');
-
             currentTimeoutZone = zone;
-            
-            // Format timeout text description
-            let titleText = `<span class="${colorClass} font-black text-xl md:text-2xl flex items-center justify-center gap-2">${iconHtml} ${timerMins} 分鐘時間到！</span>`;
-            
-            alertModalMessage(titleText, "", "warning");
+            alertModalMessage(`<span class="${zone === 'good' ? 'text-emerald-600' : (zone === 'bad' ? 'text-rose-600' : 'text-sky-600')} font-black text-xl md:text-2xl flex items-center justify-center gap-2">${zone === 'good' ? '<i class="fa-regular fa-face-laugh-beam"></i>' : (zone === 'bad' ? '<i class="fa-regular fa-face-sad-tear"></i>' : '<i class="fa-solid fa-restroom"></i>')} ${document.getElementById(`input-mins-${zone}`).value} 分鐘時間到！</span>`, "", "warning");
         }
 
         function closeAlertModal() {
@@ -1645,17 +1146,13 @@
             modal.classList.add('opacity-0');
             setTimeout(() => {
                 modal.classList.add('hidden');
-                if (currentTimeoutZone) {
-                    reduceZoneAllCardsOnce(currentTimeoutZone);
-                    currentTimeoutZone = null;
-                }
+                if (currentTimeoutZone) { reduceZoneAllCardsOnce(currentTimeoutZone); currentTimeoutZone = null; }
             }, 300);
         }
 
         function reduceZoneAllCardsOnce(zone) {
             const targetZone = document.getElementById(`${zone}-zone`);
             if (!targetZone) return;
-
             const cards = Array.from(targetZone.querySelectorAll('.student-card'));
             if (cards.length === 0) return;
 
@@ -1663,162 +1160,91 @@
                 cards.forEach(card => {
                     let count = parseInt(card.getAttribute('data-count-good') || 0);
                     if (count > 0) {
-                        count--;
-                        card.setAttribute('data-count-good', count);
+                        count--; card.setAttribute('data-count-good', count);
                         const badge = card.querySelector('.star-badge');
-                        if (badge) {
-                            if (count === 0) {
-                                badge.remove();
-                            } else {
-                                badge.querySelector('.badge-count').textContent = count;
-                            }
-                        }
+                        if (badge) { if (count === 0) badge.remove(); else badge.querySelector('.badge-count').textContent = count; }
                     }
                 });
             } else {
                 const countAttr = zone === 'bad' ? 'data-count-bad' : 'data-count-toilet';
-                const badgeClass = zone === 'bad' ? '.lightning-badge' : '.toilet-badge';
-
                 cards.forEach(card => {
                     let count = parseInt(card.getAttribute(countAttr) || 1);
-                    if (count > 1) {
-                        count--;
-                        card.setAttribute(countAttr, count);
-                        const badge = card.querySelector(badgeClass);
-                        if (badge) {
-                            badge.querySelector('.badge-count').textContent = count;
-                        }
-                    } else {
-                        card.remove();
-                    }
+                    if (count > 1) { count--; card.setAttribute(countAttr, count); card.querySelector(`${zone === 'bad' ? '.lightning-badge' : '.toilet-badge'} .badge-count`).textContent = count; }
+                    else card.remove();
                 });
             }
-
-            if (targetZone.querySelectorAll('.student-card').length === 0) {
-                const ph = targetZone.querySelector('.placeholder');
-                if (ph) {
-                    ph.style.display = 'flex';
-                }
-            }
-
+            if (targetZone.querySelectorAll('.student-card').length === 0 && targetZone.querySelector('.placeholder')) targetZone.querySelector('.placeholder').style.display = 'flex';
             updateCounts();
         }
 
         function playSynthesizedBell() {
             try {
-                const AudioContext = window.AudioContext || window.webkitAudioContext;
-                if (!AudioContext) return;
-                const ctx = new AudioContext();
-                const now = ctx.currentTime;
-                const osc1 = ctx.createOscillator();
-                const gain1 = ctx.createGain();
-                osc1.type = 'sine'; osc1.frequency.setValueAtTime(1318.51, now);
-                gain1.gain.setValueAtTime(0.25, now); gain1.gain.exponentialRampToValueAtTime(0.001, now + 0.8);
-                osc1.connect(gain1); gain1.connect(ctx.destination);
-                osc1.start(now); osc1.stop(now + 0.8);
-
+                const AudioContext = window.AudioContext || window.webkitAudioContext; if (!AudioContext) return;
+                const ctx = new AudioContext(), now = ctx.currentTime;
+                const osc1 = ctx.createOscillator(), gain1 = ctx.createGain();
+                osc1.type = 'sine'; osc1.frequency.setValueAtTime(1318.51, now); gain1.gain.setValueAtTime(0.25, now); gain1.gain.exponentialRampToValueAtTime(0.001, now + 0.8);
+                osc1.connect(gain1); gain1.connect(ctx.destination); osc1.start(now); osc1.stop(now + 0.8);
                 setTimeout(() => {
-                    const osc2 = ctx.createOscillator();
-                    const gain2 = ctx.createGain();
-                    osc2.type = 'sine'; osc2.frequency.setValueAtTime(1046.50, ctx.currentTime);
-                    gain2.gain.setValueAtTime(0.25, ctx.currentTime); gain2.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 1.2);
-                    osc2.connect(gain2); gain2.connect(ctx.destination);
-                    osc2.start();
-                    osc2.stop(ctx.currentTime + 1.2);
+                    const osc2 = ctx.createOscillator(), gain2 = ctx.createGain();
+                    osc2.type = 'sine'; osc2.frequency.setValueAtTime(1046.50, ctx.currentTime); gain2.gain.setValueAtTime(0.25, ctx.currentTime); gain2.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 1.2);
+                    osc2.connect(gain2); gain2.connect(ctx.destination); osc2.start(); osc2.stop(ctx.currentTime + 1.2);
                 }, 250);
             } catch (e) {}
         }
 
         function playCelebrationSound() {
             try {
-                const AudioContext = window.AudioContext || window.webkitAudioContext;
-                if (!AudioContext) return;
-                const ctx = new AudioContext();
-                const now = ctx.currentTime;
-                
-                const notes = [523.25, 659.25, 783.99, 1046.50];
-                notes.forEach((freq, idx) => {
-                    const osc = ctx.createOscillator(); const gain = ctx.createGain();
-                    osc.type = 'triangle'; osc.frequency.setValueAtTime(freq, now + idx * 0.1);
-                    gain.gain.setValueAtTime(0, now + idx * 0.1); gain.gain.linearRampToValueAtTime(0.15, now + idx * 0.1 + 0.02);
-                    gain.gain.exponentialRampToValueAtTime(0.001, now + idx * 0.1 + 0.4);
-                    osc.connect(gain); gain.connect(ctx.destination);
-                    osc.start(now + idx * 0.1); osc.stop(now + idx * 0.1 + 0.4);
+                const AudioContext = window.AudioContext || window.webkitAudioContext; if (!AudioContext) return;
+                const ctx = new AudioContext(), now = ctx.currentTime;
+                [523.25, 659.25, 783.99, 1046.50].forEach((freq, idx) => {
+                    const osc = ctx.createOscillator(), gain = ctx.createGain();
+                    osc.type = 'triangle'; osc.frequency.setValueAtTime(freq, now + idx * 0.1); gain.gain.setValueAtTime(0, now + idx * 0.1); gain.gain.linearRampToValueAtTime(0.15, now + idx * 0.1 + 0.02); gain.gain.exponentialRampToValueAtTime(0.001, now + idx * 0.1 + 0.4);
+                    osc.connect(gain); gain.connect(ctx.destination); osc.start(now + idx * 0.1); osc.stop(now + idx * 0.1 + 0.4);
                 });
             } catch (e) {}
         }
 
-        // Homework item addition
         function addHomeworkItem() {
-            const input = document.getElementById('hw-name-input');
-            const hwName = input.value.trim();
+            const input = document.getElementById('hw-name-input'), hwName = input.value.trim();
             if (!hwName || homeworkList.includes(hwName)) return;
-            homeworkList.push(hwName);
-            input.value = '';
-            renderHomeworkTable();
+            homeworkList.push(hwName); input.value = ''; renderHomeworkTable();
         }
-
-        // Delete homework item
-        function deleteHomeworkItem(index) {
-            homeworkList.splice(index, 1);
-            renderHomeworkTable();
-        }
+        function deleteHomeworkItem(index) { homeworkList.splice(index, 1); renderHomeworkTable(); }
 
         function toggleHwCell(number, name, hwName, cell) {
             const key = `${number}-${name}_${hwName}`;
-            const isUnfinished = homeworkStatus[key] !== false;
-            if (isUnfinished) {
+            if (homeworkStatus[key] !== false) {
                 homeworkStatus[key] = false;
-                cell.className = "py-4 px-2.5 border-b border-r border-amber-100 bg-emerald-50 text-emerald-600 text-center font-bold text-sm cursor-pointer hover:bg-emerald-100 transition-colors select-none min-w-[48px] max-w-[48px] h-12 align-middle";
+                cell.className = "py-4 px-2.5 border-b border-r border-amber-100 bg-emerald-50 text-emerald-600 text-center font-bold text-sm cursor-pointer hover:bg-emerald-100 min-w-[48px] max-w-[48px] h-12 align-middle transition-colors";
                 cell.innerHTML = `<i class="fa-solid fa-check scale-110"></i>`;
                 
                 let allDone = true;
                 for (let hw of homeworkList) { if (homeworkStatus[`${number}-${name}_${hw}`] !== false) allDone = false; }
                 if (allDone) {
-                    document.getElementById('celebration-student-info').textContent = `${number}號 ${name}`;
-                    playCelebrationSound();
-                    const overlay = document.getElementById('celebration-overlay');
-                    overlay.classList.remove('hidden');
-                    setTimeout(() => overlay.classList.remove('opacity-0'), 10);
+                    document.getElementById('celebration-student-info').textContent = `${number}號 ${name}`; playCelebrationSound();
+                    const overlay = document.getElementById('celebration-overlay'); overlay.classList.remove('hidden'); setTimeout(() => overlay.classList.remove('opacity-0'), 10);
                     confettiActive = true; startConfetti();
                 }
             } else {
                 homeworkStatus[key] = true;
-                cell.className = "py-4 px-2.5 border-b border-r border-amber-100 bg-rose-100 text-rose-600 text-center font-bold text-sm cursor-pointer hover:bg-rose-200 transition-colors select-none min-w-[48px] max-w-[48px] h-16 align-middle";
+                cell.className = "py-4 px-2.5 border-b border-r border-amber-100 bg-rose-100 text-rose-600 text-center font-bold text-sm cursor-pointer hover:bg-rose-200 min-w-[48px] max-w-[48px] h-16 align-middle transition-colors";
                 cell.innerHTML = `<i class="fa-solid fa-xmark scale-110"></i>`;
             }
         }
 
-        // Close celebration Overlay
-        function closeCelebration() {
-            const overlay = document.getElementById('celebration-overlay');
-            overlay.classList.add('opacity-0');
-            setTimeout(() => { overlay.classList.add('hidden'); confettiActive = false; }, 500);
-        }
+        function closeCelebration() { const overlay = document.getElementById('celebration-overlay'); overlay.classList.add('opacity-0'); setTimeout(() => { overlay.classList.add('hidden'); confettiActive = false; }, 500); }
 
-        // Confetti effect loop
         function startConfetti() {
-            const canvas = document.getElementById('celebration-canvas');
-            const ctx = canvas.getContext('2d');
-            canvas.width = canvas.parentElement.offsetWidth;
-            canvas.height = canvas.parentElement.offsetHeight;
+            const canvas = document.getElementById('celebration-canvas'), ctx = canvas.getContext('2d');
+            canvas.width = canvas.parentElement.offsetWidth; canvas.height = canvas.parentElement.offsetHeight;
             confettiParticles = [];
             for (let i = 0; i < 60; i++) {
-                confettiParticles.push({
-                    x: Math.random() * canvas.width, y: Math.random() * -canvas.height,
-                    w: Math.random() * 6 + 5, h: Math.random() * 10 + 5,
-                    color: confettiColors[Math.floor(Math.random() * confettiColors.length)],
-                    v: Math.random() * 2 + 2, r: Math.random() * Math.PI, rs: Math.random() * 0.06 - 0.03
-                });
+                confettiParticles.push({ x: Math.random() * canvas.width, y: Math.random() * -canvas.height, w: Math.random() * 6 + 5, h: Math.random() * 10 + 5, color: confettiColors[Math.floor(Math.random() * confettiColors.length)], v: Math.random() * 2 + 2, r: Math.random() * Math.PI, rs: Math.random() * 0.06 - 0.03 });
             }
             function frame() {
-                if (!confettiActive) return;
-                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                if (!confettiActive) return; ctx.clearRect(0, 0, canvas.width, canvas.height);
                 confettiParticles.forEach(p => {
-                    p.y += p.v; p.r += p.rs;
-                    ctx.save(); ctx.fillStyle = p.color;
-                    ctx.translate(p.x, p.y); ctx.rotate(p.r);
-                    ctx.fillRect(-p.w/2, -p.h/2, p.w, p.h); ctx.restore();
+                    p.y += p.v; p.r += p.rs; ctx.save(); ctx.fillStyle = p.color; ctx.translate(p.x, p.y); ctx.rotate(p.r); ctx.fillRect(-p.w/2, -p.h/2, p.w, p.h); ctx.restore();
                     if (p.y > canvas.height) { p.y = -10; p.x = Math.random() * canvas.width; }
                 });
                 requestAnimationFrame(frame);
@@ -1826,62 +1252,31 @@
             requestAnimationFrame(frame);
         }
 
-        // Render homework checklist table
         function renderHomeworkTable() {
-            const tableHeader = document.getElementById('hw-table-header');
-            const tableBody = document.getElementById('hw-table-body');
-            
+            const tableHeader = document.getElementById('hw-table-header'), tableBody = document.getElementById('hw-table-body');
             tableHeader.innerHTML = `<th class="p-3 border-b border-r border-amber-200/80 min-w-[80px] max-w-[80px] sticky left-0 bg-amber-50 z-20 text-[#78350f] font-bold text-lg text-center align-middle">登記</th>`;
             
             studentsList.forEach(student => {
                 const th = document.createElement('th');
                 th.className = "p-1 border-b border-r border-amber-200/80 min-w-[48px] max-w-[48px] bg-amber-100/30 text-[#78350f] font-bold text-center align-middle";
-                const isEven = parseInt(student.number) % 2 === 0;
-                const bgC = isEven ? 'bg-amber-100 text-amber-900' : 'bg-orange-100 text-orange-900';
-                th.innerHTML = `
-                    <div class="flex flex-col items-center justify-center gap-1.5 h-[145px] py-2 mx-auto">
-                        <span class="w-7 h-7 flex items-center justify-center rounded-full text-sm font-black ${bgC} shrink-0 shadow-sm">${student.number}</span>
-                        <span class="vertical-header text-base md:text-lg tracking-wide font-bold leading-none">${student.name}</span>
-                    </div>`;
+                th.innerHTML = `<div class="flex flex-col items-center justify-center gap-1.5 h-[145px] py-2 mx-auto"><span class="w-7 h-7 flex items-center justify-center rounded-full text-sm font-black ${(parseInt(student.number) % 2 === 0) ? 'bg-amber-100 text-amber-900' : 'bg-orange-100 text-orange-900'} shrink-0 shadow-sm">${student.number}</span><span class="vertical-header text-base md:text-lg tracking-wide font-bold leading-none">${student.name}</span></div>`;
                 tableHeader.appendChild(th);
             });
 
-            if (studentsList.length === 0) {
-                tableBody.innerHTML = `<tr><td class="p-10 text-gray-400 italic text-center" colspan="100%">請先匯入名單。</td></tr>`;
-                return;
-            }
-            if (homeworkList.length === 0) {
-                tableBody.innerHTML = `<tr><td class="p-10 text-gray-400 italic text-center" colspan="100%">請在右上方點擊「新增作業」建立項目。</td></tr>`;
-                return;
-            }
+            if (studentsList.length === 0) { tableBody.innerHTML = `<tr><td class="p-10 text-gray-400 italic text-center" colspan="100%">請先匯入名單。</td></tr>`; return; }
+            if (homeworkList.length === 0) { tableBody.innerHTML = `<tr><td class="p-10 text-gray-400 italic text-center" colspan="100%">請在右上方點擊「新增作業」建立項目。</td></tr>`; return; }
 
             tableBody.innerHTML = '';
             homeworkList.forEach((hw, idx) => {
-                const tr = document.createElement('tr');
-                tr.className = "hover:bg-amber-50/40 transition-colors";
-                
-                const hwTd = document.createElement('td');
-                hwTd.className = "p-2 border-b border-r border-amber-200 bg-white sticky left-0 z-10 shadow-[2px_0_5px_rgba(0,0,0,0.02)] group min-w-[80px] max-w-[80px] text-center align-middle h-16";
-                hwTd.innerHTML = `
-                    <div class="flex items-center justify-center gap-1 px-0.5 relative w-full h-full">
-                        <span class="truncate text-lg font-bold mx-auto text-[#78350f]" title="${hw}">${hw}</span>
-                        <button onclick="deleteHomeworkItem(${idx})" class="text-red-400 hover:text-red-600 opacity-0 group-hover:opacity-100 text-xs absolute right-0.5">
-                            <i class="fa-solid fa-circle-xmark"></i>
-                        </button>
-                    </div>`;
+                const tr = document.createElement('tr'); tr.className = "hover:bg-amber-50/40 transition-colors";
+                const hwTd = document.createElement('td'); hwTd.className = "p-2 border-b border-r border-amber-200 bg-white sticky left-0 z-10 min-w-[80px] max-w-[80px] text-center align-middle h-16";
+                hwTd.innerHTML = `<div class="flex items-center justify-center gap-1 px-0.5 relative w-full h-full"><span class="truncate text-lg font-bold mx-auto text-[#78350f]" title="${hw}">${hw}</span><button onclick="deleteHomeworkItem(${idx})" class="text-red-400 hover:text-red-600 opacity-0 group-hover:opacity-100 text-xs absolute right-0.5"><i class="fa-solid fa-circle-xmark"></i></button></div>`;
                 tr.appendChild(hwTd);
 
                 studentsList.forEach(student => {
                     const cellTd = document.createElement('td');
-                    const key = `${student.number}-${student.name}_${hw}`;
-                    let isUnfinished = homeworkStatus[key] !== false;
-                    if (isUnfinished) {
-                        cellTd.className = "py-4.5 px-2.5 border-b border-r border-amber-100 bg-rose-100 text-rose-600 text-center font-bold text-sm cursor-pointer hover:bg-rose-200 transition-colors select-none min-w-[48px] max-w-[48px] h-16 align-middle";
-                        cellTd.innerHTML = `<i class="fa-solid fa-xmark scale-110"></i>`;
-                    } else {
-                        cellTd.className = "py-4.5 px-2.5 border-b border-r border-amber-100 bg-emerald-50 text-emerald-600 text-center font-bold text-sm cursor-pointer hover:bg-emerald-100 transition-colors select-none min-w-[48px] max-w-[48px] h-16 align-middle";
-                        cellTd.innerHTML = `<i class="fa-solid fa-check scale-110"></i>`;
-                    }
+                    cellTd.className = homeworkStatus[`${student.number}-${student.name}_${hw}`] !== false ? "py-4.5 px-2.5 border-b border-r border-amber-100 bg-rose-100 text-rose-600 text-center font-bold text-sm cursor-pointer hover:bg-rose-200 min-w-[48px] max-w-[48px] h-16 align-middle" : "py-4.5 px-2.5 border-b border-r border-amber-100 bg-emerald-50 text-emerald-600 text-center font-bold text-sm cursor-pointer hover:bg-emerald-100 min-w-[48px] max-w-[48px] h-16 align-middle";
+                    cellTd.innerHTML = homeworkStatus[`${student.number}-${student.name}_${hw}`] !== false ? `<i class="fa-solid fa-xmark scale-110"></i>` : `<i class="fa-solid fa-check scale-110"></i>`;
                     cellTd.onclick = function() { toggleHwCell(student.number, student.name, hw, cellTd); };
                     tr.appendChild(cellTd);
                 });
@@ -1889,44 +1284,30 @@
             });
         }
 
-        // Toggle theme night/day
         function toggleTheme() {
             const isDark = document.body.classList.toggle('dark-mode');
             const btn = document.getElementById('theme-toggle-btn');
-            const icon = document.getElementById('theme-icon');
-            const text = document.getElementById('theme-text');
             if (isDark) {
-                icon.className = "fa-solid fa-sun text-yellow-400 text-sm md:text-base animate-spin-slow";
-                text.textContent = "日間正常模式";
+                document.getElementById('theme-icon').className = "fa-solid fa-sun text-yellow-400 text-sm md:text-base animate-spin-slow";
+                document.getElementById('theme-text').textContent = "日間正常模式";
                 btn.style.backgroundColor = "rgba(30, 41, 59, 0.95)"; btn.style.color = "#f1f5f9";
             } else {
-                icon.className = "fa-solid fa-moon text-amber-500 text-sm md:text-base animate-pulse";
-                text.textContent = "午休夜間模式";
+                document.getElementById('theme-icon').className = "fa-solid fa-moon text-amber-500 text-sm md:text-base animate-pulse";
+                document.getElementById('theme-text').textContent = "午休夜間模式";
                 btn.style.backgroundColor = "rgba(255, 255, 255, 0.95)"; btn.style.color = "#374151";
             }
         }
 
-        // Update local UTC Clock
         function updateUTClock() {
-            const clockEl = document.getElementById('utc-clock');
-            if (!clockEl) return;
-            const now = new Date();
-            const taipeiTime = new Date(now.getTime() + (now.getTimezoneOffset() * 60000) + (3600000 * 8));
-            const daysArr = ["日", "一", "二", "三", "四", "五", "六"];
-            clockEl.textContent = `${taipeiTime.getFullYear()}年${String(taipeiTime.getMonth() + 1).padStart(2, '0')}月${String(taipeiTime.getDate()).padStart(2, '0')}日 (週${daysArr[taipeiTime.getDay()]}) ${String(taipeiTime.getHours()).padStart(2, '0')}:${String(taipeiTime.getMinutes()).padStart(2, '0')}:${String(taipeiTime.getSeconds()).padStart(2, '0')}`;
+            const clockEl = document.getElementById('utc-clock'); if (!clockEl) return;
+            const now = new Date(); const taipeiTime = new Date(now.getTime() + (now.getTimezoneOffset() * 60000) + (3600000 * 8));
+            clockEl.textContent = `${taipeiTime.getFullYear()}年${String(taipeiTime.getMonth() + 1).padStart(2, '0')}月${String(taipeiTime.getDate()).padStart(2, '0')}日 (週${["日", "一", "二", "三", "四", "五", "六"][taipeiTime.getDay()]}) ${String(taipeiTime.getHours()).padStart(2, '0')}:${String(taipeiTime.getMinutes()).padStart(2, '0')}:${String(taipeiTime.getSeconds()).padStart(2, '0')}`;
         }
 
         window.onload = function() {
-            loadDemoStudents();
-            applyZoneTime('good'); applyZoneTime('bad'); applyZoneTime('toilet');
+            loadDemoStudents(); applyZoneTime('good'); applyZoneTime('bad'); applyZoneTime('toilet');
             updateUTClock(); setInterval(updateUTClock, 1000);
-            
-            // Read and load local storage config
-            const gasInput = document.getElementById('gas-url-input');
-            if (gasInput) {
-                gasUrl = gasInput.value.trim() || gasUrl;
-                updateGasStatusUI();
-            }
+            updateGasStatusUI();
         }
     </script>
 </body>
