@@ -236,7 +236,7 @@
                         <label class="text-sm font-bold text-amber-800">手動貼上：</label>
                     </div>
                     
-                    <textarea id="text-input" class="w-full border border-amber-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-amber-400 bg-white/70 h-[80px] resize-none p-2 text-sm text-xs" placeholder="格式範例：&#13;01 洪叡軒&#13;02 何聿倫"></textarea>
+                    <textarea id="text-input" class="w-full border border-amber-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-amber-400 bg-white/70 h-[85px] resize-none p-2 text-sm text-xs" placeholder="格式範例：&#13;01 洪叡軒&#13;02 何聿倫"></textarea>
                     
                     <!-- 「生成名牌」按鈕字體大小改為 xs -->
                     <button id="btn-generate-cards" onclick="generateFromText()" class="w-full bg-amber-500 hover:bg-amber-600 text-white font-bold py-1.5 px-2 rounded-xl shadow-sm transition-all flex items-center justify-center gap-1 text-xs shrink-0">
@@ -244,8 +244,8 @@
                     </button>
 
                     <div class="text-center shrink-0 mt-1">
-                        <p class="text-gray-400 font-medium text-sm">班級人數統計</p>
-                        <div id="student-count" class="font-black text-amber-800 bg-amber-100/60 rounded-xl py-1 mt-0.5 select-none text-sm">
+                        <p class="text-gray-400 font-medium text-[10px]">班級人數統計</p>
+                        <div id="student-count" class="font-black text-amber-800 bg-amber-100/60 rounded-xl py-1 mt-0.5 select-none text-base">
                             共 0 人
                         </div>
                     </div>
@@ -307,8 +307,8 @@
                             <span id="good-count" class="ml-auto bg-emerald-100 text-emerald-800 px-1.5 py-0.5 rounded-full text-xs">0 人</span>
                         </div>
                         
-                        <!-- 學生名牌直接生成在此區！格式為 w-[138px] h-11，呈現為 4 欄並列排版網格 (grid-cols-4) ，上方預留 pt-4 空間防徽章裁切-->
-                        <div id="good-zone" class="drag-zone flex-grow overflow-y-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-4 gap-3 p-1.5 pt-4 pb-2 rounded-xl transition-all items-start justify-start content-start" ondragover="allowDrop(event)" ondragenter="dragEnter(event)" ondragleave="dragLeave(event)" ondrop="handleDrop(event, 'good')">
+                        <!-- 學生名牌直接生成在此區！格式為 w-[138px] h-11，呈現為 4 欄並列排版網格 (grid-cols-4) ，上方預留 pt-2 空間防徽章裁切-->
+                        <div id="good-zone" class="drag-zone flex-grow overflow-y-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-4 gap-3 p-1.5 pt-2 pb-2 rounded-xl transition-all items-start justify-start content-start" ondragover="allowDrop(event)" ondragenter="dragEnter(event)" ondragleave="dragLeave(event)" ondrop="handleDrop(event, 'good')">
                             <div class="placeholder col-span-4 py-16 flex items-center justify-center text-emerald-400 text-xs text-center italic">
                                 <i class="fa-solid fa-arrow-left mr-1 animate-bounce"></i> 請從左側匯入學生名單以直接在此生成名牌
                             </div>
@@ -316,22 +316,23 @@
 
                         <!-- 專區下方計時器：內部計時數字與控制鍵一律置中且並列橫排 -->
                         <div class="border-t border-emerald-100/70 pt-2.5 mt-2 shrink-0 bg-white/40 dark:bg-slate-900/20 p-2 rounded-xl">
+                            <!-- 改為「幾分幾秒 設置」，已移除「設定：」標籤與更名套用為設置 -->
                             <div class="flex items-center justify-center gap-1 text-[10px] mb-1.5 font-medium">
-                                <span class="text-emerald-800 dark:text-emerald-300">設定：</span>
                                 <input type="number" id="input-mins-good" value="5" min="0" max="99" class="w-8 text-center border border-emerald-200 rounded p-0.5 text-emerald-900 focus:outline-none">
                                 <span class="text-emerald-700">分</span>
                                 <input type="number" id="input-secs-good" value="0" min="0" max="59" class="w-8 text-center border border-emerald-200 rounded p-0.5 text-emerald-900 focus:outline-none">
                                 <span class="text-emerald-700">秒</span>
-                                <button onclick="applyZoneTime('good')" class="ml-1 bg-emerald-100 dark:bg-emerald-950 text-emerald-800 dark:text-emerald-200 px-1.5 py-0.5 rounded text-[9px] font-extrabold hover:bg-emerald-200 transition-all">套用</button>
+                                <button onclick="applyZoneTime('good')" class="ml-1 bg-emerald-100 dark:bg-emerald-950 text-emerald-800 dark:text-emerald-200 px-1.5 py-0.5 rounded text-[9px] font-extrabold hover:bg-emerald-200 transition-all">設置</button>
                             </div>
                             <div class="flex flex-row items-center justify-center gap-3 bg-emerald-50 dark:bg-emerald-950/40 px-2.5 py-1.5 rounded-xl border border-emerald-100/50">
-                                <div id="timer-display-good" class="text-lg md:text-xl font-black text-emerald-700 dark:text-amber-400 font-mono tracking-wider leading-none">05:00</div>
+                                <!-- 【關鍵修改】將各計時器的數字改為 text-xl md:text-2xl -->
+                                <div id="timer-display-good" class="text-xl md:text-2xl font-black text-emerald-700 dark:text-amber-400 font-mono tracking-wider leading-none">05:00</div>
                                 <div class="flex gap-1 shrink-0">
-                                    <button id="btn-toggle-good" onclick="toggleZoneTimer('good')" class="bg-emerald-500 hover:bg-emerald-600 text-white text-[10px] py-1 px-2.5 rounded-lg flex items-center gap-0.5 font-bold transition-all shrink-0">
-                                        <i id="icon-toggle-good" class="fa-solid fa-play"></i><span id="text-toggle-good">開始</span>
+                                    <button id="btn-toggle-good" onclick="toggleZoneTimer('good')" class="bg-[#10b981] hover:bg-[#059669] text-white p-0 rounded-md flex items-center justify-center transition-all shrink-0 w-5 h-5" title="開始">
+                                        <i id="icon-toggle-good" class="fa-solid fa-play text-[8px]"></i>
                                     </button>
-                                    <button onclick="resetZoneTimer('good')" class="bg-stone-200 hover:bg-stone-300 text-stone-700 text-[10px] py-1 px-1.5 rounded-lg font-bold shrink-0" title="重設">
-                                        <i class="fa-solid fa-rotate-left"></i>
+                                    <button onclick="resetZoneTimer('good')" class="bg-stone-200 hover:bg-stone-300 text-stone-700 p-0 rounded-md flex items-center justify-center transition-all shrink-0 w-5 h-5" title="重設">
+                                        <i class="fa-solid fa-rotate-left text-[8px]"></i>
                                     </button>
                                 </div>
                             </div>
@@ -347,8 +348,8 @@
                             <span id="bad-count" class="ml-auto bg-rose-100 text-rose-800 px-1.5 py-0.5 rounded-full text-xs">0 人</span>
                         </div>
                         
-                        <!-- 學生方塊放置區：維持單欄 (flex flex-col) 排列，上方預留 pt-4 空間防徽章裁切 -->
-                        <div id="bad-zone" class="drag-zone flex-grow overflow-y-auto flex flex-col gap-2.5 p-1.5 pt-4 pb-2 rounded-xl transition-all items-center justify-start content-start" ondragover="allowDrop(event)" ondragenter="dragEnter(event)" ondragleave="dragLeave(event)" ondrop="handleDrop(event, 'bad')">
+                        <!-- 學生方塊放置區：維持單欄 (flex flex-col) 排列，上方預留 pt-2 空間防徽章裁切 -->
+                        <div id="bad-zone" class="drag-zone flex-grow overflow-y-auto flex flex-col gap-2.5 p-1.5 pt-2 pb-2 rounded-xl transition-all items-center justify-start content-start" ondragover="allowDrop(event)" ondragenter="dragEnter(event)" ondragleave="dragLeave(event)" ondrop="handleDrop(event, 'bad')">
                             <div class="placeholder py-12 flex items-center justify-center text-rose-400 text-xs text-center font-normal">
                                 (點擊名牌右側哭臉新增)
                             </div>
@@ -356,24 +357,24 @@
 
                         <!-- 專區下方獨立計時器：內部計時數字與控制鍵一律置中且並列橫排 -->
                         <div class="border-t border-rose-100/70 pt-2.5 mt-2 shrink-0 bg-white/40 dark:bg-slate-900/20 p-2 rounded-xl">
+                            <!-- 改為「幾分幾秒 設置」，已移除「設定：」標籤與更名套用為設置 -->
                             <div class="flex items-center justify-center gap-1 text-[10px] mb-1.5 font-medium">
-                                <span class="text-rose-800 dark:text-rose-300">設定：</span>
                                 <input type="number" id="input-mins-bad" value="4" min="0" max="99" class="w-8 text-center border border-rose-200 rounded p-0.5 text-rose-900 focus:outline-none">
                                 <span class="text-rose-700">分</span>
                                 <input type="number" id="input-secs-bad" value="0" min="0" max="59" class="w-8 text-center border border-rose-200 rounded p-0.5 text-rose-900 focus:outline-none">
                                 <span class="text-rose-700">秒</span>
-                                <button onclick="applyZoneTime('bad')" class="ml-1 bg-rose-100 dark:bg-rose-950 text-rose-800 dark:text-rose-200 px-1.5 py-0.5 rounded text-[9px] font-extrabold hover:bg-rose-200 transition-all">套用</button>
+                                <button onclick="applyZoneTime('bad')" class="ml-1 bg-rose-100 dark:bg-rose-950 text-rose-800 dark:text-rose-200 px-1.5 py-0.5 rounded text-[9px] font-extrabold hover:bg-rose-200 transition-all">設置</button>
                             </div>
                             <!-- 並列橫排且於該區置中 -->
                             <div class="flex flex-row items-center justify-center gap-3 bg-rose-50/50 dark:bg-rose-950/15 px-2.5 py-1.5 rounded-xl border border-rose-100/70">
-                                <div id="timer-display-bad" class="text-lg md:text-xl font-black text-rose-700 dark:text-rose-400 font-mono tracking-wider leading-none">04:00</div>
+                                <!-- 【關鍵修改】將各計時器的數字改為 text-xl md:text-2xl -->
+                                <div id="timer-display-bad" class="font-black text-rose-700 dark:text-rose-400 font-mono tracking-wider leading-none text-xl md:text-2xl">04:00</div>
                                 <div class="flex gap-1 shrink-0">
-                                    <!-- 【關鍵修正】補上開始按鈕 class 屬性雙引號，修正 HTML 語法錯誤 -->
-                                    <button id="btn-toggle-bad" onclick="toggleZoneTimer('bad')" class="bg-emerald-500 hover:bg-emerald-600 text-white text-[10px] py-1 px-2.5 rounded-lg flex items-center gap-0.5 font-bold transition-all shrink-0">
-                                        <i id="icon-toggle-bad" class="fa-solid fa-play"></i><span id="text-toggle-bad">開始</span>
+                                    <button id="btn-toggle-bad" onclick="toggleZoneTimer('bad')" class="bg-rose-500 hover:bg-rose-600 text-white p-0 rounded-md flex items-center justify-center transition-all shrink-0 w-5 h-5" title="開始">
+                                        <i id="icon-toggle-bad" class="fa-solid fa-play text-[8px]"></i>
                                     </button>
-                                    <button onclick="resetZoneTimer('bad')" class="bg-stone-200 hover:bg-stone-300 text-stone-700 text-[10px] py-1 px-2 rounded-lg font-bold shrink-0" title="重設">
-                                        <i class="fa-solid fa-rotate-left"></i>
+                                    <button onclick="resetZoneTimer('bad')" class="bg-stone-200 hover:bg-stone-300 text-stone-700 p-0 rounded-md flex items-center justify-center transition-all shrink-0 w-5 h-5" title="重設">
+                                        <i class="fa-solid fa-rotate-left text-[8px]"></i>
                                     </button>
                                 </div>
                             </div>
@@ -389,8 +390,8 @@
                             <span id="toilet-count" class="ml-auto bg-sky-100 text-sky-800 px-1.5 py-0.5 rounded-full text-xs">0 人</span>
                         </div>
                         
-                        <!-- 學生方塊放置區：維持單欄 (flex flex-col) 排列，上方預留 pt-4 空間防徽章裁切 -->
-                        <div id="toilet-zone" class="drag-zone flex-grow overflow-y-auto flex flex-col gap-2.5 p-1.5 pt-4 pb-2 rounded-xl transition-all items-center justify-start content-start" ondragover="allowDrop(event)" ondragenter="dragEnter(event)" ondragleave="dragLeave(event)" ondrop="handleDrop(event, 'toilet')">
+                        <!-- 學生方塊放置區：維持單欄 (flex flex-col) 排列，上方預留 pt-2 空間防徽章裁切 -->
+                        <div id="toilet-zone" class="drag-zone flex-grow overflow-y-auto flex flex-col gap-2.5 p-1.5 pt-2 pb-2 rounded-xl transition-all items-center justify-start content-start" ondragover="allowDrop(event)" ondragenter="dragEnter(event)" ondragleave="dragLeave(event)" ondrop="handleDrop(event, 'toilet')">
                             <div class="placeholder py-12 flex items-center justify-center text-sky-400 text-xs text-center font-normal">
                                 (拖曳名牌至此新增)
                             </div>
@@ -398,23 +399,23 @@
 
                         <!-- 計時器數字與「開始/暫停」、「重設」按鈕橫排置中 -->
                         <div class="border-t border-sky-100/70 pt-2.5 mt-2 shrink-0 bg-white/40 dark:bg-slate-900/20 p-2 rounded-xl">
+                            <!-- 改為「幾分幾秒 設置」，已移除「設定：」標籤與更名套用為設置 -->
                             <div class="flex items-center justify-center gap-1 text-[10px] mb-1.5 font-medium">
-                                <span class="text-sky-800 dark:text-sky-300">設定：</span>
                                 <input type="number" id="input-mins-toilet" value="2" min="0" max="99" class="w-8 text-center border border-sky-200 rounded p-0.5 text-sky-900 focus:outline-none">
                                 <span class="text-sky-700">分</span>
                                 <input type="number" id="input-secs-toilet" value="0" min="0" max="59" class="w-8 text-center border border-sky-200 rounded p-0.5 text-sky-900 focus:outline-none">
                                 <span class="text-sky-700">秒</span>
-                                <button onclick="applyZoneTime('toilet')" class="ml-1 bg-sky-100 dark:bg-sky-950 text-sky-800 dark:text-sky-200 px-1.5 py-0.5 rounded text-[9px] font-extrabold hover:bg-sky-200 transition-all">套用</button>
+                                <button onclick="applyZoneTime('toilet')" class="ml-1 bg-sky-100 dark:bg-sky-950 text-sky-800 dark:text-sky-200 px-1.5 py-0.5 rounded text-[9px] font-extrabold hover:bg-sky-200 transition-all">設置</button>
                             </div>
                             <div class="flex flex-row items-center justify-center gap-3 bg-sky-50 dark:bg-sky-950/40 px-2.5 py-1.5 rounded-xl border border-sky-100/50">
-                                <div id="timer-display-toilet" class="text-lg md:text-xl font-black text-sky-700 dark:text-sky-400 font-mono tracking-wider leading-none">02:00</div>
+                                <!-- 【關鍵修改】將各計時器的數字改為 text-xl md:text-2xl -->
+                                <div id="timer-display-toilet" class="font-black text-sky-700 dark:text-sky-400 font-mono tracking-wider leading-none text-xl md:text-2xl">02:00</div>
                                 <div class="flex gap-1 shrink-0">
-                                    <!-- 【關鍵修正】補上開始按鈕 class 屬性雙引號，修正 HTML 語法錯誤 -->
-                                    <button id="btn-toggle-toilet" onclick="toggleZoneTimer('toilet')" class="bg-emerald-500 hover:bg-emerald-600 text-white text-[10px] py-1 px-2.5 rounded-lg flex items-center gap-0.5 font-bold transition-all shrink-0">
-                                        <i id="icon-toggle-toilet" class="fa-solid fa-play"></i><span id="text-toggle-toilet">開始</span>
+                                    <button id="btn-toggle-toilet" onclick="toggleZoneTimer('toilet')" class="bg-[#38bdf8] hover:bg-[#0284c7] text-white p-0 rounded-md flex items-center justify-center transition-all shrink-0 w-5 h-5" title="開始">
+                                        <i id="icon-toggle-toilet" class="fa-solid fa-play text-[8px]"></i>
                                     </button>
-                                    <button onclick="resetZoneTimer('toilet')" class="bg-stone-200 hover:bg-stone-300 text-stone-700 text-[10px] py-1 px-1.5 rounded-lg font-bold shrink-0" title="重設">
-                                        <i class="fa-solid fa-rotate-left"></i>
+                                    <button onclick="resetZoneTimer('toilet')" class="bg-stone-200 hover:bg-stone-300 text-stone-700 p-0 rounded-md flex items-center justify-center transition-all shrink-0 w-5 h-5" title="重設">
+                                        <i class="fa-solid fa-rotate-left text-[8px]"></i>
                                     </button>
                                 </div>
                             </div>
@@ -1003,7 +1004,7 @@
             if (message) details.classList.remove('hidden'); else details.classList.add('hidden');
 
             const baseClass = "bg-white rounded-3xl p-6 md:p-8 w-full max-w-[360px] h-[350px] shadow-2xl text-center flex flex-col justify-between items-center border-4";
-            btnContainer.innerHTML = `<button id="alert-modal-btn" onclick="closeAlertModal()" class="flex-grow bg-amber-500 hover:bg-amber-600 text-white font-bold py-3 px-6 rounded-2xl shadow-lg text-sm">確認</button>`;
+            btnContainer.innerHTML = `<button id="alert-modal-btn" onclick="closeAlertModal()" class="flex-grow bg-amber-500 hover:bg-amber-600 text-white font-bold py-3 px-4 rounded-2xl shadow-lg transition-all text-sm">確認</button>`;
             const defaultBtn = document.getElementById('alert-modal-btn');
 
             if (type === 'save_success') {
@@ -1286,15 +1287,14 @@
         function toggleZoneTimer(zone) { if (timers[zone].running) pauseZoneTimer(zone); else startZoneTimer(zone); }
         
         // 修正後的時鐘與計時更新機制
+        // 開始鍵動態更新時，完美保留 w-5 h-5，且僅更新 icon 樣式與圖示大小（微調至 text-[8px]）
         function startZoneTimer(zone) {
             if (timers[zone].remaining <= 0) timers[zone].remaining = timers[zone].total;
             timers[zone].running = true;
             const btn = document.getElementById(`btn-toggle-${zone}`);
             const icon = document.getElementById(`icon-toggle-${zone}`);
-            const text = document.getElementById(`text-toggle-${zone}`);
-            btn.className = "bg-amber-500 hover:bg-amber-600 text-white text-[10px] py-1 px-2 rounded-lg flex items-center gap-0.5 font-bold transition-all";
-            icon.className = "fa-solid fa-pause";
-            text.textContent = "暫停";
+            btn.className = "bg-amber-500 hover:bg-amber-600 text-white p-0 rounded-md flex items-center justify-center transition-all shrink-0 w-5 h-5";
+            icon.className = "fa-solid fa-pause text-[8px]";
 
             timers[zone].interval = setInterval(() => {
                 timers[zone].remaining--; updateZoneTimerDisplay(zone);
@@ -1305,15 +1305,14 @@
             }, 1000);
         }
 
+        // 暫停鍵動態更新時，完美保留 w-5 h-5，且僅更新 icon 樣式與圖示大小（微調至 text-[8px]）
         function pauseZoneTimer(zone) {
             timers[zone].running = false; clearInterval(timers[zone].interval);
             const btn = document.getElementById(`btn-toggle-${zone}`);
             const icon = document.getElementById('icon-toggle-' + zone);
-            const text = document.getElementById('text-toggle-' + zone);
             if (!btn) return;
-            btn.className = (zone === 'good' ? 'bg-[#10b981] hover:bg-[#059669]' : (zone === 'bad' ? 'bg-rose-500 hover:bg-rose-600' : 'bg-sky-500 hover:bg-sky-600')) + " text-white text-[10px] py-1 px-2 rounded-lg flex items-center gap-0.5 font-bold transition-all";
-            icon.className = "fa-solid fa-play";
-            text.textContent = "開始";
+            btn.className = (zone === 'good' ? 'bg-[#10b981] hover:bg-[#059669]' : (zone === 'bad' ? 'bg-rose-500 hover:bg-rose-600' : 'bg-sky-500 hover:bg-sky-600')) + " text-white p-0 rounded-md flex items-center justify-center transition-all shrink-0 w-5 h-5";
+            icon.className = "fa-solid fa-play text-[8px]";
         }
 
         function toggleTheme() {
