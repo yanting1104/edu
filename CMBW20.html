@@ -363,19 +363,12 @@
                         <label class="text-sm font-bold text-amber-800">手動貼上：</label>
                     </div>
                     
-                    <textarea id="text-input" class="w-full border border-amber-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-amber-400 bg-white/70 h-[85px] resize-none p-2 text-sm text-xs" placeholder="格式範例：&#13;01 洪叡軒&#13;02 何聿倫"></textarea>
+                    <textarea id="text-input" class="w-full border border-amber-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-amber-400 bg-white/70 h-[110px] resize-none p-2 text-sm text-xs" placeholder="格式範例：&#13;01 洪叡軒&#13;02 何聿倫"></textarea>
                     
                     <!-- 「生成名牌」按鈕字體大小改為 xs -->
                     <button id="btn-generate-cards" onclick="generateFromText()" class="w-full bg-amber-500 hover:bg-amber-600 text-white font-bold py-1.5 px-2 rounded-xl shadow-sm transition-all flex items-center justify-center gap-1 text-xs shrink-0">
                         <i class="fa-solid fa-wand-magic-sparkles text-xs"></i>生成名牌
                     </button>
-
-                    <div class="text-center shrink-0 mt-1">
-                        <p class="text-gray-400 font-medium text-[10px]">班級人數統計</p>
-                        <div id="student-count" class="font-black text-amber-800 bg-amber-100/60 rounded-xl py-1 mt-0.5 select-none text-base">
-                            共 0 人
-                        </div>
-                    </div>
                 </div>
 
                 <!-- 2. GAS Deployment Area -->
@@ -402,6 +395,11 @@
                         <span>數據紀錄</span>
                     </h3>
                     
+                    <!-- 前往試算表 -->
+                    <button onclick="openSpreadsheetTab()" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-1.5 px-2 rounded-xl shadow-sm transition-all flex items-center justify-center gap-1 text-xs shrink-0">
+                        <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>前往試算表
+                    </button>
+
                     <!-- 設置試算表 -->
                     <button onclick="showSetupSpreadsheetModal()" class="w-full bg-pink-500 hover:bg-pink-600 text-white font-bold py-1.5 px-2 rounded-xl shadow-sm transition-all flex items-center justify-center gap-1 text-xs shrink-0">
                         <i class="fa-solid fa-file-invoice text-[10px]"></i>設置試算表
@@ -452,7 +450,7 @@
                                 <button onclick="applyZoneTime('good')" class="ml-1 bg-emerald-100 dark:bg-emerald-950 text-emerald-800 dark:text-emerald-200 px-1.5 py-0.5 rounded text-[9px] font-extrabold hover:bg-emerald-200 transition-all">設置</button>
                             </div>
                             <div class="flex flex-row items-center justify-center gap-3 bg-emerald-50 px-2.5 py-1.5 rounded-xl border border-emerald-100/50">
-                                <!-- 計時數字改為 text-xl md:text-2xl -->
+                                <!-- : 2007:21 -->
                                 <div id="timer-display-good" class="text-xl md:text-2xl font-black text-emerald-700 dark:text-amber-400 font-mono tracking-wider leading-none">05:00</div>
                                 <div class="flex gap-1 shrink-0">
                                     <button id="btn-toggle-good" onclick="toggleZoneTimer('good')" class="bg-[#10b981] hover:bg-[#059669] text-white p-0 rounded-md flex items-center justify-center transition-all shrink-0 w-5 h-5" title="開始">
@@ -601,7 +599,8 @@
     </section>
 
     <!-- Modal Windows -->
-    <div id="alert-modal" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center hidden opacity-0 transition-opacity duration-300">
+    <!-- 📌 修復：調整為 z-[80] 確保重疊在設置/儲存紀錄確認視窗的前上方 -->
+    <div id="alert-modal" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-[80] flex items-center justify-center hidden opacity-0 transition-opacity duration-300">
         <div class="bg-white rounded-3xl p-6 md:p-8 w-full max-w-[360px] h-[350px] shadow-2xl border-4 border-amber-400 text-center transform transition-transform duration-300 flex flex-col justify-between items-center">
             <div class="flex flex-col items-center justify-center flex-grow w-full">
                 <div class="w-20 h-20 bg-amber-100 rounded-full flex items-center justify-center mx-auto mb-4 animate-bounce shrink-0">
@@ -613,7 +612,7 @@
             
             <!-- Button Container -->
             <div id="alert-btn-container" class="w-full flex gap-2.5 mt-2 shrink-0">
-                <button id="alert-modal-btn" onclick="closeAlertModal()" class="flex-grow bg-amber-500 hover:bg-amber-600 text-white font-bold py-3 px-4 rounded-2xl shadow-lg transition-all text-sm">
+                <button id="alert-modal-btn" onclick="closeAlertModal()" class="flex-grow bg-amber-500 hover:bg-amber-600 text-white font-bold py-3 px-4 rounded-2xl shadow-lg text-sm">
                     確認
                 </button>
             </div>
@@ -638,7 +637,7 @@
                 <button onclick="closeConfirmModal()" class="flex-1 bg-stone-150 hover:bg-stone-200 text-stone-700 font-bold py-2.5 px-4 rounded-xl transition-all text-sm border border-stone-300">
                     取消
                 </button>
-                <button id="confirm-action-btn" onclick="executeConfirmAction()" class="flex-1 bg-pink-500 hover:bg-pink-600 text-white font-bold py-2.5 px-4 rounded-xl shadow-md transition-all text-sm">
+                <button id="confirm-action-btn" onclick="executeConfirmAction()" class="flex-1 bg-pink-500 hover:bg-pink-600 text-white font-bold py-2.5 px-4 rounded-xl shadow-md text-sm transition-all">
                     確定重設試算表資料
                 </button>
             </div>
@@ -667,7 +666,8 @@
     </div>
 
     <!-- Loading overlay -->
-    <div id="loading-overlay" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex flex-col items-center justify-center hidden opacity-0 transition-opacity duration-300">
+    <!-- 📌 修復：調整 z-index 為 z-[90]，確保 loading 時能完美顯示在完成彈窗（z-[80]）之上，也就是整體的最前上方 -->
+    <div id="loading-overlay" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-[90] flex flex-col items-center justify-center hidden opacity-0 transition-opacity duration-300">
         <div class="animate-spin rounded-full h-12 w-12 border-t-4 border-b-4 border-amber-500 mb-4"></div>
         <p id="loading-text" class="text-white font-medium text-sm">正在與試算表同步中，請稍候...</p>
     </div>
@@ -684,7 +684,9 @@
         let totalCreatedCount = 0; 
         let homeworkList = []; 
         let homeworkStatus = {}; 
-        let gasUrl = localStorage.getItem('gasUrl') || 'https://script.google.com/macros/s/AKfycbxsjXAb-iyjmlOXKeY6HUucf9B1HmvaP1OBU-lRQK2QyXgrd7VPZSeXeSHzZUlhzBog/exec'; 
+        
+        // 📌 核心設定：將預設的 GAS 後端部署 URL 替換為您所指定的最新路徑
+        let gasUrl = localStorage.getItem('gasUrl') || 'https://script.google.com/macros/s/AKfycbyiVzMuLUvb6fv61lQmqyCMWYUjHVQB7vB1SHfj2CYjyoJydtw5GqzKwJcDvL8sfZSt/exec'; 
         
         let currentSavedClassName = "";
         let currentConfirmAction = null;
@@ -711,7 +713,7 @@
             studentsList.forEach(student => {
                 const th = document.createElement('th');
                 th.className = "p-1 border-b border-r border-amber-200/80 min-w-[48px] max-w-[48px] bg-amber-100/30 text-[#78350f] font-bold text-center align-middle";
-                // 【關鍵修復】補上 dark:bg-amber-950, dark:text-amber-300 等夜間模式高對比配色，確保座號在黑夜模式下清晰可見
+                // 補上 dark:bg-amber-950, dark:text-amber-300 等夜間模式高對比配色，確保座號在黑夜模式下清晰可見
                 th.innerHTML = `
                     <div class="flex flex-col items-center justify-center gap-1.5 h-[145px] py-2 mx-auto">
                         <!-- 作業勾選表上的座號圓圈數字字體大小統一改為 sm (text-sm) -->
@@ -961,12 +963,11 @@
             if (badZone.querySelector('.placeholder')) badZone.querySelector('.placeholder').style.display = badZone.querySelectorAll('.student-card').length > 0 ? 'none' : 'flex';
             if (toiletZone.querySelector('.placeholder')) toiletZone.querySelector('.placeholder').style.display = toiletZone.querySelectorAll('.student-card').length > 0 ? 'none' : 'flex';
 
-            document.getElementById('student-count').textContent = `共 ${studentsList.length} 人`;
             sortZoneCards(goodZone); sortZoneCards(badZone); sortZoneCards(toiletZone);
             renderHomeworkTable(); updateCounts();
         }
 
-        // 學生名牌寬度增加 8% 至 w-[138px]，座號字體大小改為 sm，中文姓名 max-w 寬度微調 (【補上】夜間模式高對比座號圓圈 CSS)
+        // 學生名牌寬度增加 8% 至 w-[138px]，座號字體大小改為 sm，中文姓名 max-w 寬度微調 (補上夜間模式高對比座號圓圈 CSS)
         function createUniversalCard(number, name) {
             totalCreatedCount++;
             const card = document.createElement('div');
@@ -1003,7 +1004,7 @@
             return card;
         }
 
-        // 學生名牌寬度增加 8% 至 w-[138px]，座號字體大小改為 sm，中文姓名 max-w 寬度微調 (【補上】夜間模式高對比座號圓圈 CSS)
+        // 學生名牌寬度增加 8% 至 w-[138px]，座號字體大小改為 sm，中文姓名 max-w 寬度微調 (補上夜間模式高對比座號圓圈 CSS)
         function createZoneCard(number, name, zoneType, count) {
             const card = document.createElement('div');
             card.id = `student-zone-card-${zoneType}-${number}`;
@@ -1135,7 +1136,7 @@
             if (message) details.classList.remove('hidden'); else details.classList.add('hidden');
 
             const baseClass = "bg-white rounded-3xl p-6 md:p-8 w-full max-w-[360px] h-[350px] shadow-2xl text-center flex flex-col justify-between items-center border-4";
-            btnContainer.innerHTML = `<button id="alert-modal-btn" onclick="closeAlertModal()" class="flex-grow bg-amber-500 hover:bg-amber-600 text-white font-bold py-3 px-4 rounded-2xl shadow-lg transition-all text-sm">確認</button>`;
+            btnContainer.innerHTML = `<button id="alert-modal-btn" onclick="closeAlertModal()" class="flex-grow bg-amber-500 hover:bg-amber-600 text-white font-bold py-3 px-4 rounded-2xl shadow-lg text-sm">確認</button>`;
             const defaultBtn = document.getElementById('alert-modal-btn');
 
             if (type === 'save_success') {
@@ -1148,6 +1149,20 @@
                         確認
                     </button>
                     <button onclick="openSpreadsheetTab()" class="flex-1 bg-purple-600 hover:bg-purple-700 text-white font-bold py-3 px-4 rounded-2xl shadow-md text-xs flex items-center justify-center gap-1 focus:outline-none">
+                        <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>開啟試算表
+                    </button>
+                `;
+            } else if (type === 'init_success') {
+                // 設置試算表成功後，呈現原汁原味的暖色調粉色主題，並提供「確認」與「開啟試算表」雙按鈕跳轉
+                cardPanel.className = `${baseClass} border-pink-400`;
+                iconWrapper.className = "w-20 h-20 bg-pink-100 rounded-full flex items-center justify-center mx-auto mb-4 animate-bounce shrink-0";
+                iconBell.className = "fa-solid fa-circle-check text-4xl text-pink-500";
+                desc.className = "text-pink-700 font-bold text-lg md:text-xl text-center leading-snug mb-2 w-full truncate";
+                btnContainer.innerHTML = `
+                    <button onclick="closeAlertModal()" class="flex-1 bg-stone-200 hover:bg-stone-300 text-stone-700 font-bold py-3 px-4 rounded-2xl shadow-md text-xs focus:outline-none">
+                        確認
+                    </button>
+                    <button onclick="openSpreadsheetTab()" class="flex-1 bg-pink-500 hover:bg-pink-600 text-white font-bold py-3 px-4 rounded-2xl shadow-md text-xs flex items-center justify-center gap-1 focus:outline-none">
                         <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>開啟試算表
                     </button>
                 `;
@@ -1285,7 +1300,7 @@
 
         function showSaveRecordModal() {
             if (!gasUrl) { alertModalMessage("提示", "請先於控制台設定您的 GAS 部署網址並完成後端連結！", "warning"); return; }
-            if (studentsList.length === 0) { alertModalMessage("名單為空", "目前看板中無 any 學生，無法傳送紀錄！", "warning"); return; }
+            if (studentsList.length === 0) { alertModalMessage("名單為空", "目前看板中無任何學生，無法傳送紀錄！", "warning"); return; }
             currentConfirmAction = 'record';
             document.getElementById('confirm-card-panel').className = "bg-white rounded-3xl p-6 md:p-8 max-w-md w-full mx-4 shadow-2xl border-4 border-purple-400 text-center flex flex-col";
             document.getElementById('confirm-icon-wrapper').className = "w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-4 animate-bounce shrink-0";
@@ -1317,7 +1332,8 @@
             const payload = { action: "init", className: className, students: studentsList.map(s => `${s.number} ${s.name}`) };
             const data = await sendPostToGas(payload);
             if (data && data.status === "success") {
-                alertModalMessage("設置完成", `已為班級【${className}】成功建立獨立工作表標題與學生名冊欄位！`, "success");
+                // 這裡改用 "init_success" 的類型，使其顯示「確認」與「開啟試算表」雙按鈕跳轉
+                alertModalMessage("設置完成", `已為班級【${className}】成功建立獨立工作表標題與學生名冊欄位！`, "init_success");
             } else if (data) {
                 alertModalMessage("設置失敗", data.message || "工作表建立失敗", "error");
             }
@@ -1337,7 +1353,7 @@
             });
 
             if (!hasChanges && badRecordArray.length === 0 && toiletRecordArray.length === 0) {
-                alertModalMessage("無數據變更", "今日尚無登記 any 加減分、待改進或上廁所項目，不需送出！", "info");
+                alertModalMessage("無數據變更", "今日尚無登記任何加減分、待改進或上廁所項目，不需送出！", "info");
                 return;
             }
 
@@ -1415,9 +1431,64 @@
             if (display) display.textContent = `${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
         }
 
+        function toggleTheme() {
+            const isDark = document.body.classList.toggle('dark-mode');
+            document.body.classList.toggle('dark', isDark);
+            const btn = document.getElementById('theme-toggle-btn');
+            if (isDark) {
+                document.getElementById('theme-icon').className = "fa-solid fa-sun text-yellow-400 text-sm md:text-base animate-spin-slow";
+                document.getElementById('theme-text').textContent = "日間正常模式";
+                btn.style.backgroundColor = "rgba(30, 41, 59, 0.95)"; btn.style.color = "#f1f5f9";
+            } else {
+                document.getElementById('theme-icon').className = "fa-solid fa-moon text-amber-500 text-sm md:text-base animate-pulse";
+                document.getElementById('theme-text').textContent = "午休夜間模式";
+                btn.style.backgroundColor = "rgba(255, 255, 255, 0.95)"; btn.style.color = "#374151";
+            }
+        }
+
+        // 台北時間 (Taipei Clock)
+        function updateUTClock() {
+            const clockEl = document.getElementById('utc-clock'); if (!clockEl) return;
+            const now = new Date(); 
+            const taipeiTime = new Date(now.getTime() + (now.getTimezoneOffset() * 60000) + (3600000 * 8));
+            clockEl.textContent = `${taipeiTime.getFullYear()}年${String(taipeiTime.getMonth() + 1).padStart(2, '0')}月${String(taipeiTime.getDate()).padStart(2, '0')}日 (週${["日", "一", "二", "三", "四", "五", "六"][taipeiTime.getDay()]}) ${String(taipeiTime.getHours()).padStart(2, '0')}:${String(taipeiTime.getMinutes()).padStart(2, '0')}:${String(taipeiTime.getSeconds()).padStart(2, '0')}`;
+        }
+
+        // 播放作業全繳齊時的大滿貫慶祝音效
+        function playCelebrationSound() {
+            try {
+                const AudioContext = window.AudioContext || window.webkitAudioContext; if (!AudioContext) return;
+                const ctx = new AudioContext(), now = ctx.currentTime;
+                [523.25, 659.25, 783.99, 1046.50].forEach((freq, idx) => {
+                    const osc = ctx.createOscillator(), gain = ctx.createGain();
+                    osc.type = 'triangle'; osc.frequency.setValueAtTime(freq, now + idx * 0.1); 
+                    gain.gain.setValueAtTime(0, now + idx * 0.1); 
+                    gain.gain.linearRampToValueAtTime(0.15, now + idx * 0.1 + 0.02); 
+                    gain.gain.exponentialRampToValueAtTime(0.001, now + idx * 0.1 + 0.4);
+                    osc.connect(gain); gain.connect(ctx.destination); 
+                    osc.start(now + idx * 0.1); osc.stop(now + idx * 0.1 + 0.4);
+                });
+            } catch (e) {}
+        }
+
+        // 播放倒數截止超時警報音效
+        function playSynthesizedBell() {
+            try {
+                const AudioContext = window.AudioContext || window.webkitAudioContext; if (!AudioContext) return;
+                const ctx = new AudioContext(), now = ctx.currentTime;
+                const osc1 = ctx.createOscillator(), gain1 = ctx.createGain();
+                osc1.type = 'sine'; osc1.frequency.setValueAtTime(1318.51, now); gain1.gain.setValueAtTime(0.25, now); gain1.gain.exponentialRampToValueAtTime(0.001, now + 0.8);
+                osc1.connect(gain1); gain1.connect(ctx.destination); osc1.start(now); osc1.stop(now + 0.8);
+                setTimeout(() => {
+                    const osc2 = ctx.createOscillator(), gain2 = ctx.createGain();
+                    osc2.type = 'sine'; osc2.frequency.setValueAtTime(1046.50, ctx.currentTime); gain2.gain.setValueAtTime(0.25, ctx.currentTime); gain2.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 1.2);
+                    osc2.connect(gain2); gain2.connect(ctx.destination); osc2.start(); osc2.stop(ctx.currentTime + 1.2);
+                }, 250);
+            } catch (e) {}
+        }
+
         function toggleZoneTimer(zone) { if (timers[zone].running) pauseZoneTimer(zone); else startZoneTimer(zone); }
         
-        // 修正後的時鐘與計時更新機制
         // 開始鍵動態更新時，完美保留 w-5 h-5，且僅更新 icon 樣式與圖示大小（微調至 text-[8px]）
         function startZoneTimer(zone) {
             if (timers[zone].remaining <= 0) timers[zone].remaining = timers[zone].total;
@@ -1446,66 +1517,6 @@
             icon.className = "fa-solid fa-play text-[8px]";
         }
 
-        function toggleTheme() {
-            const isDark = document.body.classList.toggle('dark-mode');
-            document.body.classList.toggle('dark', isDark);
-            const btn = document.getElementById('theme-toggle-btn');
-            if (isDark) {
-                document.getElementById('theme-icon').className = "fa-solid fa-sun text-yellow-400 text-sm md:text-base animate-spin-slow";
-                document.getElementById('theme-text').textContent = "日間正常模式";
-                btn.style.backgroundColor = "rgba(30, 41, 59, 0.95)"; btn.style.color = "#f1f5f9";
-            } else {
-                document.getElementById('theme-icon').className = "fa-solid fa-moon text-amber-500 text-sm md:text-base animate-pulse";
-                document.getElementById('theme-text').textContent = "午休夜間模式";
-                btn.style.backgroundColor = "rgba(255, 255, 255, 0.95)"; btn.style.color = "#374151";
-            }
-        }
-
-        // 台北時間 (Taipei Clock)
-        function updateUTClock() {
-            const clockEl = document.getElementById('utc-clock'); if (!clockEl) return;
-            const now = new Date(); 
-            const taipeiTime = new Date(now.getTime() + (now.getTimezoneOffset() * 60000) + (3600000 * 8));
-            clockEl.textContent = `${taipeiTime.getFullYear()}年${String(taipeiTime.getMonth() + 1).padStart(2, '0')}月${String(taipeiTime.getDate()).padStart(2, '0')}日 (週${["日", "一", "二", "三", "四", "五", "六"][taipeiTime.getDay()]}) ${String(taipeiTime.getHours()).padStart(2, '0')}:${String(taipeiTime.getMinutes()).padStart(2, '0')}:${String(taipeiTime.getSeconds()).padStart(2, '0')}`;
-        }
-
-        // ==========================================
-        // 【關鍵修復】補回遺失定義的 playCelebrationSound 函數，徹底解決 Bingo 音效未定義錯誤
-        // ==========================================
-        function playCelebrationSound() {
-            try {
-                const AudioContext = window.AudioContext || window.webkitAudioContext; if (!AudioContext) return;
-                const ctx = new AudioContext(), now = ctx.currentTime;
-                [523.25, 659.25, 783.99, 1046.50].forEach((freq, idx) => {
-                    const osc = ctx.createOscillator(), gain = ctx.createGain();
-                    osc.type = 'triangle'; osc.frequency.setValueAtTime(freq, now + idx * 0.1); 
-                    gain.gain.setValueAtTime(0, now + idx * 0.1); 
-                    gain.gain.linearRampToValueAtTime(0.15, now + idx * 0.1 + 0.02); 
-                    gain.gain.exponentialRampToValueAtTime(0.001, now + idx * 0.1 + 0.4);
-                    osc.connect(gain); gain.connect(ctx.destination); 
-                    osc.start(now + idx * 0.1); osc.stop(now + idx * 0.1 + 0.4);
-                });
-            } catch (e) {}
-        }
-
-        // ==========================================
-        // 【全新補回】修復遺漏的 playSynthesizedBell 倒數截止超時音效函數，根除 ReferenceError 錯誤
-        // ==========================================
-        function playSynthesizedBell() {
-            try {
-                const AudioContext = window.AudioContext || window.webkitAudioContext; if (!AudioContext) return;
-                const ctx = new AudioContext(), now = ctx.currentTime;
-                const osc1 = ctx.createOscillator(), gain1 = ctx.createGain();
-                osc1.type = 'sine'; osc1.frequency.setValueAtTime(1318.51, now); gain1.gain.setValueAtTime(0.25, now); gain1.gain.exponentialRampToValueAtTime(0.001, now + 0.8);
-                osc1.connect(gain1); gain1.connect(ctx.destination); osc1.start(now); osc1.stop(now + 0.8);
-                setTimeout(() => {
-                    const osc2 = ctx.createOscillator(), gain2 = ctx.createGain();
-                    osc2.type = 'sine'; osc2.frequency.setValueAtTime(1046.50, ctx.currentTime); gain2.gain.setValueAtTime(0.25, ctx.currentTime); gain2.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 1.2);
-                    osc2.connect(gain2); gain2.connect(ctx.destination); osc2.start(); osc2.stop(ctx.currentTime + 1.2);
-                }, 250);
-            } catch (e) {}
-        }
-
         function resetZoneTimer(zone) { pauseZoneTimer(zone); timers[zone].remaining = timers[zone].total; updateZoneTimerDisplay(zone); }
 
         function zoneTimerTimeout(zone) {
@@ -1516,9 +1527,6 @@
             alertModalMessage(`<span class="${zone === 'good' ? 'text-emerald-600' : (zone === 'bad' ? 'text-rose-600' : 'text-sky-600')} font-black text-xl md:text-2xl flex items-center justify-center gap-2">${zone === 'good' ? '<i class="fa-regular fa-face-laugh-beam"></i>' : (zone === 'bad' ? '<i class="fa-regular fa-face-sad-tear"></i>' : '<i class="fa-solid fa-restroom"></i>')} ${minsVal} 分鐘時間到！</span>`, "", "warning");
         }
 
-        // ==========================================
-        // 修復遺漏的 closeAlertModal 警告彈出對話框關閉函數
-        // ==========================================
         function closeAlertModal() {
             const modal = document.getElementById('alert-modal');
             if (!modal) return;
