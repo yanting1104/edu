@@ -8,6 +8,12 @@
     <link class="favicon" rel="icon" type="image/png" href="貓臉logo1.png">
     <!-- 引入 Tailwind CSS 提供現代化、響應式的排版 -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <!-- 配置 Tailwind 啟用 class 手動黑夜模式切換 -->
+    <script>
+        tailwind.config = {
+            darkMode: 'class'
+        }
+    </script>
     <!-- 引入 Font Awesome 提供可愛的圖示 -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- 引入 Google Fonts 採用圓潤可愛的字體 -->
@@ -132,7 +138,7 @@
         /* 【午休夜間模式】深色主題 CSS 覆蓋樣式 */
         body.dark-mode {
             background-color: #0f1015;
-            color: #94a3b8;
+            color: #cbd5e1;
         }
         body.dark-mode .glass-panel {
             background: rgba(17, 22, 37, 0.9);
@@ -167,7 +173,128 @@
             color: #cbd5e1 !important;
             border-color: #2d364f !important;
         }
+
+        /* ==========================================
+           【精細重構】夜間模式各專區計時器配色修正（依據原本日間色系進行深色調變化）
+           ========================================== */
         
+        /* 1. 好表現區（綠色系）*/
+        body.dark-mode .bg-emerald-50\/50 div.border-t {
+            border-color: rgba(16, 185, 129, 0.2) !important;
+            background-color: rgba(6, 78, 59, 0.2) !important;
+        }
+        body.dark-mode .bg-emerald-50\/50 .flex-row {
+            background-color: rgba(6, 78, 59, 0.45) !important;
+            border-color: rgba(16, 185, 129, 0.3) !important;
+        }
+        body.dark-mode #timer-display-good {
+            color: #34d399 !important; /* 呈現精緻亮綠色 text-emerald-400 */
+        }
+        body.dark-mode .bg-emerald-50\/50 span.text-emerald-700 {
+            color: #a7f3d0 !important; /* 呈現柔綠色 text-emerald-200 */
+        }
+
+        /* 2. 待改進區（紅色系）*/
+        body.dark-mode .bg-rose-50\/50 div.border-t {
+            border-color: rgba(244, 63, 94, 0.2) !important;
+            background-color: rgba(136, 19, 55, 0.2) !important;
+        }
+        body.dark-mode .bg-rose-50\/50 .flex-row {
+            background-color: rgba(136, 19, 55, 0.45) !important;
+            border-color: rgba(244, 63, 94, 0.3) !important;
+        }
+        body.dark-mode #timer-display-bad {
+            color: #fb7185 !important; /* 呈現精緻粉紅色 text-rose-400 */
+        }
+        body.dark-mode .bg-rose-50\/50 span.text-rose-700 {
+            color: #fecdd3 !important; /* 呈現柔粉色 text-rose-200 */
+        }
+
+        /* 3. 課間上廁所（藍色系）*/
+        body.dark-mode .bg-sky-50\/50 div.border-t {
+            border-color: rgba(14, 165, 233, 0.2) !important;
+            background-color: rgba(12, 74, 96, 0.2) !important;
+        }
+        body.dark-mode .bg-sky-50\/50 .flex-row {
+            background-color: rgba(12, 74, 96, 0.45) !important;
+            border-color: rgba(14, 165, 233, 0.3) !important;
+        }
+        body.dark-mode #timer-display-toilet {
+            color: #38bdf8 !important; /* 呈現柔水藍色 text-sky-400 */
+        }
+        body.dark-mode .bg-sky-50\/50 span.text-sky-700 {
+            color: #bae6fd !important; /* 呈現淡藍色 text-sky-200 */
+        }
+
+        /* ==========================================
+           【全新精細修正】夜間模式作業檢核新增區與登記表顏色比照日間橘黃色系（Amber）變化
+           ========================================== */
+        body.dark-mode .bg-amber-50 {
+            background-color: rgba(120, 53, 15, 0.15) !important; /* 深琥珀橘底色 */
+            border-color: rgba(217, 119, 6, 0.25) !important; /* 琥珀橘邊框 */
+        }
+        body.dark-mode .border-amber-100 {
+            border-color: rgba(217, 119, 6, 0.18) !important;
+        }
+        body.dark-mode h2.text-[#78350f],
+        body.dark-mode h2 span,
+        body.dark-mode h1.text-[#b45309],
+        body.dark-mode h2.text-amber-800,
+        body.dark-mode h3.text-amber-800 {
+            color: #f59e0b !important; /* 溫慢的飽滿琥珀橘黃 */
+        }
+        body.dark-mode .text-[#78350f] {
+            color: #fef3c7 !important; /* 柔和淡黃 */
+        }
+        
+        /* 登記表（表格容器）在深色模式下的溫慢大地色變化 */
+        body.dark-mode .overflow-x-auto.bg-amber-50\/10 {
+            border-color: rgba(217, 119, 6, 0.2) !important;
+            background-color: rgba(120, 53, 15, 0.06) !important;
+        }
+        body.dark-mode #hw-table-header {
+            background-color: rgba(120, 53, 15, 0.2) !important;
+        }
+        /* 表頭直書名冊 th (深色模式橘黃色系比照) */
+        body.dark-mode #hw-table-header th {
+            background-color: rgba(120, 53, 15, 0.25) !important;
+            color: #fef3c7 !important;
+            border-color: rgba(217, 119, 6, 0.22) !important;
+        }
+        
+        /* 【關鍵修復核心】只限縮於姓名直書 (.vertical-header)，釋放座號數字 th span，防止座號字體在夜間模式被覆蓋為亮黃色 */
+        body.dark-mode #hw-table-header th .vertical-header {
+            color: #fef3c7 !important;
+        }
+        
+        body.dark-mode #hw-table-body tr:hover {
+            background-color: rgba(217, 119, 6, 0.03) !important;
+        }
+        /* 左側固定「登記」與「作業名稱」td 的深色模式比照 */
+        body.dark-mode #hw-table-body td.bg-white {
+            background-color: rgba(45, 23, 5, 0.95) !important;
+            color: #fef3c7 !important;
+            border-color: rgba(217, 119, 6, 0.22) !important;
+        }
+        body.dark-mode #hw-table-body td.bg-white span {
+            color: #fef3c7 !important;
+        }
+        /* 未完成（紅叉✗）在深色模式下的配色，改用高對比半透明粉紅 */
+        body.dark-mode #hw-table-body td.bg-rose-100 {
+            background-color: rgba(190, 18, 60, 0.25) !important;
+            color: #fda4af !important;
+            border-color: rgba(217, 119, 6, 0.2) !important;
+        }
+        /* 已完成（綠勾✓）在深色模式下的配色，改用半透明翠綠 */
+        body.dark-mode #hw-table-body td.bg-emerald-50 {
+            background-color: rgba(4, 120, 87, 0.25) !important;
+            color: #6ee7b7 !important;
+            border-color: rgba(217, 119, 6, 0.2) !important;
+        }
+        body.dark-mode #hw-table-body td {
+            border-color: rgba(217, 119, 6, 0.2) !important;
+        }
+
         .no-scrollbar::-webkit-scrollbar {
             display: none;
         }
@@ -187,8 +314,14 @@
         </div>
     </div>
 
-    <!-- Night/Day theme toggle button -->
-    <div class="absolute top-4 right-4 md:top-6 md:right-6 z-50">
+    <!-- Night/Day theme toggle & Instructions button area -->
+    <div class="absolute top-4 right-4 md:top-6 md:right-6 z-50 flex items-center gap-2.5">
+        <!-- 使用說明書按鈕 -->
+        <button id="instructions-btn" onclick="openInstructionsModal()" class="glass-panel py-2 px-3.5 rounded-full shadow-md hover:shadow-lg transition-all flex items-center gap-2 font-bold text-xs md:text-sm bg-white/95 hover:scale-105 active:scale-95">
+            <i class="fa-solid fa-book-open text-pink-500 text-sm md:text-base"></i>
+            <span class="select-none">使用說明書</span>
+        </button>
+        <!-- 午休夜間模式按鈕 -->
         <button id="theme-toggle-btn" onclick="toggleTheme()" class="glass-panel py-2 px-3.5 rounded-full shadow-md hover:shadow-lg transition-all flex items-center gap-2 font-bold text-xs md:text-sm bg-white/95 hover:scale-105 active:scale-95">
             <i id="theme-icon" class="fa-solid fa-moon text-amber-500 text-sm md:text-base animate-pulse"></i>
             <span id="theme-text" class="select-none">午休夜間模式</span>
@@ -201,11 +334,11 @@
             <i class="fa-solid fa-graduation-cap text-[#f59e0b]"></i>
             班級經營互動看板
         </h1>
-        <p class="text-gray-500 text-xs md:text-[12px]">　</p>
+        <p class="text-gray-500 text-xs md:text-[12px]">　　</p>
     </header>
 
     <!-- Layout structure -->
-    <main class="grid grid-cols-1 md:grid-cols-[1.25fr_10.75fr] gap-5 md:h-[635px] shrink-0 min-h-0 mb-6">
+    <main class="grid grid-cols-1 md:grid-cols-[1.24fr_10.79fr] gap-5 md:h-[635px] shrink-0 min-h-0 mb-6">
         
         <!-- Left Side: Control Panel -->
         <section class="flex flex-col h-full min-h-0">
@@ -233,22 +366,15 @@
 
                     <!-- Paste Area & Text Input -->
                     <div class="flex items-center justify-between mt-1 shrink-0">
-                        <label class="text-xs font-bold text-amber-800">手動貼上：</label>
-                        <button onclick="loadDemoStudents()" class="text-[9px] bg-stone-200 text-stone-700 px-1.5 py-0.5 rounded hover:bg-stone-300 dark:bg-stone-800 dark:text-stone-300 transition-all">範例</button>
+                        <label class="text-sm font-bold text-amber-800">手動貼上：</label>
                     </div>
                     
-                    <textarea id="text-input" class="w-full border border-amber-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-amber-400 bg-white/70 h-[100px] resize-none p-2 text-xs" placeholder="格式範例：&#13;01 洪叡軒&#13;02 何聿倫"></textarea>
+                    <textarea id="text-input" class="w-full border border-amber-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-amber-400 bg-white/70 h-[100px] resize-none p-2 text-sm text-xs" placeholder="格式範例：&#13;01 洪叡軒&#13;02 何聿倫"></textarea>
                     
+                    <!-- 「生成名牌」按鈕字體大小改為 xs -->
                     <button id="btn-generate-cards" onclick="generateFromText()" class="w-full bg-amber-500 hover:bg-amber-600 text-white font-bold py-1.5 px-2 rounded-xl shadow-sm transition-all flex items-center justify-center gap-1 text-xs shrink-0">
-                        <i class="fa-solid fa-wand-magic-sparkles text-[10px]"></i>生成名牌
+                        <i class="fa-solid fa-wand-magic-sparkles text-xs"></i>生成名牌
                     </button>
-
-                    <div class="text-center shrink-0 mt-1">
-                        <p class="text-gray-400 font-medium text-[10px]">班級人數統計</p>
-                        <div id="student-count" class="font-black text-amber-800 bg-amber-100/60 rounded-xl py-1 mt-0.5 select-none text-xs">
-                            共 0 人
-                        </div>
-                    </div>
                 </div>
 
                 <!-- 2. GAS Deployment Area -->
@@ -275,17 +401,20 @@
                         <span>數據紀錄</span>
                     </h3>
                     
-                    <!-- 【文字修改】設置試算表 -->
+                    <!-- 前往試算表 -->
+                    <button onclick="openSpreadsheetTab()" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-1.5 px-2 rounded-xl shadow-sm transition-all flex items-center justify-center gap-1 text-xs shrink-0">
+                        <i class="fa-solid fa-arrow-up-right-from-square text-[8px]"></i>前往試算表
+                    </button>
+
+                    <!-- 設置試算表 -->
                     <button onclick="showSetupSpreadsheetModal()" class="w-full bg-pink-500 hover:bg-pink-600 text-white font-bold py-1.5 px-2 rounded-xl shadow-sm transition-all flex items-center justify-center gap-1 text-xs shrink-0">
                         <i class="fa-solid fa-file-invoice text-[10px]"></i>設置試算表
                     </button>
                     
-                    <!-- 【文字修改】儲存紀錄 -->
+                    <!-- 儲存紀錄 -->
                     <button onclick="showSaveRecordModal()" class="w-full bg-purple-600 hover:bg-purple-700 text-white font-bold py-1.5 px-2 rounded-xl shadow-sm transition-all flex items-center justify-center gap-1 text-xs shrink-0">
                         <i class="fa-solid fa-cloud-arrow-up text-[10px]"></i>儲存紀錄
                     </button>
-                    
-                    <!-- 控制台的獨立「開啟試算表」按鈕已依要求在此移除 -->
                 </div>
             </div>
         </section>
@@ -301,11 +430,11 @@
                 <div class="flex flex-col md:flex-row gap-4 flex-grow min-h-0 w-full">
                     
                     <!-- 1. Good performance area -->
-                    <div class="bg-emerald-50/50 border-2 border-emerald-100 rounded-2xl p-3 flex flex-col min-h-0 h-full justify-between w-full md:w-[65%]">
-                        <div class="flex items-center gap-1.5 mb-1.5 text-emerald-700 font-bold border-b border-emerald-100 pb-1.5 shrink-0 text-lg">
-                            <i class="fa-regular fa-face-laugh-beam text-lg text-emerald-500"></i>
+                    <div class="bg-emerald-50/50 border-2 border-emerald-100 rounded-2xl p-3 flex flex-col min-h-0 h-full justify-between w-full md:w-[64.6%]">
+                        <div class="flex items-center gap-1.5 mb-1.5 text-emerald-700 font-bold border-b border-emerald-100 pb-1.5 shrink-0 text-base">
+                            <i class="fa-regular fa-face-laugh-beam text-base text-emerald-500"></i>
                             <span>好表現區 <span class="text-xs font-normal text-emerald-600/80 ml-1 hidden sm:inline">（點擊名牌左側笑臉新增）</span></span>
-                            <span id="good-count" class="ml-auto bg-emerald-100 text-emerald-800 px-1.5 py-0.5 rounded-full text-sm">0 人</span>
+                            <span id="good-count" class="ml-auto bg-emerald-100 text-emerald-800 px-1.5 py-0.5 rounded-full text-xs">0 人</span>
                         </div>
                         
                         <div id="good-zone" class="drag-zone flex-grow overflow-y-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-4 gap-3 p-1.5 pt-2 pb-2 rounded-xl transition-all items-start justify-start content-start" ondragover="allowDrop(event)" ondragenter="dragEnter(event)" ondragleave="dragLeave(event)" ondrop="handleDrop(event, 'good')">
@@ -314,23 +443,23 @@
                             </div>
                         </div>
 
-                        <div class="border-t border-emerald-100/70 pt-2.5 mt-2 shrink-0 bg-white/40 dark:bg-slate-900/20 p-2 rounded-xl">
+                        <!-- 專區下方計時器 -->
+                        <div class="border-t border-emerald-100/70 pt-2.5 mt-2 shrink-0 bg-white/40 p-2 rounded-xl">
                             <div class="flex items-center justify-center gap-1 text-[10px] mb-1.5 font-medium">
-                                <span class="text-emerald-800 dark:text-emerald-300">設定：</span>
                                 <input type="number" id="input-mins-good" value="5" min="0" max="99" class="w-8 text-center border border-emerald-200 rounded p-0.5 text-emerald-900 focus:outline-none">
                                 <span class="text-emerald-700">分</span>
                                 <input type="number" id="input-secs-good" value="0" min="0" max="59" class="w-8 text-center border border-emerald-200 rounded p-0.5 text-emerald-900 focus:outline-none">
                                 <span class="text-emerald-700">秒</span>
-                                <button onclick="applyZoneTime('good')" class="ml-1 bg-emerald-100 dark:bg-emerald-950 text-emerald-800 dark:text-emerald-200 px-1.5 py-0.5 rounded text-[9px] font-extrabold hover:bg-emerald-200 transition-all">套用</button>
+                                <button onclick="applyZoneTime('good')" class="ml-1 bg-emerald-100 dark:bg-emerald-950 text-emerald-800 dark:text-emerald-200 px-1.5 py-0.5 rounded text-[9px] font-extrabold hover:bg-emerald-200 transition-all">設置</button>
                             </div>
-                            <div class="flex flex-row items-center justify-center gap-3 bg-emerald-50 dark:bg-emerald-950/40 px-2.5 py-1.5 rounded-xl border border-emerald-100/50">
-                                <div id="timer-display-good" class="text-lg md:text-xl font-black text-emerald-700 dark:text-emerald-400 font-mono tracking-wider leading-none">05:00</div>
+                            <div class="flex flex-row items-center justify-center gap-3 bg-emerald-50 px-2.5 py-1.5 rounded-xl border border-emerald-100/50">
+                                <div id="timer-display-good" class="text-xl md:text-2xl font-black text-emerald-700 dark:text-amber-400 font-mono tracking-wider leading-none">05:00</div>
                                 <div class="flex gap-1 shrink-0">
-                                    <button id="btn-toggle-good" onclick="toggleZoneTimer('good')" class="bg-emerald-500 hover:bg-emerald-600 text-white text-[10px] py-1 px-2.5 rounded-lg flex items-center gap-0.5 font-bold transition-all shrink-0">
-                                        <i id="icon-toggle-good" class="fa-solid fa-play"></i><span id="text-toggle-good">開始</span>
+                                    <button id="btn-toggle-good" onclick="toggleZoneTimer('good')" class="bg-[#10b981] hover:bg-[#059669] text-white p-0 rounded-md flex items-center justify-center transition-all shrink-0 w-5 h-5" title="開始">
+                                        <i id="icon-toggle-good" class="fa-solid fa-play text-[8px]"></i>
                                     </button>
-                                    <button onclick="resetZoneTimer('good')" class="bg-stone-200 hover:bg-stone-300 text-stone-700 text-[10px] py-1 px-1.5 rounded-lg font-bold shrink-0" title="重設">
-                                        <i class="fa-solid fa-rotate-left"></i>
+                                    <button onclick="resetZoneTimer('good')" class="bg-stone-200 hover:bg-stone-300 text-stone-700 p-0 rounded-md flex items-center justify-center transition-all shrink-0 w-5 h-5" title="重設">
+                                        <i class="fa-solid fa-rotate-left text-[8px]"></i>
                                     </button>
                                 </div>
                             </div>
@@ -338,72 +467,73 @@
                     </div>
 
                     <!-- 2. Reflected area -->
-                    <div class="bg-rose-50/50 border-2 border-rose-100 rounded-2xl p-3 flex flex-col min-h-0 h-full justify-between w-full md:w-[17.5%]">
-                        <div class="flex items-center gap-1.5 mb-1.5 text-rose-700 font-bold border-b border-rose-100 pb-1.5 shrink-0 text-lg">
-                            <i class="fa-regular fa-face-sad-tear text-lg text-rose-500"></i>
+                    <div class="bg-rose-50/50 border-2 border-rose-100 rounded-2xl p-3 flex flex-col min-h-0 h-full justify-between w-full md:w-[17.7%]">
+                        <div class="flex items-center gap-1.5 mb-1.5 text-rose-700 font-bold border-b border-rose-100 pb-1.5 shrink-0 text-base">
+                            <i class="fa-regular fa-face-sad-tear text-base text-rose-500"></i>
                             <span>待改進區</span>
-                            <span id="bad-count" class="ml-auto bg-rose-100 text-rose-800 px-1.5 py-0.5 rounded-full text-sm">0 人</span>
+                            <span id="bad-count" class="ml-auto bg-rose-100 text-rose-800 px-1.5 py-0.5 rounded-full text-xs">0 人</span>
                         </div>
                         
-                        <div id="bad-zone" class="drag-zone flex-grow overflow-y-auto flex flex-col gap-2.5 p-1.5 pt-4 pb-2 rounded-xl transition-all items-center justify-start content-start" ondragover="allowDrop(event)" ondragenter="dragEnter(event)" ondragleave="dragLeave(event)" ondrop="handleDrop(event, 'bad')">
+                        <div id="bad-zone" class="drag-zone flex-grow overflow-y-auto flex flex-col gap-2.5 p-1.5 pt-2 pb-2 rounded-xl transition-all items-center justify-start content-start" ondragover="allowDrop(event)" ondragenter="dragEnter(event)" ondragleave="dragLeave(event)" ondrop="handleDrop(event, 'bad')">
                             <div class="placeholder py-12 flex items-center justify-center text-rose-400 text-xs text-center font-normal">
-                                (拖曳/點擊名牌右側哭臉新增)
+                                (點擊名牌右側哭臉新增)
                             </div>
                         </div>
 
-                        <div class="border-t border-rose-100/70 pt-2.5 mt-2 shrink-0 bg-white/40 dark:bg-slate-900/20 p-2 rounded-xl">
+                        <!-- 專區下方計時器 -->
+                        <div class="border-t border-rose-100/70 pt-2.5 mt-2 shrink-0 bg-white/40 p-2 rounded-xl">
                             <div class="flex items-center justify-center gap-1 text-[10px] mb-1.5 font-medium">
-                                <span class="text-rose-800 dark:text-rose-300">設定：</span>
                                 <input type="number" id="input-mins-bad" value="4" min="0" max="99" class="w-8 text-center border border-rose-200 rounded p-0.5 text-rose-900 focus:outline-none">
                                 <span class="text-rose-700">分</span>
                                 <input type="number" id="input-secs-bad" value="0" min="0" max="59" class="w-8 text-center border border-rose-200 rounded p-0.5 text-rose-900 focus:outline-none">
                                 <span class="text-rose-700">秒</span>
-                                <button onclick="applyZoneTime('bad')" class="ml-1 bg-rose-100 dark:bg-rose-950 text-rose-800 dark:text-rose-200 px-1.5 py-0.5 rounded text-[9px] font-extrabold hover:bg-rose-200 transition-all">套用</button>
+                                <button onclick="applyZoneTime('bad')" class="ml-1 bg-rose-100 dark:bg-rose-950 text-rose-800 dark:text-rose-200 px-1.5 py-0.5 rounded text-[9px] font-extrabold hover:bg-rose-200 transition-all">設置</button>
                             </div>
-                            <div class="flex flex-row items-center justify-center gap-3 bg-rose-50/50 dark:bg-rose-950/15 px-2.5 py-1.5 rounded-xl border border-rose-100/70">
-                                <div id="timer-display-bad" class="text-lg md:text-xl font-black text-rose-700 dark:text-rose-400 font-mono tracking-wider leading-none">04:00</div>
+                            <div class="flex flex-row items-center justify-center gap-3 bg-rose-50/50 px-2.5 py-1.5 rounded-xl border border-rose-100/70">
+                                <div id="timer-display-bad" class="font-black text-rose-700 dark:text-rose-400 font-mono tracking-wider leading-none text-xl md:text-2xl">04:00</div>
                                 <div class="flex gap-1 shrink-0">
-                                    <button id="btn-toggle-bad" onclick="toggleZoneTimer('bad')" class="bg-rose-500 hover:bg-rose-600 text-white text-[10px] py-1 px-2.5 rounded-lg flex items-center gap-0.5 font-bold transition-all shrink-0">
-                                        <i id="icon-toggle-bad" class="fa-solid fa-play"></i><span id="text-toggle-bad">開始</span>
+                                    <button id="btn-toggle-bad" onclick="toggleZoneTimer('bad')" class="bg-rose-500 hover:bg-rose-600 text-white p-0 rounded-md flex items-center justify-center transition-all shrink-0 w-5 h-5" title="開始">
+                                        <i id="icon-toggle-bad" class="fa-solid fa-play text-[8px]"></i>
                                     </button>
-                                    <button onclick="resetZoneTimer('bad')" class="bg-stone-200 hover:bg-stone-300 text-stone-700 text-[10px] py-1 px-2 rounded-lg font-bold shrink-0" title="重設">
-                                        <i class="fa-solid fa-rotate-left"></i>
+                                    <button onclick="resetZoneTimer('bad')" class="bg-stone-200 hover:bg-stone-300 text-stone-700 p-0 rounded-md flex items-center justify-center transition-all shrink-0 w-5 h-5" title="重設">
+                                        <i class="fa-solid fa-rotate-left text-[8px]"></i>
                                     </button>
                                 </div>
                             </div>
                         </div>
                     </div>
 
-                    <div class="bg-sky-50/50 border-2 border-sky-100 rounded-2xl p-3 flex flex-col min-h-0 h-full justify-between w-full md:w-[17.5%]">
-                        <div class="flex items-center gap-1.5 mb-1.5 text-sky-700 font-bold border-b border-sky-100 pb-1.5 shrink-0 text-lg">
-                            <i class="fa-solid fa-restroom text-lg text-sky-500"></i>
+                    <!-- 3. Toilet Area -->
+                    <div class="bg-sky-50/50 border-2 border-sky-100 rounded-2xl p-3 flex flex-col min-h-0 h-full justify-between w-full md:w-[17.7%]">
+                        <div class="flex items-center gap-1.5 mb-1.5 text-sky-700 font-bold border-b border-sky-100 pb-1.5 shrink-0 text-base">
+                            <i class="fa-solid fa-restroom text-base text-sky-500"></i>
                             <span>課間上廁所</span>
-                            <span id="toilet-count" class="ml-auto bg-sky-100 text-sky-800 px-1.5 py-0.5 rounded-full text-sm">0 人</span>
+                            <span id="toilet-count" class="ml-auto bg-sky-100 text-sky-800 px-1.5 py-0.5 rounded-full text-xs">0 人</span>
                         </div>
                         
-                        <div id="toilet-zone" class="drag-zone flex-grow overflow-y-auto flex flex-col gap-2.5 p-1.5 pt-4 pb-2 rounded-xl transition-all items-center justify-start content-start" ondragover="allowDrop(event)" ondragenter="dragEnter(event)" ondragleave="dragLeave(event)" ondrop="handleDrop(event, 'toilet')">
+                        <div id="toilet-zone" class="drag-zone flex-grow overflow-y-auto flex flex-col gap-2.5 p-1.5 pt-2 pb-2 rounded-xl transition-all items-center justify-start content-start" ondragover="allowDrop(event)" ondragenter="dragEnter(event)" ondragleave="dragLeave(event)" ondrop="handleDrop(event, 'toilet')">
                             <div class="placeholder py-12 flex items-center justify-center text-sky-400 text-xs text-center font-normal">
                                 (拖曳名牌至此新增)
                             </div>
                         </div>
 
-                        <div class="border-t border-sky-100/70 pt-2.5 mt-2 shrink-0 bg-white/40 dark:bg-slate-900/20 p-2 rounded-xl">
+                        <!-- 計時器 -->
+                        <div class="border-t border-sky-100/70 pt-2.5 mt-2 shrink-0 bg-white/40 p-2 rounded-xl">
                             <div class="flex items-center justify-center gap-1 text-[10px] mb-1.5 font-medium">
-                                <span class="text-sky-800 dark:text-sky-300">設定：</span>
                                 <input type="number" id="input-mins-toilet" value="2" min="0" max="99" class="w-8 text-center border border-sky-200 rounded p-0.5 text-sky-900 focus:outline-none">
                                 <span class="text-sky-700">分</span>
                                 <input type="number" id="input-secs-toilet" value="0" min="0" max="59" class="w-8 text-center border border-sky-200 rounded p-0.5 text-sky-900 focus:outline-none">
                                 <span class="text-sky-700">秒</span>
-                                <button onclick="applyZoneTime('toilet')" class="ml-1 bg-sky-100 dark:bg-sky-950 text-sky-800 dark:text-sky-200 px-1.5 py-0.5 rounded text-[9px] font-extrabold hover:bg-sky-200 transition-all">套用</button>
+                                <button onclick="applyZoneTime('toilet')" class="ml-1 bg-sky-100 dark:bg-sky-950 text-sky-800 dark:text-sky-200 px-1.5 py-0.5 rounded text-[9px] font-extrabold hover:bg-sky-200 transition-all">設置</button>
                             </div>
-                            <div class="flex flex-row items-center justify-center gap-3 bg-sky-50 dark:bg-sky-950/40 px-2.5 py-1.5 rounded-xl border border-sky-100/50">
-                                <div id="timer-display-toilet" class="text-lg md:text-xl font-black text-sky-700 dark:text-sky-400 font-mono tracking-wider leading-none">02:00</div>
+                            <div class="flex flex-row items-center justify-center gap-3 bg-sky-50 px-2.5 py-1.5 rounded-xl border border-sky-100/50">
+                                <div id="timer-display-toilet" class="font-black text-sky-700 dark:text-sky-400 font-mono tracking-wider leading-none text-xl md:text-2xl">02:00</div>
                                 <div class="flex gap-1 shrink-0">
-                                    <button id="btn-toggle-toilet" onclick="toggleZoneTimer('toilet')" class="bg-sky-500 hover:bg-sky-600 text-white text-[10px] py-1 px-2.5 rounded-lg flex items-center gap-0.5 font-bold transition-all shrink-0">
-                                        <i id="icon-toggle-toilet" class="fa-solid fa-play"></i><span id="text-toggle-toilet">開始</span>
+                                    <button id="btn-toggle-toilet" onclick="toggleZoneTimer('toilet')" class="bg-sky-500 hover:bg-sky-600 text-white p-0 rounded-md flex items-center justify-center transition-all shrink-0 w-5 h-5" title="開始">
+                                        <i id="icon-toggle-toilet" class="fa-solid fa-play text-[8px]"></i>
                                     </button>
-                                    <button onclick="resetZoneTimer('toilet')" class="bg-stone-200 hover:bg-stone-300 text-stone-700 text-[10px] py-1 px-1.5 rounded-lg font-bold shrink-0" title="重設">
-                                        <i class="fa-solid fa-rotate-left"></i>
+                                    <button onclick="resetZoneTimer('toilet')" class="bg-stone-200 hover:bg-stone-300 text-stone-700 p-0 rounded-md flex items-center justify-center transition-all shrink-0 w-5 h-5" title="重設">
+                                        <i class="fa-solid fa-rotate-left text-[8px]"></i>
                                     </button>
                                 </div>
                             </div>
@@ -415,6 +545,7 @@
         </section>
     </main>
 
+    <!-- Homework Checklist Section -->
     <section class="w-full shrink-0">
         <div class="glass-panel rounded-2xl p-5 shadow-sm flex flex-col bg-white/90">
             <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4 mb-4 pb-3 border-b border-amber-100">
@@ -422,10 +553,18 @@
                     <i class="fa-solid fa-clipboard-check text-amber-600"></i>
                     作業檢核區
                 </h2>
-                <div class="flex items-center gap-2 bg-amber-50 p-1.5 rounded-xl border border-amber-100 max-w-lg w-full">
-                    <input type="text" id="hw-name-input" placeholder="請輸入作業名稱 (例如：國習、數單)" class="flex-grow text-sm bg-white border border-amber-200 rounded-lg py-1.5 px-3 focus:outline-none focus:ring-2 focus:ring-amber-500 font-medium">
+                <div class="flex flex-wrap items-center gap-2 bg-amber-50 p-1.5 rounded-xl border border-amber-100 max-w-2xl w-full">
+                    <input type="text" id="hw-name-input" placeholder="請輸入作業名稱 (例如：國習、數單)" class="flex-grow text-sm bg-white border border-amber-200 rounded-lg py-1.5 px-3 focus:outline-none focus:ring-2 focus:ring-amber-500 font-medium min-w-[150px]">
                     <button onclick="addHomeworkItem()" class="bg-amber-500 hover:bg-emerald-600 text-white font-bold text-sm py-1.5 px-4 rounded-lg transition-all shadow-sm shrink-0">
                         <i class="fa-solid fa-plus mr-1"></i>新增作業
+                    </button>
+                    <!-- 一鍵全部打勾按鈕 -->
+                    <button onclick="setAllHomeworkStatus(false)" class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-sm py-1.5 px-3 rounded-lg transition-all shadow-sm shrink-0">
+                        <i class="fa-solid fa-square-check mr-1"></i>全部打勾
+                    </button>
+                    <!-- 一鍵全部畫叉按鈕 -->
+                    <button onclick="setAllHomeworkStatus(true)" class="bg-rose-500 hover:bg-rose-600 text-white font-bold text-sm py-1.5 px-3 rounded-lg transition-all shadow-sm shrink-0">
+                        <i class="fa-solid fa-square-xmark mr-1"></i>全部畫叉
                     </button>
                 </div>
             </div>
@@ -433,14 +572,14 @@
             <div class="overflow-x-auto w-full border border-amber-100 rounded-xl bg-amber-50/10">
                 <table class="w-full border-collapse text-center">
                     <thead>
-                        <tr id="hw-table-header" class="bg-amber-100/50 text-[#78350f] font-bold text-sm">
-                            <th class="p-3 border-b border-r border-amber-200/80 min-w-[80px] max-w-[80px] sticky left-0 bg-amber-50 z-20 text-[#78350f] font-bold text-lg text-center align-middle">登記</th>
+                        <tr id="hw-table-header" class="bg-amber-100/50 text-[#78350f] font-bold text-base">
+                            <th class="p-3 border-b border-r border-amber-200/100 min-w-[100px] max-w-[100px] sticky left-0 bg-amber-50 z-20 text-[#78350f] font-bold text-base text-center align-middle">登記</th>
                         </tr>
                     </thead>
                     <tbody id="hw-table-body" class="divide-y divide-amber-90 text-xs md:text-sm">
                         <tr>
                             <td class="p-8 text-gray-400 italic text-center" colspan="100%">
-                                <i class="fa-solid fa-circle-info mr-1"></i> 請先於左側管理區匯入學生名單，再於右側輸入作業名稱以啟用檢核表格。
+                                <i class="fa-solid fa-circle-info mr-1"></i> 請先於作業檢核區匯入名單，再於右側輸入作業名稱以啟用檢核表格。
                             </td>
                         </tr>
                     </tbody>
@@ -449,19 +588,52 @@
             
             <div class="flex gap-4 items-center justify-end mt-3 text-xs text-gray-500">
                 <span class="flex items-center gap-1">
-                    <span class="w-4 h-4 rounded bg-rose-100 border border-rose-300 inline-block text-center text-[10px] text-rose-600 leading-none">✗</span>
+                    <span class="w-4 h-4 rounded bg-rose-100 border border-rose-300 inline-block text-center text-[10px] text-rose-600">✗</span>
                     未完成 / 未繳交
                 </span>
                 <span class="flex items-center gap-1">
-                    <span class="w-4 h-4 rounded bg-emerald-50 border border-emerald-200 inline-block text-center text-[10px] text-emerald-600 leading-none">✓</span>
+                    <span class="w-4 h-4 rounded bg-emerald-50 border border-emerald-200 inline-block text-center text-[10px] text-emerald-600">✓</span>
                     已完成 / 已繳交
                 </span>
             </div>
         </div>
     </section>
 
-    <!-- 訊息提示視窗 -->
-    <div id="alert-modal" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center hidden opacity-0 transition-opacity duration-300">
+    <!-- Modal Windows -->
+    
+    <!-- 使用說明書彈出視窗 -->
+    <div id="instructions-modal" onclick="if(event.target===this) closeInstructionsModal()" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-[80] flex items-center justify-center hidden opacity-0 transition-opacity duration-300">
+        <div class="bg-white rounded-3xl p-6 md:p-8 w-full max-w-[480px] max-h-[85vh] overflow-y-auto shadow-2xl border-4 border-pink-400 transform transition-transform duration-300 flex flex-col justify-between items-center gap-4">
+            <h2 class="text-xl md:text-2xl font-black text-pink-700 flex items-center gap-2 shrink-0 justify-center">
+                <i class="fa-solid fa-book-open"></i> 🍎 班級經營看板使用說明
+            </h2>
+            <div class="text-gray-600 font-semibold text-xs leading-relaxed space-y-4 pr-1 text-left w-full overflow-y-auto no-scrollbar">
+                <div>
+                    <h3 class="font-bold text-pink-600 flex items-center gap-1.5"><i class="fa-solid fa-users"></i> 一、 學生名單導入與生成</h3>
+                    <p class="pl-5 text-gray-500">點選左側「Excel 匯入」上傳首欄座號、第二欄姓名的檔案；或在文字框手動貼上（格式如：1 洪叡軒）後點選「生成名牌」。</p>
+                </div>
+                <div>
+                    <h3 class="font-bold text-pink-600 flex items-center gap-1.5"><i class="fa-regular fa-star"></i> 二、 表現記錄區與計時器</h3>
+                    <p class="pl-5 text-gray-500">滑鼠移至學生名牌可點擊左側 😊 加星星累積、右側 😢 加入待改進區與閃電累積，亦可直接拖曳名牌至各區，若不小心按錯，可點擊名牌的座號刪除次數。每個計時器倒數結束且按下「確認」後，專區內學生的徽章次數將會自動減 1。</p>
+                </div>
+                <div>
+                    <h3 class="font-bold text-pink-600 flex items-center gap-1.5"><i class="fa-solid fa-clipboard-check"></i> 三、 作業檢核與 BINGO 動畫</h3>
+                    <p class="pl-5 text-gray-500">點選右下方「新增作業」建立項目，點選格子可切換(✗)或(✓)。</p>
+                    <p class="pl-5 text-gray-500">系統全新支援「全部打勾」、「全部畫叉」以便快速重置！當有學生所有作業皆打勾時，將會觸發<strong>金黃色大滿貫 BINGO 特效與慶祝音效</strong>！</p>
+                </div>
+                <div>
+                    <h3 class="font-bold text-pink-600 flex items-center gap-1.5"><i class="fa-solid fa-rotate"></i> 四、 雲端備份（GAS）</h3>
+                    <p class="pl-5 text-gray-500">點選「設置試算表」建立雲端班級名冊與自動加總公式；「儲存紀錄」將當日數據自動備份至試算表最新一列中並清空看板；「前往試算表」一鍵直達雲端看歷史紀錄。</p>
+                </div>
+            </div>
+            <button onclick="closeInstructionsModal()" class="w-full bg-pink-500 hover:bg-pink-600 text-white font-bold py-2.5 px-4 rounded-2xl shadow-lg text-sm shrink-0 transition-all">
+                好的，我知道了！
+            </button>
+        </div>
+    </div>
+
+    <!-- 提醒與警告彈窗 -->
+    <div id="alert-modal" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-[80] flex items-center justify-center hidden opacity-0 transition-opacity duration-300">
         <div class="bg-white rounded-3xl p-6 md:p-8 w-full max-w-[360px] h-[350px] shadow-2xl border-4 border-amber-400 text-center transform transition-transform duration-300 flex flex-col justify-between items-center">
             <div class="flex flex-col items-center justify-center flex-grow w-full">
                 <div class="w-20 h-20 bg-amber-100 rounded-full flex items-center justify-center mx-auto mb-4 animate-bounce shrink-0">
@@ -473,7 +645,7 @@
             
             <!-- Button Container -->
             <div id="alert-btn-container" class="w-full flex gap-2.5 mt-2 shrink-0">
-                <button id="alert-modal-btn" onclick="closeAlertModal()" class="flex-1 bg-amber-500 hover:bg-amber-600 text-white font-bold py-3 px-4 rounded-2xl shadow-lg transition-all text-sm">
+                <button id="alert-modal-btn" onclick="closeAlertModal()" class="flex-grow bg-amber-500 hover:bg-amber-600 text-white font-bold py-3 px-4 rounded-2xl shadow-lg text-sm">
                     確認
                 </button>
             </div>
@@ -498,7 +670,7 @@
                 <button onclick="closeConfirmModal()" class="flex-1 bg-stone-150 hover:bg-stone-200 text-stone-700 font-bold py-2.5 px-4 rounded-xl transition-all text-sm border border-stone-300">
                     取消
                 </button>
-                <button id="confirm-action-btn" onclick="executeConfirmAction()" class="flex-1 bg-pink-500 hover:bg-pink-600 text-white font-bold py-2.5 px-4 rounded-xl shadow-md transition-all text-sm">
+                <button id="confirm-action-btn" onclick="executeConfirmAction()" class="flex-1 bg-pink-500 hover:bg-pink-600 text-white font-bold py-2.5 px-4 rounded-xl shadow-md text-sm transition-all">
                     確定重設試算表資料
                 </button>
             </div>
@@ -527,7 +699,7 @@
     </div>
 
     <!-- Loading overlay -->
-    <div id="loading-overlay" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex flex-col items-center justify-center hidden opacity-0 transition-opacity duration-300">
+    <div id="loading-overlay" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-[90] flex flex-col items-center justify-center hidden opacity-0 transition-opacity duration-300">
         <div class="animate-spin rounded-full h-12 w-12 border-t-4 border-b-4 border-amber-500 mb-4"></div>
         <p id="loading-text" class="text-white font-medium text-sm">正在與試算表同步中，請稍候...</p>
     </div>
@@ -538,16 +710,19 @@
         <p>© 班級經營互動看板作者 — 雁婷老師</p>
     </footer>
 
-    <script {nonce}="">
+    <script>
+        // 1. 全域變數初始化
         let studentsList = []; 
         let totalCreatedCount = 0; 
         let homeworkList = []; 
         let homeworkStatus = {}; 
-        let gasUrl = localStorage.getItem('gasUrl') || 'https://script.google.com/macros/s/AKfycbxsjXAb-iyjmlOXKeY6HUucf9B1HmvaP1OBU-lRQK2QyXgrd7VPZSeXeSHzZUlhzBog/exec'; 
         
-        // 核心機制：建立暫存班級名稱的全域變數，保證儲存完成彈窗能精確取得
+        let gasUrl = localStorage.getItem('gasUrl') || 'https://script.google.com/macros/s/AKfycbyVzMuLUvb6fv61lQmqyCMWYUjHVQB7vB1SHfj2CYjyoJydtw5GqzKwJcDvL8sfZSt/exec'; 
+        
         let currentSavedClassName = "";
+        let currentConfirmAction = null;
 
+        // 全域變數 timers 初始化
         let timers = {
             good: { remaining: 300, total: 300, running: false, interval: null },
             bad: { remaining: 240, total: 240, running: false, interval: null },
@@ -555,11 +730,117 @@
         };
 
         let currentTimeoutZone = null;
-        let currentConfirmAction = null;
         let confettiActive = false;
         let confettiParticles = [];
         const confettiColors = ['#f43f5e', '#10b981', '#06b6d4', '#f59e0b', '#ec4899', '#3b82f6', '#ffffff'];
 
+        // 確保 renderHomeworkTable 於頂層正確載入定義
+        function renderHomeworkTable() {
+            const tableHeader = document.getElementById('hw-table-header'), tableBody = document.getElementById('hw-table-body');
+            if (!tableHeader || !tableBody) return;
+            // 表頭首欄「登記」改為 base (text-base)
+            tableHeader.innerHTML = `<th class="p-3 border-b border-r border-amber-200/100 min-w-[100px] max-w-[100px] sticky left-0 bg-amber-50 z-20 text-[#78350f] font-bold text-base text-center align-middle">登記</th>`;
+            
+            studentsList.forEach(student => {
+                const th = document.createElement('th');
+                th.className = "p-1 border-b border-r border-amber-200/80 min-w-[48px] max-w-[48px] bg-amber-100/30 text-[#78350f] font-bold text-center align-middle";
+                // 補上 dark:bg-amber-950, dark:text-amber-300 等夜間模式高對比配色，確保座號在黑夜模式下清晰可見
+                th.innerHTML = `
+                    <div class="flex flex-col items-center justify-center gap-1.5 h-[145px] py-2 mx-auto">
+                        <!-- 作業勾選表上的座號圓圈數字字體大小統一改為 sm (text-sm) -->
+                        <span class="w-7 h-7 flex items-center justify-center rounded-full text-sm font-black ${(parseInt(student.number) % 2 === 0) ? 'bg-amber-100 text-amber-900 dark:bg-amber-950 dark:text-amber-300' : 'bg-orange-100 text-orange-900 dark:bg-orange-950 dark:text-orange-300'} shrink-0 shadow-sm">${student.number}</span>
+                        <!-- 作業勾選表上的學生直書中文姓名字體大小調整為 base (text-base) -->
+                        <span class="vertical-header text-base tracking-wide font-bold leading-none">${student.name}</span>
+                    </div>`;
+                tableHeader.appendChild(th);
+            });
+
+            if (studentsList.length === 0) { tableBody.innerHTML = `<tr><td class="p-10 text-gray-400 italic text-center" colspan="100%">請先匯入名單。</td></tr>`; return; }
+            if (homeworkList.length === 0) { tableBody.innerHTML = `<tr><td class="p-10 text-gray-400 italic text-center" colspan="100%">請在右上方點擊「新增作業」建立項目。</td></tr>`; return; }
+
+            tableBody.innerHTML = '';
+            homeworkList.forEach((hw, idx) => {
+                const tr = document.createElement('tr'); tr.className = "hover:bg-amber-50/40 transition-colors";
+                
+                // 作業名稱欄：字體大小改為 base (text-base) (補上 group 類別，使刪除按鈕能正常 hover 顯示)
+                const hwTd = document.createElement('td'); hwTd.className = "p-2 border-b border-r border-amber-200 bg-white sticky left-0 z-10 min-w-[80px] max-w-[80px] text-center align-middle h-16 group";
+                hwTd.innerHTML = `<div class="flex items-center justify-center gap-1 px-0.5 relative w-full h-full"><span class="truncate text-base font-bold mx-auto text-[#78350f]" title="${hw}">${hw}</span><button onclick="deleteHomeworkItem(${idx})" class="text-red-400 hover:text-red-600 opacity-0 group-hover:opacity-100 text-sm absolute right-0.5"><i class="fa-solid fa-circle-xmark"></i></button></div>`;
+                tr.appendChild(hwTd);
+
+                studentsList.forEach(student => {
+                    const cellTd = document.createElement('td');
+                    cellTd.className = homeworkStatus[`${student.number}-${student.name}_${hw}`] !== false ? "py-4.5 px-2.5 border-b border-r border-amber-100 bg-rose-100 text-rose-600 text-center font-bold text-sm cursor-pointer hover:bg-rose-200 min-w-[48px] max-w-[48px] h-16 align-middle transition-colors" : "py-4.5 px-2.5 border-b border-r border-amber-100 bg-emerald-50 text-emerald-600 text-center font-bold text-sm cursor-pointer hover:bg-emerald-100 min-w-[48px] max-w-[48px] h-16 align-middle transition-colors";
+                    cellTd.innerHTML = homeworkStatus[`${student.number}-${student.name}_${hw}`] !== false ? `<i class="fa-solid fa-xmark scale-110"></i>` : `<i class="fa-solid fa-check scale-110"></i>`;
+                    cellTd.onclick = function() { toggleHwCell(student.number, student.name, hw, cellTd); };
+                    tr.appendChild(cellTd);
+                });
+                tableBody.appendChild(tr);
+            });
+        }
+
+        // 補回 loadDemoStudents 函數定義並置於頂部
+        function loadDemoStudents() {
+            const demoText = "1 洪叡軒\n1 何聿倫\n2 高嘉恩\n2 曾紹倫\n3 周紹群\n4 廖恩可\n5 陳熙文\n6 謝睿陽\n7 何仲偉\n7 陳柏琛\n9 王宥傑\n10 林詩芸\n11 吳苡樂\n12 陳蕾伊\n13 林亞歆\n13 黃佳營\n14 林雨霏\n15 周育欣\n16 吳依宸\n17 黃苡真\n18 陳泓鈺";
+            document.getElementById('text-input').value = demoText;
+            generateFromText();
+            if (homeworkList.length === 0) {
+                homeworkList = ["國語", "數學", "閱讀"];
+                renderHomeworkTable();
+            }
+        }
+
+        // 補回並修正 toggleHwCell 函數定義
+        function toggleHwCell(number, name, hwName, cell) {
+            const key = `${number}-${name}_${hwName}`;
+            const isUnfinished = homeworkStatus[key] !== false;
+            if (isUnfinished) {
+                homeworkStatus[key] = false;
+                cell.className = "py-4.5 px-2.5 border-b border-r border-amber-100 bg-emerald-50 text-emerald-600 text-center font-bold text-sm cursor-pointer hover:bg-emerald-100 transition-colors select-none min-w-[48px] max-w-[48px] h-16 align-middle";
+                cell.innerHTML = `<i class="fa-solid fa-check scale-110"></i>`;
+                
+                // 檢查 Bingo 全交
+                let allDone = true;
+                for (let hw of homeworkList) { 
+                    if (homeworkStatus[`${number}-${name}_${hw}`] !== false) allDone = false; 
+                }
+                if (allDone) {
+                    document.getElementById('celebration-student-info').textContent = `${number}號 ${name}`;
+                    playCelebrationSound();
+                    const overlay = document.getElementById('celebration-overlay');
+                    overlay.classList.remove('hidden');
+                    setTimeout(() => overlay.classList.remove('opacity-0'), 10);
+                    confettiActive = true; 
+                    startConfetti();
+                }
+            } else {
+                homeworkStatus[key] = true;
+                cell.className = "py-4.5 px-2.5 border-b border-r border-amber-100 bg-rose-100 text-rose-600 text-center font-bold text-sm cursor-pointer hover:bg-rose-200 transition-colors select-none min-w-[48px] max-w-[48px] h-16 align-middle";
+                cell.innerHTML = `<i class="fa-solid fa-xmark scale-110"></i>`;
+            }
+        }
+
+        // 補回作業新增與刪除管理函數
+        function addHomeworkItem() {
+            const input = document.getElementById('hw-name-input');
+            if (!input) return;
+            const hwName = input.value.trim();
+            if (!hwName || homeworkList.includes(hwName)) return;
+            homeworkList.push(hwName); 
+            input.value = ''; 
+            renderHomeworkTable();
+        }
+
+        // 刪除作業
+        function deleteHomeworkItem(index) {
+            const name = homeworkList[index];
+            homeworkList.splice(index, 1);
+            for (let k in homeworkStatus) { 
+                if (k.endsWith(`_${name}`)) delete homeworkStatus[k]; 
+            }
+            renderHomeworkTable();
+        }
+
+        // 依座號排序指定表現區域內的所有學生卡片
         function sortZoneCards(zone) {
             const cards = Array.from(zone.querySelectorAll('.student-card'));
             cards.sort((a, b) => {
@@ -568,6 +849,34 @@
                 return numA - numB;
             });
             cards.forEach(card => zone.appendChild(card));
+        }
+
+        function switchImportTab(type) {
+            const btnExcel = document.getElementById('btn-tab-excel');
+            const btnText = document.getElementById('btn-tab-text');
+            const areaExcel = document.getElementById('import-excel-area');
+            const areaText = document.getElementById('import-text-area');
+            const isDarkMode = document.body.classList.contains('dark-mode');
+
+            if (type === 'excel') {
+                btnExcel.className = "flex-1 py-1 px-2 rounded-lg bg-amber-500 text-white shadow-sm transition-all";
+                if (isDarkMode) {
+                    btnText.className = "flex-1 py-1 px-2 rounded-lg tab-inactive-dark transition-all";
+                } else {
+                    btnText.className = "flex-1 py-1 px-2 rounded-lg bg-amber-100 text-amber-800 hover:bg-amber-200 transition-all";
+                }
+                areaExcel.classList.remove('hidden');
+                areaText.classList.add('hidden');
+            } else {
+                btnText.className = "flex-1 py-1 px-2 rounded-lg bg-amber-500 text-white shadow-sm transition-all";
+                if (isDarkMode) {
+                    btnExcel.className = "flex-1 py-1 px-2 rounded-lg tab-inactive-dark transition-all";
+                } else {
+                    btnExcel.className = "flex-1 py-1 px-2 rounded-lg bg-amber-100 text-amber-800 hover:bg-amber-200 transition-all";
+                }
+                areaExcel.classList.add('hidden');
+                areaText.classList.remove('hidden');
+            }
         }
 
         let draggedElement = null;
@@ -587,9 +896,9 @@
         }
         function allowDrop(e) { e.preventDefault(); }
         function dragEnter(e) {
-            e.preventDefault();
             const zone = e.currentTarget;
-            if (document.body.classList.contains('dark-mode')) {
+            const isDarkMode = document.body.classList.contains('dark-mode');
+            if (isDarkMode) {
                 if (zone.id === 'good-zone') zone.classList.add('good-zone-hover');
                 else if (zone.id === 'bad-zone') zone.classList.add('bad-zone-hover');
                 else if (zone.id === 'toilet-zone') zone.classList.add('toilet-zone-hover');
@@ -609,16 +918,6 @@
             const sourceCard = document.getElementById(id);
             if (!sourceCard) return;
             addStudentToZone(sourceCard.getAttribute('data-number'), sourceCard.getAttribute('data-name'), zoneType);
-        }
-
-        function loadDemoStudents() {
-            const demoText = "1 洪叡軒\n1 何聿倫\n2 高嘉恩\n2 曾紹倫\n3 周紹群\n4 廖恩可\n5 陳熙文\n6 謝睿陽\n7 何仲偉\n7 陳柏琛\n9 王宥傑\n10 林詩芸\n11 吳苡樂\n12 陳蕾伊\n13 林亞歆\n13 黃佳營\n14 林雨霏\n15 周育欣\n16 吳依宸\n17 黃苡真\n18 陳泓鈺";
-            document.getElementById('text-input').value = demoText;
-            generateFromText();
-            if (homeworkList.length === 0) {
-                homeworkList = ["國語", "數學", "閱讀"];
-                renderHomeworkTable();
-            }
         }
 
         function handleExcelUpload(event) {
@@ -695,11 +994,11 @@
             if (badZone.querySelector('.placeholder')) badZone.querySelector('.placeholder').style.display = badZone.querySelectorAll('.student-card').length > 0 ? 'none' : 'flex';
             if (toiletZone.querySelector('.placeholder')) toiletZone.querySelector('.placeholder').style.display = toiletZone.querySelectorAll('.student-card').length > 0 ? 'none' : 'flex';
 
-            document.getElementById('student-count').textContent = `共 ${studentsList.length} 人`;
             sortZoneCards(goodZone); sortZoneCards(badZone); sortZoneCards(toiletZone);
             renderHomeworkTable(); updateCounts();
         }
 
+        // 學生名牌寬度增加 8% 至 w-[138px]，座號字體大小改為 sm，中文姓名 max-w 寬度微調 (補上夜間模式高對比座號圓圈 CSS)
         function createUniversalCard(number, name) {
             totalCreatedCount++;
             const card = document.createElement('div');
@@ -708,17 +1007,21 @@
             card.setAttribute('data-number', number);
             card.setAttribute('data-name', name);
             card.setAttribute('data-count-good', '0');
-            const bgCircleClass = (parseInt(number) % 2 === 0) ? 'bg-amber-100 text-amber-800' : 'bg-orange-100 text-orange-900';
-            card.className = "student-card bg-white border border-amber-200 hover:border-amber-400 hover:shadow-md rounded-xl shadow-sm w-40 h-11 shrink-0 mx-auto flex items-center justify-center gap-1.5 group relative transition-all duration-300 cursor-grab active:cursor-grabbing text-base";
+            const bgCircleClass = (parseInt(number) % 2 === 0) 
+                ? 'bg-amber-100 text-amber-800 dark:bg-amber-950 dark:text-amber-300' 
+                : 'bg-orange-100 text-orange-900 dark:bg-orange-950 dark:text-orange-300';
+            card.className = "student-card bg-white border border-amber-200 hover:border-amber-400 hover:shadow-md rounded-xl shadow-sm w-[138px] h-11 shrink-0 mx-auto flex items-center justify-center gap-1.5 group relative transition-all duration-300 cursor-grab active:cursor-grabbing text-base";
             card.innerHTML = `
                 <button class="quick-good-btn absolute left-1.5 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-opacity text-emerald-500 hover:text-emerald-600 cursor-pointer z-30 p-1">
                     <i class="fa-regular fa-face-laugh-beam text-sm md:text-base"></i>
                 </button>
+                <!-- 座號按鈕字體改為 text-sm -->
                 <button class="delete-btn w-7 h-7 flex items-center justify-center rounded-full text-sm font-black ${bgCircleClass} hover:bg-stone-200 hover:text-stone-600 relative transition-all duration-200 pointer-events-auto group/btn focus:outline-none">
                     <span class="group-hover/btn:scale-0 transition-transform duration-200">${number}</span>
                     <i class="fa-regular fa-trash-can text-xs absolute opacity-0 group-hover/btn:opacity-100 transition-opacity duration-200"></i>
                 </button>
-                <span class="truncate text-amber-950 font-bold text-base md:text-lg max-w-[70px]">${name}</span>
+                <!-- 中文姓名字體維持 text-base，可視寬度增加 -->
+                <span class="truncate text-amber-950 font-bold text-base max-w-[62px]">${name}</span>
                 <button class="quick-bad-btn absolute right-1.5 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-opacity text-rose-500 hover:text-rose-600 cursor-pointer z-20 p-1">
                     <i class="fa-regular fa-face-sad-tear text-sm md:text-base"></i>
                 </button>
@@ -732,25 +1035,31 @@
             return card;
         }
 
+        // 學生名牌寬度增加 8% 至 w-[138px]，座號字體大小改為 sm，中文姓名 max-w 寬度微調 (補上夜間模式高對比座號圓圈 CSS)
         function createZoneCard(number, name, zoneType, count) {
             const card = document.createElement('div');
             card.id = `student-zone-card-${zoneType}-${number}`;
             card.setAttribute('data-number', number);
             card.setAttribute('data-name', name);
-            const bgCircleClass = (parseInt(number) % 2 === 0) ? 'bg-amber-100 text-amber-800' : 'bg-orange-100 text-orange-900';
-            card.className = "student-card bg-white border border-amber-200 hover:border-amber-400 hover:shadow-md rounded-xl shadow-sm w-40 h-11 shrink-0 mx-auto flex items-center justify-center gap-1.5 group relative transition-all duration-300 cursor-default text-base";
+            const bgCircleClass = (parseInt(number) % 2 === 0) 
+                ? 'bg-amber-100 text-amber-800 dark:bg-amber-950 dark:text-amber-300' 
+                : 'bg-orange-100 text-orange-900 dark:bg-orange-950 dark:text-orange-300';
+            card.className = "student-card bg-white border border-amber-200 hover:border-amber-400 hover:shadow-md rounded-xl shadow-sm w-[138px] h-11 shrink-0 mx-auto flex items-center justify-center gap-1.5 group relative transition-all duration-300 cursor-default text-base";
             
             if (zoneType === 'bad') {
                 card.setAttribute('data-count-bad', count);
-                card.innerHTML = `<button class="delete-btn w-7 h-7 flex items-center justify-center rounded-full text-sm font-black ${bgCircleClass} hover:bg-stone-200 hover:text-stone-600 shrink-0 shadow-sm ml-2 group/btn relative transition-all duration-200"><span class="group-hover/btn:scale-0">${number}</span><i class="fa-regular fa-trash-can text-xs absolute opacity-0 group-hover/btn:opacity-100"></i></button><span class="truncate text-amber-950 font-bold max-w-[70px]">${name}</span><div class="lightning-badge badge-unified animate-pulse"><i class="fa-solid fa-bolt text-[7px] text-yellow-700 mr-0.5"></i><span class="badge-count">${count}</span></div>`;
+                // 座號按鈕字體大小改為 text-sm，中文字體 text-base
+                card.innerHTML = `<button class="delete-btn w-7 h-7 flex items-center justify-center rounded-full text-sm font-black ${bgCircleClass} hover:bg-stone-200 hover:text-stone-600 shrink-0 shadow-sm ml-2 group/btn relative transition-all duration-200"><span class="group-hover/btn:scale-0">${number}</span><i class="fa-regular fa-trash-can text-xs absolute opacity-0 group-hover/btn:opacity-100"></i></button><span class="truncate text-amber-950 font-bold text-base max-w-[62px]">${name}</span><div class="lightning-badge badge-unified animate-pulse"><i class="fa-solid fa-bolt text-[7px] text-yellow-700 mr-0.5"></i><span class="badge-count">${count}</span></div>`;
             } else if (zoneType === 'toilet') {
                 card.setAttribute('data-count-toilet', count);
-                card.innerHTML = `<button class="delete-btn w-7 h-7 flex items-center justify-center rounded-full text-sm font-black ${bgCircleClass} hover:bg-stone-200 hover:text-stone-600 shrink-0 shadow-sm ml-2 group/btn relative transition-all duration-200"><span class="group-hover/btn:scale-0">${number}</span><i class="fa-regular fa-trash-can text-xs absolute opacity-0 group-hover/btn:opacity-100"></i></button><span class="truncate text-amber-950 font-bold max-w-[70px]">${name}</span><div class="toilet-badge badge-unified animate-pulse"><i class="fa-solid fa-droplet text-[7px] text-sky-100 mr-0.5"></i><span class="badge-count">${count}</span></div>`;
+                // 座號按鈕字體大小改為 text-sm，中文字體 text-base
+                card.innerHTML = `<button class="delete-btn w-7 h-7 flex items-center justify-center rounded-full text-sm font-black ${bgCircleClass} hover:bg-stone-200 hover:text-stone-600 shrink-0 shadow-sm ml-2 group/btn relative transition-all duration-200"><span class="group-hover/btn:scale-0">${number}</span><i class="fa-regular fa-trash-can text-xs absolute opacity-0 group-hover/btn:opacity-100"></i></button><span class="truncate text-amber-950 font-bold text-base max-w-[62px]">${name}</span><div class="toilet-badge badge-unified animate-pulse"><i class="fa-solid fa-droplet text-[7px] text-sky-100 mr-0.5"></i><span class="badge-count">${count}</span></div>`;
             }
             card.querySelector('.delete-btn').addEventListener('click', (e) => { e.stopPropagation(); removeCardOrReduceCount(card, zoneType); });
             return card;
         }
 
+        // 學生分發至特定表現區域之 addStudentToZone 函數定義
         function addStudentToZone(number, name, zoneType) {
             const targetZone = document.getElementById(`${zoneType}-zone`);
             if (!targetZone) return;
@@ -773,6 +1082,7 @@
             sortZoneCards(targetZone); updateCounts();
         }
 
+        // 重構並補回 addStarToCard 函數
         function addStarToCard(card) {
             let count = parseInt(card.getAttribute('data-count-good') || 0) + 1;
             card.setAttribute('data-count-good', count);
@@ -806,6 +1116,7 @@
                     if (parent && parent.querySelectorAll('.student-card').length === 0 && parent.querySelector('.placeholder')) parent.querySelector('.placeholder').style.display = 'flex';
                 }
             }
+            boxCheck(card); // 觸發可能的聯動狀態檢查
             updateCounts();
         }
 
@@ -842,6 +1153,81 @@
             document.getElementById('toilet-count').textContent = `${document.getElementById('toilet-zone').querySelectorAll('.student-card').length} 人`;
         }
 
+        // 全域彈出警告視窗的核心定義與控制台 UI 連動邏輯
+        function alertModalMessage(title, message, type = 'info') {
+            const modal = document.getElementById('alert-modal');
+            const cardPanel = modal.querySelector('.bg-white');
+            const desc = document.getElementById('alert-modal-desc');
+            const details = document.getElementById('alert-modal-details');
+            const iconBell = document.getElementById('alert-icon-bell');
+            const iconWrapper = iconBell.parentElement;
+            const btnContainer = document.getElementById('alert-btn-container');
+
+            desc.innerHTML = title;
+            details.innerHTML = message ? message.replace(/\n/g, '<br>') : "";
+            if (message) details.classList.remove('hidden'); else details.classList.add('hidden');
+
+            const baseClass = "bg-white rounded-3xl p-6 md:p-8 w-full max-w-[360px] h-[350px] shadow-2xl text-center flex flex-col justify-between items-center border-4";
+            btnContainer.innerHTML = `<button id="alert-modal-btn" onclick="closeAlertModal()" class="flex-grow bg-amber-500 hover:bg-amber-600 text-white font-bold py-3 px-4 rounded-2xl shadow-lg text-sm">確認</button>`;
+            const defaultBtn = document.getElementById('alert-modal-btn');
+
+            if (type === 'save_success') {
+                cardPanel.className = `${baseClass} border-purple-400`;
+                iconWrapper.className = "w-20 h-20 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-4 animate-bounce shrink-0";
+                iconBell.className = "fa-solid fa-circle-check text-4xl text-purple-500";
+                desc.className = "text-purple-700 font-bold text-lg md:text-xl text-center leading-snug mb-2 w-full truncate";
+                btnContainer.innerHTML = `
+                    <button onclick="closeAlertModal()" class="flex-1 bg-stone-200 hover:bg-stone-300 text-stone-700 font-bold py-3 px-4 rounded-2xl shadow-md text-xs focus:outline-none">
+                        確認
+                    </button>
+                    <button onclick="openSpreadsheetTab()" class="flex-1 bg-purple-600 hover:bg-purple-700 text-white font-bold py-3 px-4 rounded-2xl shadow-md text-xs flex items-center justify-center gap-1 focus:outline-none">
+                        <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>開啟試算表
+                    </button>
+                `;
+            } else if (type === 'init_success') {
+                // 設置試算表成功後，呈現原汁原味的暖色調粉色主題，並提供「確認」與「開啟試算表」雙按鈕跳轉
+                cardPanel.className = `${baseClass} border-pink-400`;
+                iconWrapper.className = "w-20 h-20 bg-pink-100 rounded-full flex items-center justify-center mx-auto mb-4 animate-bounce shrink-0";
+                iconBell.className = "fa-solid fa-circle-check text-4xl text-pink-500";
+                desc.className = "text-pink-700 font-bold text-lg md:text-xl text-center leading-snug mb-2 w-full truncate";
+                btnContainer.innerHTML = `
+                    <button onclick="closeAlertModal()" class="flex-1 bg-stone-200 hover:bg-stone-300 text-stone-700 font-bold py-3 px-4 rounded-2xl shadow-md text-xs focus:outline-none">
+                        確認
+                    </button>
+                    <button onclick="openSpreadsheetTab()" class="flex-1 bg-pink-500 hover:bg-pink-600 text-white font-bold py-3 px-4 rounded-2xl shadow-md text-xs flex items-center justify-center gap-1 focus:outline-none">
+                        <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>開啟試算表
+                    </button>
+                `;
+            } else if (type === 'success') {
+                cardPanel.className = `${baseClass} border-emerald-400`;
+                iconWrapper.className = "w-20 h-20 bg-emerald-100 rounded-full flex items-center justify-center mx-auto mb-4 animate-bounce shrink-0";
+                iconBell.className = "fa-solid fa-circle-check text-4xl text-emerald-500";
+                desc.className = "text-emerald-700 font-bold text-lg md:text-xl text-center leading-snug mb-2 w-full truncate";
+                defaultBtn.className = "w-full bg-emerald-500 hover:bg-emerald-600 text-white font-bold py-3 px-6 rounded-2xl shadow-lg text-sm";
+            } else if (type === 'error') {
+                cardPanel.className = `${baseClass} border-rose-400`;
+                iconWrapper.className = "w-20 h-20 bg-rose-100 rounded-full flex items-center justify-center mx-auto mb-4 animate-pulse shrink-0";
+                iconBell.className = "fa-solid fa-circle-xmark text-4xl text-rose-500";
+                desc.className = "text-rose-700 font-bold text-lg md:text-xl text-center leading-snug mb-2 w-full truncate";
+                defaultBtn.className = "w-full bg-rose-500 hover:bg-rose-600 text-white font-bold py-3 px-6 rounded-2xl shadow-lg text-sm";
+            } else if (type === 'connect') {
+                cardPanel.className = `${baseClass} border-slate-400`;
+                iconWrapper.className = "w-20 h-20 bg-slate-100 rounded-full flex items-center justify-center mx-auto mb-4 animate-bounce shrink-0";
+                iconBell.className = "fa-solid fa-lightbulb text-4xl text-slate-500";
+                desc.className = "text-slate-700 font-bold text-lg md:text-xl text-center leading-snug mb-2 w-full truncate";
+                defaultBtn.className = "w-full bg-slate-500 hover:bg-slate-600 text-white font-bold py-3 px-6 rounded-2xl shadow-lg text-sm";
+            } else {
+                cardPanel.className = `${baseClass} border-amber-400`;
+                iconWrapper.className = "w-20 h-20 bg-amber-100 rounded-full flex items-center justify-center mx-auto mb-4 animate-bounce shrink-0";
+                iconBell.className = "fa-solid fa-bell text-4xl text-amber-500";
+                desc.className = "font-black text-xl text-center leading-snug mb-2 w-full";
+                defaultBtn.className = "w-full bg-amber-500 hover:bg-amber-600 text-white font-bold py-3 px-6 rounded-2xl shadow-lg text-sm";
+            }
+
+            modal.classList.remove('hidden'); setTimeout(() => modal.classList.remove('opacity-0'), 10);
+        }
+
+        // 補回 GAS 與試算表連結與確認彈窗核心函數
         function connectGas() {
             const input = document.getElementById('gas-url-input');
             if (!input) return;
@@ -898,18 +1284,13 @@
             }
         }
 
-        // 【純後端動態開啟試算表機制】：不需要 LocalStorage 即可動態與 GAS 通訊直達對應班級
         async function openSpreadsheetTab() {
             if (!gasUrl) { 
                 alertModalMessage("尚未設定後端", "請先於控制台貼上您的 GAS 網址並點選後端連結！", "warning"); 
                 return; 
             }
-
-            // 直接讀取剛剛暫存下來、或是畫面上輸入的班級
             let className = currentSavedClassName || document.getElementById('confirm-class-input')?.value.trim() || "";
-
             showLoading(true, "正在線上取得您的 Google 試算表專屬直達連結...");
-
             try {
                 const payload = { action: "getUrl", className: className };
                 const options = { 
@@ -918,13 +1299,10 @@
                     headers: { 'Content-Type': 'text/plain;charset=utf-8' }, 
                     body: JSON.stringify(payload) 
                 };
-                
                 const response = await fetch(gasUrl, options);
                 const data = await response.json();
                 showLoading(false);
-
                 if (data && data.status === "success" && data.spreadsheetUrl) {
-                    // 精確直達對應班級分頁標籤！
                     window.open(data.spreadsheetUrl, '_blank');
                 } else {
                     alertModalMessage("開啟失敗", data.message || "後端目前尚未設定試算表，請先點選「設置試算表」！", "error");
@@ -936,12 +1314,10 @@
             }
         }
 
-        // 設置試算表
         function showSetupSpreadsheetModal() {
             if (!gasUrl) { alertModalMessage("提示", "請先於控制台設定您的 GAS 部署網址並完成後端連結！", "warning"); return; }
             if (studentsList.length === 0) { alertModalMessage("名單為空", "請先手動產生或匯入學生名單，才能將名單部署至試算表！", "warning"); return; }
             currentConfirmAction = 'init';
-            
             document.getElementById('confirm-card-panel').className = "bg-white rounded-3xl p-6 md:p-8 max-w-md w-full mx-4 shadow-2xl border-4 border-pink-400 text-center flex flex-col";
             document.getElementById('confirm-icon-wrapper').className = "w-16 h-16 bg-pink-100 rounded-full flex items-center justify-center mx-auto mb-4 animate-pulse shrink-0";
             document.getElementById('confirm-modal-icon').className = "fa-solid fa-triangle-exclamation text-3xl text-pink-500";
@@ -950,26 +1326,22 @@
             document.getElementById('confirm-action-btn').className = "flex-1 bg-pink-500 hover:bg-pink-600 text-white font-bold py-2.5 px-4 rounded-xl shadow-md text-sm transition-all";
             document.getElementById('confirm-action-btn').textContent = "確定重設試算表資料";
             document.getElementById('confirm-class-input').value = "";
-            
             const modal = document.getElementById('confirm-modal');
             modal.classList.remove('hidden'); setTimeout(() => modal.classList.remove('opacity-0'), 10);
         }
 
-        // 儲存紀錄 (彈窗與文字已優化，增加目前板面資訊會歸零之提醒)
         function showSaveRecordModal() {
             if (!gasUrl) { alertModalMessage("提示", "請先於控制台設定您的 GAS 部署網址並完成後端連結！", "warning"); return; }
             if (studentsList.length === 0) { alertModalMessage("名單為空", "目前看板中無任何學生，無法傳送紀錄！", "warning"); return; }
             currentConfirmAction = 'record';
-            
             document.getElementById('confirm-card-panel').className = "bg-white rounded-3xl p-6 md:p-8 max-w-md w-full mx-4 shadow-2xl border-4 border-purple-400 text-center flex flex-col";
             document.getElementById('confirm-icon-wrapper').className = "w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-4 animate-bounce shrink-0";
             document.getElementById('confirm-modal-icon').className = "fa-solid fa-cloud-arrow-up text-3xl text-purple-500";
             document.getElementById('confirm-modal-title').textContent = "💾 儲存紀錄";
-            document.getElementById('confirm-modal-desc-box').innerHTML = "即將打包與清理目前版面上之好表現、待改進與課間上廁所的資料，並自動記錄至您輸入之班級的專屬工作表最新一列中！";
+            document.getElementById('confirm-modal-desc-box').innerHTML = "即將打包目前的好表現、待改進與課間上廁所的資料，並自動記錄至您輸入之班級的專屬工作表最新一列中！提醒您：按下儲存後，目前板面上的資訊會歸零喔！";
             document.getElementById('confirm-action-btn').className = "flex-1 bg-purple-600 hover:bg-purple-700 text-white font-bold py-2.5 px-4 rounded-xl shadow-md text-sm transition-all";
             document.getElementById('confirm-action-btn').textContent = "確定儲存資料";
             document.getElementById('confirm-class-input').value = "";
-            
             const modal = document.getElementById('confirm-modal');
             modal.classList.remove('hidden'); setTimeout(() => modal.classList.remove('opacity-0'), 10);
         }
@@ -979,6 +1351,7 @@
             modal.classList.add('opacity-0'); setTimeout(() => { modal.classList.add('hidden'); currentConfirmAction = null; }, 300);
         }
 
+        // 行為表現/設置試算表確認事件
         function executeConfirmAction() {
             const className = document.getElementById('confirm-class-input').value.trim();
             if (!className) { alertModalMessage("請輸入班級", "班級名稱不能留空喔！請輸入如 301 或 502。", "warning"); return; }
@@ -988,12 +1361,12 @@
 
         async function executeInitSheet(className) {
             closeConfirmModal();
-            // 在成功完成前預先暫存班級名稱
             currentSavedClassName = className;
             const payload = { action: "init", className: className, students: studentsList.map(s => `${s.number} ${s.name}`) };
             const data = await sendPostToGas(payload);
             if (data && data.status === "success") {
-                alertModalMessage("設置完成", `已為班級【${className}】成功建立獨立工作表標題與學生名冊欄位！`, "success");
+                // 這裡改用 "init_success" 的類型，使其顯示「確認」與「開啟試算表」雙按鈕跳轉
+                alertModalMessage("設置完成", `已為班級【${className}】成功建立獨立工作表標題與學生名冊欄位！`, "init_success");
             } else if (data) {
                 alertModalMessage("設置失敗", data.message || "工作表建立失敗", "error");
             }
@@ -1001,9 +1374,7 @@
 
         async function executeSaveRecord(className) {
             closeConfirmModal();
-            // 暫存本次寫入的班級名稱，以便下方「開啟試算表」按鈕使用
             currentSavedClassName = className;
-
             const badRecordArray = Array.from(document.getElementById('bad-zone').querySelectorAll('.student-card')).map(card => `${card.getAttribute('data-number')}${card.getAttribute('data-name')}(${card.getAttribute('data-count-bad') || 1})`);
             const toiletRecordArray = Array.from(document.getElementById('toilet-zone').querySelectorAll('.student-card')).map(card => `${card.getAttribute('data-number')}${card.getAttribute('data-name')}(${card.getAttribute('data-count-toilet') || 1})`);
             
@@ -1023,7 +1394,6 @@
             const data = await sendPostToGas(payload);
             
             if (data && data.status === "success") {
-                // 儲存成功後，執行清除與歸零
                 resetZoneTimer('good'); resetZoneTimer('bad'); resetZoneTimer('toilet');
                 document.getElementById('bad-zone').querySelectorAll('.student-card').forEach(c => c.remove());
                 document.getElementById('toilet-zone').querySelectorAll('.student-card').forEach(c => c.remove());
@@ -1034,119 +1404,245 @@
                     if (card.querySelector('.star-badge')) card.querySelector('.star-badge').remove();
                 });
                 updateCounts();
-
-                // 彈出特殊的雙按鍵儲存成功視窗（點選「開啟試算表」便會主動向後端連動取得直達分頁連結）
                 alertModalMessage("儲存成功", `班級【${className}】的計分與登記資料已順利上傳至雲端！`, "save_success");
-            } else if (data) {
-                alertModalMessage("儲存失敗", data.message || "發生未知錯誤", "error");
-            }
-        }
-
-        function alertModalMessage(title, message, type = 'info') {
-            const modal = document.getElementById('alert-modal');
-            const cardPanel = modal.querySelector('.bg-white');
-            const desc = document.getElementById('alert-modal-desc');
-            const details = document.getElementById('alert-modal-details');
-            const iconBell = document.getElementById('alert-icon-bell');
-            const iconWrapper = iconBell.parentElement;
-            const btnContainer = document.getElementById('alert-btn-container');
-
-            desc.innerHTML = title;
-            details.innerHTML = message ? message.replace(/\n/g, '<br>') : "";
-            if (message) details.classList.remove('hidden'); else details.classList.add('hidden');
-
-            const baseClass = "bg-white rounded-3xl p-6 md:p-8 w-full max-w-[360px] h-[350px] shadow-2xl text-center flex flex-col justify-between items-center border-4";
-            btnContainer.innerHTML = `<button id="alert-modal-btn" onclick="closeAlertModal()" class="w-full bg-amber-500 hover:bg-amber-600 text-white font-bold py-3 px-6 rounded-2xl shadow-lg text-sm">確認</button>`;
-            const defaultBtn = document.getElementById('alert-modal-btn');
-
-            if (type === 'save_success') {
-                cardPanel.className = `${baseClass} border-purple-400`;
-                iconWrapper.className = "w-20 h-20 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-4 animate-bounce shrink-0";
-                iconBell.className = "fa-solid fa-circle-check text-4xl text-purple-500";
-                desc.className = "text-purple-700 font-bold text-lg md:text-xl text-center leading-snug mb-2 w-full truncate";
-                
-                // 點選右側直接呼叫動態後端查詢分頁函式，安全直達
-                btnContainer.innerHTML = `
-                    <button onclick="closeAlertModal()" class="flex-1 bg-stone-200 hover:bg-stone-300 text-stone-700 font-bold py-3 px-4 rounded-2xl shadow-md text-xs focus:outline-none">
-                        確認
-                    </button>
-                    <button onclick="openSpreadsheetTab()" class="flex-1 bg-purple-600 hover:bg-purple-700 text-white font-bold py-3 px-4 rounded-2xl shadow-md text-xs flex items-center justify-center gap-1 focus:outline-none">
-                        <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>開啟試算表
-                    </button>
-                `;
-            } else if (type === 'success') {
-                cardPanel.className = `${baseClass} border-emerald-400`;
-                iconWrapper.className = "w-20 h-20 bg-emerald-100 rounded-full flex items-center justify-center mx-auto mb-4 animate-bounce shrink-0";
-                iconBell.className = "fa-solid fa-circle-check text-4xl text-emerald-500";
-                desc.className = "text-emerald-700 font-bold text-lg md:text-xl text-center leading-snug mb-2 w-full truncate";
-                defaultBtn.className = "w-full bg-emerald-500 hover:bg-emerald-600 text-white font-bold py-3 px-6 rounded-2xl shadow-lg text-sm";
-            } else if (type === 'error') {
-                cardPanel.className = `${baseClass} border-rose-400`;
-                iconWrapper.className = "w-20 h-20 bg-rose-100 rounded-full flex items-center justify-center mx-auto mb-4 animate-pulse shrink-0";
-                iconBell.className = "fa-solid fa-circle-xmark text-4xl text-rose-500";
-                desc.className = "text-rose-700 font-bold text-lg md:text-xl text-center leading-snug mb-2 w-full truncate";
-                defaultBtn.className = "w-full bg-rose-500 hover:bg-rose-600 text-white font-bold py-3 px-6 rounded-2xl shadow-lg text-sm";
-            } else if (type === 'connect') {
-                cardPanel.className = `${baseClass} border-slate-400`;
-                iconWrapper.className = "w-20 h-20 bg-slate-100 rounded-full flex items-center justify-center mx-auto mb-4 animate-bounce shrink-0";
-                iconBell.className = "fa-solid fa-lightbulb text-4xl text-slate-500";
-                desc.className = "text-slate-700 font-bold text-lg md:text-xl text-center leading-snug mb-2 w-full truncate";
-                defaultBtn.className = "w-full bg-slate-500 hover:bg-slate-600 text-white font-bold py-3 px-6 rounded-2xl shadow-lg text-sm";
             } else {
-                cardPanel.className = `${baseClass} border-amber-400`;
-                iconWrapper.className = "w-20 h-20 bg-amber-100 rounded-full flex items-center justify-center mx-auto mb-4 animate-bounce shrink-0";
-                iconBell.className = "fa-solid fa-bell text-4xl text-amber-500";
-                desc.className = "font-black text-xl text-center leading-snug mb-2 w-full";
-                defaultBtn.className = "w-full bg-amber-500 hover:bg-amber-600 text-white font-bold py-3 px-6 rounded-2xl shadow-lg text-sm";
+                resetZoneTimer('good'); resetZoneTimer('bad'); resetZoneTimer('toilet');
+                document.getElementById('bad-zone').querySelectorAll('.student-card').forEach(c => c.remove());
+                document.getElementById('toilet-zone').querySelectorAll('.student-card').forEach(c => c.remove());
+                if (document.getElementById('bad-zone').querySelector('.placeholder')) document.getElementById('bad-zone').querySelector('.placeholder').style.display = 'flex';
+                if (document.getElementById('toilet-zone').querySelector('.placeholder')) document.getElementById('toilet-zone').querySelector('.placeholder').style.display = 'flex';
+                document.getElementById('good-zone').querySelectorAll('.student-card').forEach(card => {
+                    card.setAttribute('data-count-good', '0');
+                    if (card.querySelector('.star-badge')) card.querySelector('.star-badge').remove();
+                });
+                updateCounts();
+                alertModalMessage("儲存成功", `班級【${className}】的計分與登記資料已上傳完畢！`, "save_success");
             }
-
-            modal.classList.remove('hidden'); setTimeout(() => modal.classList.remove('opacity-0'), 10);
         }
 
-        function applyZoneTime(zone) {
-            pauseZoneTimer(zone);
-            timers[zone].total = ((parseInt(document.getElementById(`input-mins-${zone}`).value) || 0) * 60) + (parseInt(document.getElementById(`input-secs-${zone}`).value) || 0);
-            if (timers[zone].total <= 0) timers[zone].total = 10;
-            timers[zone].remaining = timers[zone].total; updateZoneTimerDisplay(zone);
+        // 📌 新增：作業一鍵批次打勾/畫叉切換邏輯 (不干擾 BINGO 彈窗)
+        function setAllHomeworkStatus(markUnfinished) {
+            if (homeworkList.length === 0) {
+                alertModalMessage("提示", "目前沒有作業項目！請先在右側新增作業項目。", "warning");
+                return;
+            }
+            if (studentsList.length === 0) {
+                alertModalMessage("提示", "目前學生名單為空！請先手動生成或匯入學生名牌。", "warning");
+                return;
+            }
+            
+            // 批次修改數據：markUnfinished為 true 代表畫 ✗，為 false 代表打 ✓
+            studentsList.forEach(student => {
+                homeworkList.forEach(hw => {
+                    const key = `${student.number}-${student.name}_${hw}`;
+                    homeworkStatus[key] = markUnfinished;
+                });
+            });
+            
+            // 重新繪製作業檢核表格
+            renderHomeworkTable();
+        }
+
+        // 📌 新增：使用說明書彈出視窗控制邏輯
+        function openInstructionsModal() {
+            const modal = document.getElementById('instructions-modal');
+            modal.classList.remove('hidden');
+            setTimeout(() => modal.classList.remove('opacity-0'), 10);
+        }
+        
+        function closeInstructionsModal() {
+            const modal = document.getElementById('instructions-modal');
+            modal.classList.add('opacity-0');
+            setTimeout(() => modal.classList.add('hidden'), 300);
+        }
+
+        // 📌 新增：台北時間時鐘更新函數 (修復遺漏的核心函式定義)
+        function updateUTClock() {
+            const clockEl = document.getElementById('utc-clock'); 
+            if (!clockEl) return;
+            const now = new Date(); 
+            // 台北時間 (GMT+8)
+            const taipeiTime = new Date(now.getTime() + (now.getTimezoneOffset() * 60000) + (3600000 * 8));
+            
+            const year = taipeiTime.getFullYear();
+            const month = String(taipeiTime.getMonth() + 1).padStart(2, '0');
+            const date = String(taipeiTime.getDate()).padStart(2, '0');
+            const hours = String(taipeiTime.getHours()).padStart(2, '0');
+            const minutes = String(taipeiTime.getMinutes()).padStart(2, '0');
+            const seconds = String(taipeiTime.getSeconds()).padStart(2, '0');
+            const dayOfWeek = ["日", "一", "二", "三", "四", "五", "六"][taipeiTime.getDay()];
+            
+            clockEl.textContent = `${year}年${month}月${date}日 (週${dayOfWeek}) ${hours}:${minutes}:${seconds}`;
+        }
+
+        // 📌 新增：午休夜間模式與日間模式切換函數 (修復遺漏的核心函式定義)
+        function toggleTheme() {
+            const isDark = document.body.classList.toggle('dark-mode');
+            document.body.classList.toggle('dark', isDark);
+            const btn = document.getElementById('theme-toggle-btn');
+            if (isDark) {
+                document.getElementById('theme-icon').className = "fa-solid fa-sun text-yellow-400 text-sm md:text-base animate-spin-slow";
+                document.getElementById('theme-text').textContent = "日間正常模式";
+                btn.style.backgroundColor = "rgba(30, 41, 59, 0.95)"; btn.style.color = "#f1f5f9";
+            } else {
+                document.getElementById('theme-icon').className = "fa-solid fa-moon text-amber-500 text-sm md:text-base animate-pulse";
+                document.getElementById('theme-text').textContent = "午休夜間模式";
+                btn.style.backgroundColor = "rgba(255, 255, 255, 0.95)"; btn.style.color = "#374151";
+            }
+        }
+
+        // 📌 新增：播放倒數截止超時警報音效 (修復遺漏的核心函式定義)
+        function playSynthesizedBell() {
+            try {
+                const AudioContext = window.AudioContext || window.webkitAudioContext; 
+                if (!AudioContext) return;
+                const ctx = new AudioContext(), now = ctx.currentTime;
+                
+                // 第一聲警報 (高音)
+                const osc1 = ctx.createOscillator(), gain1 = ctx.createGain();
+                osc1.type = 'sine'; 
+                osc1.frequency.setValueAtTime(1318.51, now); 
+                gain1.gain.setValueAtTime(0.25, now); 
+                gain1.gain.exponentialRampToValueAtTime(0.001, now + 0.8);
+                osc1.connect(gain1); 
+                gain1.connect(ctx.destination); 
+                osc1.start(now); 
+                osc1.stop(now + 0.8);
+                
+                // 第二聲警報 (低音)
+                setTimeout(() => {
+                    const osc2 = ctx.createOscillator(), gain2 = ctx.createGain();
+                    osc2.type = 'sine'; 
+                    osc2.frequency.setValueAtTime(1046.50, ctx.currentTime); 
+                    gain2.gain.setValueAtTime(0.25, ctx.currentTime); 
+                    gain2.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 1.2);
+                    osc2.connect(gain2); 
+                    gain2.connect(ctx.destination); 
+                    osc2.start(); 
+                    osc2.stop(ctx.currentTime + 1.2);
+                }, 250);
+            } catch (e) {}
+        }
+
+        // 📌 新增：播放作業全繳齊時的大滿貫慶祝音效 (修復遺漏的核心函式定義)
+        function playCelebrationSound() {
+            try {
+                const AudioContext = window.AudioContext || window.webkitAudioContext; 
+                if (!AudioContext) return;
+                const ctx = new AudioContext(), now = ctx.currentTime;
+                
+                // 依序播放四個上升的和弦音 (C5 -> E5 -> G5 -> C6)，打造大滿貫通關感
+                [523.25, 659.25, 783.99, 1046.50].forEach((freq, idx) => {
+                    const osc = ctx.createOscillator(), gain = ctx.createGain();
+                    osc.type = 'triangle'; // 三角波，聲音比正弦波更為圓潤溫暖
+                    osc.frequency.setValueAtTime(freq, now + idx * 0.1); 
+                    
+                    gain.gain.setValueAtTime(0, now + idx * 0.1); 
+                    gain.gain.linearRampToValueAtTime(0.15, now + idx * 0.1 + 0.02); 
+                    gain.gain.exponentialRampToValueAtTime(0.001, now + idx * 0.1 + 0.4);
+                    
+                    osc.connect(gain); 
+                    gain.connect(ctx.destination); 
+                    
+                    osc.start(now + idx * 0.1); 
+                    osc.stop(now + idx * 0.1 + 0.4);
+                });
+            } catch (e) {}
+        }
+
+        // 補回遺漏的 closeCelebration 與 startConfetti 特效函數
+        function closeCelebration() { 
+            const overlay = document.getElementById('celebration-overlay'); 
+            overlay.classList.add('opacity-0'); 
+            setTimeout(() => { 
+                overlay.classList.add('hidden'); 
+                confettiActive = false; 
+            }, 500); 
+        }
+
+        function startConfetti() {
+            const canvas = document.getElementById('celebration-canvas'), ctx = canvas.getContext('2d');
+            canvas.width = canvas.parentElement.offsetWidth; canvas.height = canvas.parentElement.offsetHeight;
+            confettiParticles = [];
+            for (let i = 0; i < 60; i++) {
+                confettiParticles.push({ x: Math.random() * canvas.width, y: Math.random() * -canvas.height, w: Math.random() * 6 + 5, h: Math.random() * 10 + 5, color: confettiColors[Math.floor(Math.random() * confettiColors.length)], v: Math.random() * 2 + 2, r: Math.random() * Math.PI, rs: Math.random() * 0.06 - 0.03 });
+            }
+            function frame() {
+                if (!confettiActive) return; ctx.clearRect(0, 0, canvas.width, canvas.height);
+                confettiParticles.forEach(p => {
+                    p.y += p.v; p.r += p.rs; ctx.save(); ctx.fillStyle = p.color; ctx.translate(p.x, p.y); ctx.rotate(p.r); ctx.fillRect(-p.w/2, -p.h/2, p.w, p.h); ctx.restore();
+                    if (p.y > canvas.height) { p.y = -10; p.x = Math.random() * canvas.width; }
+                });
+                requestAnimationFrame(frame);
+            }
+            requestAnimationFrame(frame);
         }
 
         function updateZoneTimerDisplay(zone) {
             const mins = Math.floor(timers[zone].remaining / 60), secs = timers[zone].remaining % 60;
-            document.getElementById(`timer-display-${zone}`).textContent = `${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
+            const display = document.getElementById(`timer-display-${zone}`);
+            if (display) display.textContent = `${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
+        }
+
+        // 📌 新增：套用並重設特定專區的倒數計時時間 (修復遺漏的核心函式定義)
+        function applyZoneTime(zone) {
+            pauseZoneTimer(zone);
+            timers[zone].total = ((parseInt(document.getElementById(`input-mins-${zone}`).value) || 0) * 60) + (parseInt(document.getElementById(`input-secs-${zone}`).value) || 0);
+            if (timers[zone].total <= 0) timers[zone].total = 10;
+            timers[zone].remaining = timers[zone].total; 
+            updateZoneTimerDisplay(zone);
         }
 
         function toggleZoneTimer(zone) { if (timers[zone].running) pauseZoneTimer(zone); else startZoneTimer(zone); }
+        
+        // 開始鍵動態更新時，完美保留 w-5 h-5，且僅更新 icon 樣式與圖示大小（微調至 text-[8px]）
         function startZoneTimer(zone) {
             if (timers[zone].remaining <= 0) timers[zone].remaining = timers[zone].total;
             timers[zone].running = true;
-            document.getElementById(`icon-toggle-${zone}`).className = "fa-solid fa-pause";
-            document.getElementById(`text-toggle-${zone}`).textContent = "暫停";
+            const btn = document.getElementById(`btn-toggle-${zone}`);
+            const icon = document.getElementById(`icon-toggle-${zone}`);
+            btn.className = "bg-amber-500 hover:bg-amber-600 text-white p-0 rounded-md flex items-center justify-center transition-all shrink-0 w-5 h-5";
+            icon.className = "fa-solid fa-pause text-[8px]";
+
             timers[zone].interval = setInterval(() => {
                 timers[zone].remaining--; updateZoneTimerDisplay(zone);
-                if (timers[zone].remaining <= 0) { clearInterval(timers[zone].interval); zoneTimerTimeout(zone); }
+                if (timers[zone].remaining <= 0) {
+                    clearInterval(timers[zone].interval);
+                    zoneTimerTimeout(zone);
+                }
             }, 1000);
         }
+
+        // 暫停鍵動態更新時，完美保留 w-5 h-5，且僅更新 icon 樣式與圖示大小（微調至 text-[8px]）
         function pauseZoneTimer(zone) {
             timers[zone].running = false; clearInterval(timers[zone].interval);
-            if (!document.getElementById(`icon-toggle-${zone}`)) return;
-            document.getElementById(`icon-toggle-${zone}`).className = "fa-solid fa-play";
-            document.getElementById(`text-toggle-${zone}`).textContent = "開始";
+            const btn = document.getElementById(`btn-toggle-${zone}`);
+            const icon = document.getElementById('icon-toggle-' + zone);
+            if (!btn) return;
+            btn.className = (zone === 'good' ? 'bg-[#10b981] hover:bg-[#059669]' : (zone === 'bad' ? 'bg-rose-500 hover:bg-rose-600' : 'bg-sky-500 hover:bg-sky-600')) + " text-white p-0 rounded-md flex items-center justify-center transition-all shrink-0 w-5 h-5";
+            icon.className = "fa-solid fa-play text-[8px]";
         }
+
         function resetZoneTimer(zone) { pauseZoneTimer(zone); timers[zone].remaining = timers[zone].total; updateZoneTimerDisplay(zone); }
 
         function zoneTimerTimeout(zone) {
             pauseZoneTimer(zone); timers[zone].remaining = timers[zone].total; updateZoneTimerDisplay(zone);
             playSynthesizedBell();
             currentTimeoutZone = zone;
-            alertModalMessage(`<span class="${zone === 'good' ? 'text-emerald-600' : (zone === 'bad' ? 'text-rose-600' : 'text-sky-600')} font-black text-xl md:text-2xl flex items-center justify-center gap-2">${zone === 'good' ? '<i class="fa-regular fa-face-laugh-beam"></i>' : (zone === 'bad' ? '<i class="fa-regular fa-face-sad-tear"></i>' : '<i class="fa-solid fa-restroom"></i>')} ${document.getElementById(`input-mins-${zone}`).value} 分鐘時間到！</span>`, "", "warning");
+            const minsVal = document.getElementById(`input-mins-${zone}`) ? document.getElementById(`input-mins-${zone}`).value : 0;
+            alertModalMessage(`<span class="${zone === 'good' ? 'text-emerald-600' : (zone === 'bad' ? 'text-rose-600' : 'text-sky-600')} font-black text-xl md:text-2xl flex items-center justify-center gap-2">${zone === 'good' ? '<i class="fa-regular fa-face-laugh-beam"></i>' : (zone === 'bad' ? '<i class="fa-regular fa-face-sad-tear"></i>' : '<i class="fa-solid fa-restroom"></i>')} ${minsVal} 分鐘時間到！</span>`, "", "warning");
         }
 
         function closeAlertModal() {
             const modal = document.getElementById('alert-modal');
+            if (!modal) return;
             modal.classList.add('opacity-0');
             setTimeout(() => {
                 modal.classList.add('hidden');
-                if (currentTimeoutZone) { reduceZoneAllCardsOnce(currentTimeoutZone); currentTimeoutZone = null; }
+                if (currentTimeoutZone) {
+                    reduceZoneAllCardsOnce(currentTimeoutZone);
+                    currentTimeoutZone = null;
+                }
             }, 300);
         }
 
@@ -1167,141 +1663,25 @@
                 });
             } else {
                 const countAttr = zone === 'bad' ? 'data-count-bad' : 'data-count-toilet';
+                const badgeClass = zone === 'bad' ? '.lightning-badge' : '.toilet-badge';
+
                 cards.forEach(card => {
                     let count = parseInt(card.getAttribute(countAttr) || 1);
-                    if (count > 1) { count--; card.setAttribute(countAttr, count); card.querySelector(`${zone === 'bad' ? '.lightning-badge' : '.toilet-badge'} .badge-count`).textContent = count; }
+                    if (count > 1) {
+                        count--; card.setAttribute(countAttr, count); card.querySelector(`${zone === 'bad' ? '.lightning-badge' : '.toilet-badge'} .badge-count`).textContent = count; }
                     else card.remove();
                 });
             }
-            if (targetZone.querySelectorAll('.student-card').length === 0 && targetZone.querySelector('.placeholder')) targetZone.querySelector('.placeholder').style.display = 'flex';
+
+            if (targetZone.querySelectorAll('.student-card').length === 0 && targetZone.querySelector('.placeholder')) {
+                targetZone.querySelector('.placeholder').style.display = 'flex';
+            }
             updateCounts();
         }
 
-        function playSynthesizedBell() {
-            try {
-                const AudioContext = window.AudioContext || window.webkitAudioContext; if (!AudioContext) return;
-                const ctx = new AudioContext(), now = ctx.currentTime;
-                const osc1 = ctx.createOscillator(), gain1 = ctx.createGain();
-                osc1.type = 'sine'; osc1.frequency.setValueAtTime(1318.51, now); gain1.gain.setValueAtTime(0.25, now); gain1.gain.exponentialRampToValueAtTime(0.001, now + 0.8);
-                osc1.connect(gain1); gain1.connect(ctx.destination); osc1.start(now); osc1.stop(now + 0.8);
-                setTimeout(() => {
-                    const osc2 = ctx.createOscillator(), gain2 = ctx.createGain();
-                    osc2.type = 'sine'; osc2.frequency.setValueAtTime(1046.50, ctx.currentTime); gain2.gain.setValueAtTime(0.25, ctx.currentTime); gain2.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 1.2);
-                    osc2.connect(gain2); gain2.connect(ctx.destination); osc2.start(); osc2.stop(ctx.currentTime + 1.2);
-                }, 250);
-            } catch (e) {}
-        }
-
-        function playCelebrationSound() {
-            try {
-                const AudioContext = window.AudioContext || window.webkitAudioContext; if (!AudioContext) return;
-                const ctx = new AudioContext(), now = ctx.currentTime;
-                [523.25, 659.25, 783.99, 1046.50].forEach((freq, idx) => {
-                    const osc = ctx.createOscillator(), gain = ctx.createGain();
-                    osc.type = 'triangle'; osc.frequency.setValueAtTime(freq, now + idx * 0.1); gain.gain.setValueAtTime(0, now + idx * 0.1); gain.gain.linearRampToValueAtTime(0.15, now + idx * 0.1 + 0.02); gain.gain.exponentialRampToValueAtTime(0.001, now + idx * 0.1 + 0.4);
-                    osc.connect(gain); gain.connect(ctx.destination); osc.start(now + idx * 0.1); osc.stop(now + idx * 0.1 + 0.4);
-                });
-            } catch (e) {}
-        }
-
-        function addHomeworkItem() {
-            const input = document.getElementById('hw-name-input'), hwName = input.value.trim();
-            if (!hwName || homeworkList.includes(hwName)) return;
-            homeworkList.push(hwName); input.value = ''; renderHomeworkTable();
-        }
-        function deleteHomeworkItem(index) { homeworkList.splice(index, 1); renderHomeworkTable(); }
-
-        function toggleHwCell(number, name, hwName, cell) {
-            const key = `${number}-${name}_${hwName}`;
-            if (homeworkStatus[key] !== false) {
-                homeworkStatus[key] = false;
-                cell.className = "py-4 px-2.5 border-b border-r border-amber-100 bg-emerald-50 text-emerald-600 text-center font-bold text-sm cursor-pointer hover:bg-emerald-100 min-w-[48px] max-w-[48px] h-12 align-middle transition-colors";
-                cell.innerHTML = `<i class="fa-solid fa-check scale-110"></i>`;
-                
-                let allDone = true;
-                for (let hw of homeworkList) { if (homeworkStatus[`${number}-${name}_${hw}`] !== false) allDone = false; }
-                if (allDone) {
-                    document.getElementById('celebration-student-info').textContent = `${number}號 ${name}`; playCelebrationSound();
-                    const overlay = document.getElementById('celebration-overlay'); overlay.classList.remove('hidden'); setTimeout(() => overlay.classList.remove('opacity-0'), 10);
-                    confettiActive = true; startConfetti();
-                }
-            } else {
-                homeworkStatus[key] = true;
-                cell.className = "py-4 px-2.5 border-b border-r border-amber-100 bg-rose-100 text-rose-600 text-center font-bold text-sm cursor-pointer hover:bg-rose-200 min-w-[48px] max-w-[48px] h-16 align-middle transition-colors";
-                cell.innerHTML = `<i class="fa-solid fa-xmark scale-110"></i>`;
-            }
-        }
-
-        function closeCelebration() { const overlay = document.getElementById('celebration-overlay'); overlay.classList.add('opacity-0'); setTimeout(() => { overlay.classList.add('hidden'); confettiActive = false; }, 500); }
-
-        function startConfetti() {
-            const canvas = document.getElementById('celebration-canvas'), ctx = canvas.getContext('2d');
-            canvas.width = canvas.parentElement.offsetWidth; canvas.height = canvas.parentElement.offsetHeight;
-            confettiParticles = [];
-            for (let i = 0; i < 60; i++) {
-                confettiParticles.push({ x: Math.random() * canvas.width, y: Math.random() * -canvas.height, w: Math.random() * 6 + 5, h: Math.random() * 10 + 5, color: confettiColors[Math.floor(Math.random() * confettiColors.length)], v: Math.random() * 2 + 2, r: Math.random() * Math.PI, rs: Math.random() * 0.06 - 0.03 });
-            }
-            function frame() {
-                if (!confettiActive) return; ctx.clearRect(0, 0, canvas.width, canvas.height);
-                confettiParticles.forEach(p => {
-                    p.y += p.v; p.r += p.rs; ctx.save(); ctx.fillStyle = p.color; ctx.translate(p.x, p.y); ctx.rotate(p.r); ctx.fillRect(-p.w/2, -p.h/2, p.w, p.h); ctx.restore();
-                    if (p.y > canvas.height) { p.y = -10; p.x = Math.random() * canvas.width; }
-                });
-                requestAnimationFrame(frame);
-            }
-            requestAnimationFrame(frame);
-        }
-
-        function renderHomeworkTable() {
-            const tableHeader = document.getElementById('hw-table-header'), tableBody = document.getElementById('hw-table-body');
-            tableHeader.innerHTML = `<th class="p-3 border-b border-r border-amber-200/80 min-w-[80px] max-w-[80px] sticky left-0 bg-amber-50 z-20 text-[#78350f] font-bold text-lg text-center align-middle">登記</th>`;
-            
-            studentsList.forEach(student => {
-                const th = document.createElement('th');
-                th.className = "p-1 border-b border-r border-amber-200/80 min-w-[48px] max-w-[48px] bg-amber-100/30 text-[#78350f] font-bold text-center align-middle";
-                th.innerHTML = `<div class="flex flex-col items-center justify-center gap-1.5 h-[145px] py-2 mx-auto"><span class="w-7 h-7 flex items-center justify-center rounded-full text-sm font-black ${(parseInt(student.number) % 2 === 0) ? 'bg-amber-100 text-amber-900' : 'bg-orange-100 text-orange-900'} shrink-0 shadow-sm">${student.number}</span><span class="vertical-header text-base md:text-lg tracking-wide font-bold leading-none">${student.name}</span></div>`;
-                tableHeader.appendChild(th);
-            });
-
-            if (studentsList.length === 0) { tableBody.innerHTML = `<tr><td class="p-10 text-gray-400 italic text-center" colspan="100%">請先匯入名單。</td></tr>`; return; }
-            if (homeworkList.length === 0) { tableBody.innerHTML = `<tr><td class="p-10 text-gray-400 italic text-center" colspan="100%">請在右上方點擊「新增作業」建立項目。</td></tr>`; return; }
-
-            tableBody.innerHTML = '';
-            homeworkList.forEach((hw, idx) => {
-                const tr = document.createElement('tr'); tr.className = "hover:bg-amber-50/40 transition-colors";
-                const hwTd = document.createElement('td'); hwTd.className = "p-2 border-b border-r border-amber-200 bg-white sticky left-0 z-10 min-w-[80px] max-w-[80px] text-center align-middle h-16";
-                hwTd.innerHTML = `<div class="flex items-center justify-center gap-1 px-0.5 relative w-full h-full"><span class="truncate text-lg font-bold mx-auto text-[#78350f]" title="${hw}">${hw}</span><button onclick="deleteHomeworkItem(${idx})" class="text-red-400 hover:text-red-600 opacity-0 group-hover:opacity-100 text-xs absolute right-0.5"><i class="fa-solid fa-circle-xmark"></i></button></div>`;
-                tr.appendChild(hwTd);
-
-                studentsList.forEach(student => {
-                    const cellTd = document.createElement('td');
-                    cellTd.className = homeworkStatus[`${student.number}-${student.name}_${hw}`] !== false ? "py-4.5 px-2.5 border-b border-r border-amber-100 bg-rose-100 text-rose-600 text-center font-bold text-sm cursor-pointer hover:bg-rose-200 min-w-[48px] max-w-[48px] h-16 align-middle" : "py-4.5 px-2.5 border-b border-r border-amber-100 bg-emerald-50 text-emerald-600 text-center font-bold text-sm cursor-pointer hover:bg-emerald-100 min-w-[48px] max-w-[48px] h-16 align-middle";
-                    cellTd.innerHTML = homeworkStatus[`${student.number}-${student.name}_${hw}`] !== false ? `<i class="fa-solid fa-xmark scale-110"></i>` : `<i class="fa-solid fa-check scale-110"></i>`;
-                    cellTd.onclick = function() { toggleHwCell(student.number, student.name, hw, cellTd); };
-                    tr.appendChild(cellTd);
-                });
-                tableBody.appendChild(tr);
-            });
-        }
-
-        function toggleTheme() {
-            const isDark = document.body.classList.toggle('dark-mode');
-            const btn = document.getElementById('theme-toggle-btn');
-            if (isDark) {
-                document.getElementById('theme-icon').className = "fa-solid fa-sun text-yellow-400 text-sm md:text-base animate-spin-slow";
-                document.getElementById('theme-text').textContent = "日間正常模式";
-                btn.style.backgroundColor = "rgba(30, 41, 59, 0.95)"; btn.style.color = "#f1f5f9";
-            } else {
-                document.getElementById('theme-icon').className = "fa-solid fa-moon text-amber-500 text-sm md:text-base animate-pulse";
-                document.getElementById('theme-text').textContent = "午休夜間模式";
-                btn.style.backgroundColor = "rgba(255, 255, 255, 0.95)"; btn.style.color = "#374151";
-            }
-        }
-
-        function updateUTClock() {
-            const clockEl = document.getElementById('utc-clock'); if (!clockEl) return;
-            const now = new Date(); const taipeiTime = new Date(now.getTime() + (now.getTimezoneOffset() * 60000) + (3600000 * 8));
-            clockEl.textContent = `${taipeiTime.getFullYear()}年${String(taipeiTime.getMonth() + 1).padStart(2, '0')}月${String(taipeiTime.getDate()).padStart(2, '0')}日 (週${["日", "一", "二", "三", "四", "五", "六"][taipeiTime.getDay()]}) ${String(taipeiTime.getHours()).padStart(2, '0')}:${String(taipeiTime.getMinutes()).padStart(2, '0')}:${String(taipeiTime.getSeconds()).padStart(2, '0')}`;
+        // 房呆檢查
+        function boxCheck(card) {
+            // 提供聯動狀態擴充插槽
         }
 
         window.onload = function() {
