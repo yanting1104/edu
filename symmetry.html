@@ -1,0 +1,2052 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>線對稱圖形摺摺看</title>
+    <!-- 設置網站瀏覽器分頁小圖示 (Favicon) -->
+    <link class="favicon" rel="icon" type="image/png" href="貓臉logo1.png">
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome 圖示庫 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', 'Microsoft JhengHei', sans-serif;
+            background-color: #f3f4f6;
+            touch-action: manipulation;
+        }
+        /* 隱藏滾動條但保留功能 */
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+        /* 畫布網格背景 */
+        .grid-bg {
+            background-size: 20px 20px;
+            background-image: 
+                linear-gradient(to right, rgba(200, 200, 200, 0.2) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(200, 200, 200, 0.2) 1px, transparent 1px);
+        }
+        /* 自訂動畫 */
+        @keyframes pulse-light {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.6; }
+        }
+        .animate-pulse-light {
+            animation: pulse-light 2s infinite;
+        }
+        /* 標籤徽章動畫 */
+        @keyframes pop-in {
+            0% { transform: scale(0.8); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        .pop-in {
+            animation: pop-in 0.3s ease-out forwards;
+        }
+        /* 氣球向上飄動與微擺動畫 */
+        @keyframes float-up {
+            0% {
+                transform: translate(-50%, 20px) scale(0.5) rotate(-5deg);
+                opacity: 0;
+            }
+            20% {
+                transform: translate(-50%, -20px) scale(1.1) rotate(5deg);
+                opacity: 1;
+            }
+            50% {
+                transform: translate(-50%, -60px) scale(1) rotate(-3deg);
+                opacity: 1;
+            }
+            80% {
+                transform: translate(-50%, -100px) scale(1) rotate(3deg);
+                opacity: 0.9;
+            }
+            100% {
+                transform: translate(-50%, -140px) scale(0.9) rotate(0deg);
+                opacity: 0;
+            }
+        }
+        .animate-balloon {
+            animation: float-up 3s ease-out forwards;
+        }
+        /* 鬧鐘 emoji 晃動動畫 */
+        @keyframes shake-alarm {
+            0%, 100% { transform: rotate(0deg); }
+            20% { transform: rotate(-15deg); }
+            40% { transform: rotate(15deg); }
+            60% { transform: rotate(-10deg); }
+            80% { transform: rotate(10deg); }
+        }
+        .animate-alarm {
+            animation: shake-alarm 0.5s infinite ease-in-out;
+        }
+    </style>
+</head>
+<body class="h-screen w-screen overflow-hidden flex flex-col bg-slate-100">
+
+    <!-- 頂部標題列 -->
+    <header class="bg-indigo-600 text-white px-6 py-3 flex justify-between items-center shadow-md z-10">
+        <div class="flex items-center space-x-3">
+            <i class="fa-solid fa-shapes text-2xl text-yellow-300"></i>
+            <h1 class="text-xl font-bold tracking-wide">線對稱圖形摺摺看</h1>
+        </div>
+        <div class="flex items-center space-x-3">
+            <!-- 修改：計時器按鈕內加入與說明按鈕同風格的時鐘圖示 -->
+            <button id="timerBtn" class="bg-indigo-500 hover:bg-indigo-400 text-white text-sm font-semibold px-3 py-1.5 rounded-lg transition flex items-center space-x-1.5 shadow">
+                <i class="fa-solid fa-clock"></i>
+                <span id="timerDisplay">計時器</span>
+            </button>
+            <button id="helpBtn" class="bg-yellow-400 hover:bg-yellow-500 text-indigo-900 text-sm font-semibold px-3 py-1.5 rounded-lg transition flex items-center space-x-1 shadow">
+                <i class="fa-solid fa-circle-question"></i>
+                <span>說明</span>
+            </button>
+        </div>
+    </header>
+
+    <!-- 主內容區 -->
+    <main class="flex-1 flex overflow-hidden p-3 gap-3">
+
+        <!-- 左側：主要工作畫布區 -->
+        <section class="flex-1 bg-white rounded-xl shadow-lg relative flex flex-col overflow-hidden border border-slate-200 grid-bg" id="canvasContainer">
+            
+            <!-- 頂部狀態顯示與置中控制列 -->
+            <div class="w-full pt-3 px-4 flex justify-center items-center z-10 pointer-events-none">
+                <div class="flex flex-wrap justify-center items-center gap-2 pointer-events-auto">
+                    <button id="toggleGhostBtn" class="bg-white/90 hover:bg-white text-slate-700 px-3 py-1.5 rounded-lg shadow border border-slate-200 text-xs font-semibold transition flex items-center gap-1">
+                        <i class="fa-solid fa-ghost text-indigo-500"></i>
+                        <span id="ghostBtnText">隱藏原本輪廓</span>
+                    </button>
+                    <button id="toggleCenterLineBtn" class="bg-white/90 hover:bg-white text-slate-700 px-3 py-1.5 rounded-lg shadow border border-slate-200 text-xs font-semibold transition flex items-center gap-1">
+                        <i class="fa-solid fa-eye-slash" id="centerLineIcon"></i>
+                        <span id="centerLineBtnText">顯示中心線</span>
+                    </button>
+                    <button id="toggleFoldLineBtn" class="bg-white/90 hover:bg-white text-slate-700 px-3 py-1.5 rounded-lg shadow border border-slate-200 text-xs font-semibold transition flex items-center gap-1">
+                        <i class="fa-solid fa-eye-slash text-slate-400" id="foldLineIcon"></i>
+                        <span id="foldLineBtnText">隱藏摺線</span>
+                    </button>
+                    <button id="showAllAxesBtn" class="bg-white/90 hover:bg-white text-slate-700 px-3 py-1.5 rounded-lg shadow border border-slate-200 text-xs font-semibold transition flex items-center gap-1">
+                        <i class="fa-solid fa-wand-magic-sparkles"></i>
+                        <span>顯示所有對稱軸</span>
+                    </button>
+                    <button id="clearAllAxesBtn" class="bg-white/90 hover:bg-white text-slate-700 px-3 py-1.5 rounded-lg shadow border border-slate-200 text-xs font-semibold transition flex items-center gap-1">
+                        <i class="fa-solid fa-trash-can"></i>
+                        <span>清除所有對稱軸</span>
+                    </button>
+                    <button id="resetCanvasBtn" class="bg-white/90 hover:bg-white text-slate-700 px-3 py-1.5 rounded-lg shadow border border-slate-200 text-xs font-semibold transition flex items-center gap-1">
+                        <i class="fa-solid fa-rotate-left"></i>
+                        <span>重設</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Canvas 核心區 -->
+            <div class="flex-1 w-full h-full relative cursor-crosshair overflow-hidden" id="canvasWrapper">
+                <canvas id="mainCanvas" class="w-full h-full block"></canvas>
+
+                <!-- 左下角圖形名稱標籤 -->
+                <div id="shapeTitleDisplay" class="absolute bottom-4 left-4 bg-white/90 backdrop-blur-md px-3.5 py-2 rounded-xl shadow-md border border-slate-200 text-sm font-bold text-slate-700 flex items-center gap-2 z-10 pointer-events-none">
+                    <i class="fa-solid fa-tag text-indigo-500"></i>
+                    <span>正三角形</span>
+                </div>
+
+                <!-- 右下角中心點微調方向鍵 -->
+                <div class="absolute bottom-4 right-4 bg-white/80 backdrop-blur-md p-2 rounded-xl shadow-md border border-slate-200 flex flex-col items-center gap-1 z-10 pointer-events-auto">
+                    <span class="text-[10px] font-bold text-slate-500 mb-0.5">中心點微調</span>
+                    <button id="moveUpBtn" class="w-7 h-7 bg-white hover:bg-slate-100 border border-slate-200 text-slate-700 rounded-md flex items-center justify-center text-xs shadow-sm transition">
+                        <i class="fa-solid fa-chevron-up"></i>
+                    </button>
+                    <div class="flex gap-1">
+                        <button id="moveLeftBtn" class="w-7 h-7 bg-white hover:bg-slate-100 border border-slate-200 text-slate-700 rounded-md flex items-center justify-center text-xs shadow-sm transition">
+                            <i class="fa-solid fa-chevron-left"></i>
+                        </button>
+                        <button id="moveDownBtn" class="w-7 h-7 bg-white hover:bg-slate-100 border border-slate-200 text-slate-700 rounded-md flex items-center justify-center text-xs shadow-sm transition">
+                            <i class="fa-solid fa-chevron-down"></i>
+                        </button>
+                        <button id="moveRightBtn" class="w-7 h-7 bg-white hover:bg-slate-100 border border-slate-200 text-slate-700 rounded-md flex items-center justify-center text-xs shadow-sm transition">
+                            <i class="fa-solid fa-chevron-right"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 底部結果通知卡片 -->
+            <div id="resultCard" class="absolute bottom-4 left-1/2 -translate-x-1/2 bg-white/95 backdrop-blur-md px-6 py-3 rounded-full shadow-xl border border-indigo-100 flex items-center space-x-3 transition-all duration-300 opacity-0 transform translate-y-8 pointer-events-none z-20">
+                <div id="resultIcon" class="w-8 h-8 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center font-bold text-lg">
+                    <i class="fa-solid fa-check"></i>
+                </div>
+                <div>
+                    <h4 id="resultTitle" class="font-bold text-sm text-slate-800">完全重合！</h4>
+                    <p id="resultDesc" class="text-xs text-slate-500">這條對摺線可讓圖形左右完美對稱。</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 中間：工具與對摺設定區 -->
+        <aside class="w-64 bg-white rounded-xl shadow-lg flex flex-col overflow-hidden border border-slate-200 shrink-0">
+            <div class="p-3 bg-slate-50 border-b border-slate-200">
+                <h2 class="font-bold text-slate-700 flex items-center gap-2 text-sm">
+                    <i class="fa-solid fa-sliders text-indigo-500"></i> 控制台
+                </h2>
+            </div>
+
+            <div class="p-2 flex-1 overflow-y-auto space-y-2">
+                <!-- 區塊 1. 對摺角度 -->
+                <div class="bg-slate-50 p-2.5 rounded-xl border border-slate-200 space-y-1.5">
+                    <div class="flex justify-between items-center">
+                        <label class="text-[11px] font-bold text-slate-700 uppercase tracking-wider flex items-center gap-1">
+                            <i class="fa-solid fa-compass text-indigo-500"></i>對摺角度
+                        </label>
+                        <div class="flex items-center gap-1">
+                            <button id="angleStepDownBtn" class="w-5 h-5 bg-white hover:bg-slate-100 border border-slate-300 text-slate-700 rounded flex items-center justify-center text-[10px] font-bold shadow-sm transition">
+                                <i class="fa-solid fa-minus"></i>
+                            </button>
+                            <span id="angleValue" class="text-xs font-bold text-indigo-600 bg-indigo-100 px-1.5 py-0.5 rounded min-w-[36px] text-center">90°</span>
+                            <button id="angleStepUpBtn" class="w-5 h-5 bg-white hover:bg-slate-100 border border-slate-300 text-slate-700 rounded flex items-center justify-center text-[10px] font-bold shadow-sm transition">
+                                <i class="fa-solid fa-plus"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <!-- 微調拉軸 -->
+                    <div>
+                        <input type="range" id="angleSlider" min="0" max="180" value="90" class="w-full accent-indigo-600 h-1.5 bg-slate-200 rounded-lg appearance-none cursor-pointer">
+                        <div class="flex justify-between text-[9px] text-slate-400 mt-0.5">
+                            <span>0° (水平)</span>
+                            <span>90° (垂直)</span>
+                            <span>180°</span>
+                        </div>
+                    </div>
+                    <!-- 兩欄 / 四欄快捷角度按鈕 -->
+                    <div class="space-y-1.5 pt-0.5">
+                        <div class="grid grid-cols-2 gap-1.5">
+                            <button class="line-preset-btn active bg-indigo-50 border border-indigo-500 text-indigo-700 py-1 px-1.5 rounded-md text-[11px] font-medium transition text-center" data-angle="90">90° 垂直</button>
+                            <button class="line-preset-btn bg-white border border-slate-200 text-slate-600 hover:border-indigo-300 py-1 px-1.5 rounded-md text-[11px] font-medium transition text-center" data-angle="0">0° 水平</button>
+                        </div>
+                        <div class="grid grid-cols-2 gap-1.5">
+                            <button class="line-preset-btn bg-white border border-slate-200 text-slate-600 hover:border-indigo-300 py-1 px-1.5 rounded-md text-[11px] font-medium transition text-center" data-angle="45">45° 左斜角</button>
+                            <button class="line-preset-btn bg-white border border-slate-200 text-slate-600 hover:border-indigo-300 py-1 px-1.5 rounded-md text-[11px] font-medium transition text-center" data-angle="135">135° 右斜角</button>
+                        </div>
+                        <div class="grid grid-cols-4 gap-1.5">
+                            <button class="line-preset-btn bg-white border border-slate-200 text-slate-600 hover:border-indigo-300 py-1 px-0.5 rounded-md text-[10px] font-medium transition text-center" data-angle="30">30° 左</button>
+                            <button class="line-preset-btn bg-white border border-slate-200 text-slate-600 hover:border-indigo-300 py-1 px-0.5 rounded-md text-[10px] font-medium transition text-center" data-angle="60">60° 左</button>
+                            <button class="line-preset-btn bg-white border border-slate-200 text-slate-600 hover:border-indigo-300 py-1 px-0.5 rounded-md text-[10px] font-medium transition text-center" data-angle="120">120° 右</button>
+                            <button class="line-preset-btn bg-white border border-slate-200 text-slate-600 hover:border-indigo-300 py-1 px-0.5 rounded-md text-[10px] font-medium transition text-center" data-angle="150">150° 右</button>
+                        </div>
+                        <div class="grid grid-cols-4 gap-1.5">
+                            <button class="line-preset-btn bg-white border border-slate-200 text-slate-600 hover:border-indigo-300 py-1 px-0.5 rounded-md text-[10px] font-medium transition text-center" data-angle="18">18° 左</button>
+                            <button class="line-preset-btn bg-white border border-slate-200 text-slate-600 hover:border-indigo-300 py-1 px-0.5 rounded-md text-[10px] font-medium transition text-center" data-angle="54">54° 右</button>
+                            <button class="line-preset-btn bg-white border border-slate-200 text-slate-600 hover:border-indigo-300 py-1 px-0.5 rounded-md text-[10px] font-medium transition text-center" data-angle="126">126° 左</button>
+                            <button class="line-preset-btn bg-white border border-slate-200 text-slate-600 hover:border-indigo-300 py-1 px-0.5 rounded-md text-[10px] font-medium transition text-center" data-angle="162">162° 右</button>
+                        </div>
+                        <div class="grid grid-cols-4 gap-1.5">
+                            <button class="line-preset-btn bg-white border border-slate-200 text-slate-600 hover:border-indigo-300 py-1 px-0.5 rounded-md text-[10px] font-medium transition text-center" data-angle="110">110° 斜</button>
+                            <button class="line-preset-btn bg-white border border-slate-200 text-slate-600 hover:border-indigo-300 py-1 px-0.5 rounded-md text-[10px] font-medium transition text-center" data-angle="69">69° 左</button>
+                            <button class="line-preset-btn bg-white border border-slate-200 text-slate-600 hover:border-indigo-300 py-1 px-0.5 rounded-md text-[10px] font-medium transition text-center" data-angle="138">138° 右</button>
+                            <button class="line-preset-btn bg-white border border-slate-200 text-slate-600 hover:border-indigo-300 py-1 px-0.5 rounded-md text-[10px] font-medium transition text-center" data-angle="180">180° 平</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 區塊 2. 對摺示範 (上移) -->
+                <div class="bg-slate-50 p-2.5 rounded-xl border border-slate-200 space-y-1.5">
+                    <div class="flex justify-between items-center">
+                        <label class="text-[11px] font-bold text-slate-700 uppercase tracking-wider flex items-center gap-1">
+                            <i class="fa-solid fa-book-open text-indigo-500"></i>對摺操作
+                        </label>
+                        <span id="foldProgressText" class="text-xs font-bold text-indigo-600 bg-indigo-100 px-1.5 py-0.5 rounded">0%</span>
+                    </div>
+                    <!-- 微調拉軸 -->
+                    <input type="range" id="foldSlider" min="0" max="100" value="0" class="w-full accent-indigo-600 h-1.5 bg-slate-200 rounded-lg appearance-none cursor-pointer">
+                    
+                    <div class="space-y-1.5 pt-0.5">
+                        <!-- 第一排：播放對摺 與 標記對稱軸 -->
+                        <div class="grid grid-cols-2 gap-1.5">
+                            <button id="togglePlayFoldBtn" class="bg-indigo-500 hover:bg-indigo-600 text-white font-semibold py-2 px-2 rounded-lg shadow-sm transition flex items-center justify-center gap-1 text-xs">
+                                <i class="fa-solid fa-play" id="playFoldIcon"></i>
+                                <span id="playFoldText">播放對摺</span>
+                            </button>
+                            <button id="checkSymmetryBtn" class="bg-emerald-500 hover:bg-emerald-600 text-white font-bold py-2 px-2 rounded-lg shadow-sm transition flex items-center justify-center gap-1 text-xs">
+                                <i class="fa-solid fa-wand-magic-sparkles"></i>
+                                <span>標記對稱軸</span>
+                            </button>
+                        </div>
+
+                        <!-- 第二排：對摺/展開 與 對稱軸數量 -->
+                        <div class="grid grid-cols-2 gap-1.5">
+                            <button id="toggleFoldBtn" class="bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-2 px-2 rounded-lg shadow-sm transition flex items-center justify-center gap-1 text-xs">
+                                <i class="fa-solid fa-book-open" id="toggleFoldIcon"></i>
+                                <span id="toggleFoldText">對摺/展開</span>
+                            </button>
+                            <button id="showAxesCountBtn" class="bg-amber-500 hover:bg-amber-600 text-white font-bold py-2 px-2 rounded-lg shadow-sm transition flex items-center justify-center gap-1 text-xs">
+                                <i class="fa-solid fa-chart-simple"></i>
+                                <span>對稱軸數量</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- 右側：圖檔選擇區 -->
+        <aside class="w-64 bg-white rounded-xl shadow-lg flex flex-col overflow-hidden border border-slate-200 shrink-0">
+            <div class="p-3 bg-slate-50 border-b border-slate-200 flex justify-between items-center">
+                <h2 class="font-bold text-slate-700 flex items-center gap-2 text-sm">
+                    <i class="fa-solid fa-folder-open text-indigo-500"></i> 圖形寶庫
+                </h2>
+                <span class="text-[10px] text-slate-400">點擊選取</span>
+            </div>
+
+            <!-- 自訂上傳區與文字輸入區 -->
+            <div class="p-2 border-b border-slate-100 bg-indigo-50/50 space-y-2">
+                <label for="imageUpload" class="w-full bg-white border border-dashed border-indigo-300 hover:border-indigo-500 rounded-lg p-2 text-center cursor-pointer transition flex flex-col items-center justify-center group">
+                    <i class="fa-solid fa-cloud-arrow-up text-lg text-indigo-400 group-hover:text-indigo-600 transition mb-0.5"></i>
+                    <span class="text-[11px] text-slate-600 font-medium">上傳圖片 (加入寶庫)</span>
+                    <input type="file" id="imageUpload" accept="image/*" class="hidden">
+                </label>
+
+                <!-- 新增：文字輸入加入寶庫 -->
+                <div class="flex gap-1">
+                    <input type="text" id="textInput" placeholder="輸入文字(例如: 中, A)" maxlength="3" class="flex-1 bg-white border border-slate-300 focus:border-indigo-500 rounded-lg px-2 py-1 text-xs text-slate-700 outline-none">
+                    <button id="addTextBtn" class="bg-indigo-600 hover:bg-indigo-700 text-white font-medium px-2.5 py-1 rounded-lg text-xs transition flex items-center justify-center shadow-sm">
+                        <i class="fa-solid fa-plus"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- 圖檔清單 -->
+            <div class="flex-1 overflow-y-auto p-2 space-y-3 no-scrollbar" id="galleryContainer">
+                <!-- 由 JavaScript 動態生成圖片項 -->
+            </div>
+
+            <!-- 圖檔備註提示 -->
+            <div class="p-2.5 bg-slate-50 border-t border-slate-200 text-[11px] text-slate-500">
+                <i class="fa-solid fa-lightbulb text-amber-500 mr-1"></i>
+                提示：選取圖形在左側進行對摺探索。
+            </div>
+        </aside>
+    </main>
+
+    <!-- 彈出幫助說明模態框 -->
+    <div id="helpModal" class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm z-50 flex items-center justify-center hidden opacity-0 transition-opacity duration-200">
+        <div class="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl border border-slate-100 transform scale-95 transition-transform duration-200" id="helpModalContent">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-lg font-bold text-slate-800 flex items-center gap-2">
+                    <i class="fa-solid fa-chalkboard-user text-indigo-600"></i> 操作使用說明
+                </h3>
+                <button id="closeHelpBtn" class="text-slate-400 hover:text-slate-600 p-1">
+                    <i class="fa-solid fa-xmark text-xl"></i>
+                </button>
+            </div>
+            <div class="space-y-3 text-sm text-slate-600">
+                <p>1. <strong>選擇圖形</strong>：點擊右側「圖形寶庫」中的幾何圖案或生活圖形，也可上傳自訂圖片或輸入文字。</p>
+                <p>2. <strong>設定對摺線</strong>：點選中間控制台的角度快捷按鈕，或拉動滑桿調整灰色對摺線。</p>
+                <p>3. <strong>對摺與展開</strong>：點擊「對摺」或「展開」按鈕，或滑動進度條觀察摺疊過程。</p>
+                <p>4. <strong>對稱軸及數量</strong>：點擊「標記對稱軸」可在畫布上記錄對稱軸；點擊「對稱軸數量」及「顯示所有對稱軸」可揭曉答案。</p>
+                <p>5. <strong>拖曳中心點</strong>：可在畫布上直接按住淺灰色圓環拖曳，或點選右下角微調，改變對摺線旋轉中心。</p>
+                <p>6. <strong>重設功能</strong>：點擊「重設」按鈕可將對摺狀態與中心點還原至正中央。</p>
+            </div>
+            <button id="confirmHelpBtn" class="mt-6 w-full bg-indigo-600 text-white py-2.5 rounded-xl font-semibold hover:bg-indigo-700 transition">知道了，開始教學</button>
+        </div>
+    </div>
+
+    <!-- 新增：計時器設定與倒數彈出模態框 -->
+    <div id="timerModal" class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm z-50 flex items-center justify-center hidden opacity-0 transition-opacity duration-200">
+        <div class="bg-white rounded-2xl max-w-sm w-full p-6 shadow-2xl border border-slate-100 transform scale-95 transition-transform duration-200" id="timerModalContent">
+            <div class="flex justify-between items-center mb-4">
+                <!-- 修改：移除標題前方的鬧鐘 emoji -->
+                <h3 class="text-lg font-bold text-slate-800 flex items-center gap-2">
+                    倒數計時器
+                </h3>
+                <button id="closeTimerModalBtn" class="text-slate-400 hover:text-slate-600 p-1">
+                    <i class="fa-solid fa-xmark text-xl"></i>
+                </button>
+            </div>
+            
+            <div id="timerSetupView" class="space-y-4">
+                <div class="flex justify-center items-center gap-3 py-2">
+                    <div class="flex flex-col items-center">
+                        <label class="text-xs font-bold text-slate-500 mb-1">分鐘</label>
+                        <input type="number" id="timerMinutesInput" min="0" max="60" value="1" class="w-20 text-center text-2xl font-bold border border-slate-300 rounded-xl py-2 focus:border-indigo-500 outline-none">
+                    </div>
+                    <span class="text-2xl font-bold text-slate-400 mt-5">:</span>
+                    <div class="flex flex-col items-center">
+                        <label class="text-xs font-bold text-slate-500 mb-1">秒數</label>
+                        <input type="number" id="timerSecondsInput" min="0" max="59" value="0" class="w-20 text-center text-2xl font-bold border border-slate-300 rounded-xl py-2 focus:border-indigo-500 outline-none">
+                    </div>
+                </div>
+                <div class="flex gap-2 pt-2">
+                    <button id="startTimerBtn" class="flex-1 bg-indigo-600 hover:bg-indigo-700 text-white py-2.5 rounded-xl font-semibold transition flex items-center justify-center gap-2 shadow">
+                        <i class="fa-solid fa-play"></i> 開始倒數
+                    </button>
+                </div>
+            </div>
+
+            <div id="timerRunningView" class="space-y-4 text-center hidden py-3">
+                <!-- 修改：鬧鐘 emoji 再放大（改為 text-8xl），並加大與下方文字的間距（mb-3） -->
+                <div class="flex flex-col items-center justify-center">
+                    <span id="alarmEmoji" class="text-8xl inline-block mb-3">⏰</span>
+                    <div id="timerBigDisplay" class="text-5xl font-black text-indigo-600 tracking-wider">01:00</div>
+                </div>
+                <!-- 調整為長方形按鈕，顏色設定：暫停(黃/琥珀), 重新計時(紅), 重設(藍) -->
+                <div class="grid grid-cols-3 gap-1.5 pt-2">
+                    <button id="pauseTimerBtn" class="bg-amber-500 hover:bg-amber-600 text-white py-2 px-1 rounded-lg text-xs font-semibold transition shadow flex items-center justify-center">暫停</button>
+                    <button id="resetTimerBtn" class="bg-rose-500 hover:bg-rose-600 text-white py-2 px-1 rounded-lg text-xs font-semibold transition shadow flex items-center justify-center">重新計時</button>
+                    <button id="stopTimerBtn" class="bg-blue-600 hover:bg-blue-700 text-white py-2 px-1 rounded-lg text-xs font-semibold transition shadow flex items-center justify-center">重設</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript 腳本區 -->
+    <script>
+        // DOM 元素引用
+        let canvas, ctx, canvasWrapper, galleryContainer, imageUpload;
+        let angleSlider, angleValue;
+        let foldSlider, foldProgressText;
+        let toggleFoldBtn;
+        let toggleGhostBtn, ghostBtnText, toggleFoldLineBtn, foldLineBtnText, foldLineIcon;
+        let checkSymmetryBtn, showAxesCountBtn, resultCard, resultIcon, resultTitle, resultDesc, shapeTitleDisplay, foundAxesBadge;
+        let helpBtn, helpModal, closeHelpBtn, confirmHelpBtn, resetCanvasBtn;
+        let stopAutoPlayFn = null;
+
+        // 計時器相關變數
+        let timerBtn, timerDisplay, timerModal, closeTimerModalBtn, timerSetupView, timerRunningView;
+        let timerMinutesInput, timerSecondsInput, startTimerBtn, pauseTimerBtn, resetTimerBtn, stopTimerBtn, timerBigDisplay, alarmEmoji;
+        let totalTimerSeconds = 0;
+        let currentTimerRemaining = 0;
+        let timerInterval = null;
+        let isTimerRunning = false;
+        let isTimerPaused = false;
+        let audioCtx = null;
+
+        // 初始化 Web Audio API 播放提示音
+        function playBeepSound(frequency = 600, duration = 0.15, type = 'sine') {
+            try {
+                if (!audioCtx) {
+                    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                }
+                if (audioCtx.state === 'suspended') {
+                    audioCtx.resume();
+                }
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.type = type;
+                osc.frequency.setValueAtTime(frequency, audioCtx.currentTime);
+                gain.gain.setValueAtTime(0.3, audioCtx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + duration);
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+                osc.start();
+                osc.stop(audioCtx.currentTime + duration);
+            } catch (e) {
+                console.log('Audio error', e);
+            }
+        }
+
+        // 倒數 5 秒節拍音效 (高音短嗶) 與 時間到結束音效
+        function playCountdownTickSound() {
+            playBeepSound(880, 0.12, 'sine');
+        }
+
+        function playTimeUpSound() {
+            try {
+                if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                if (audioCtx.state === 'suspended') audioCtx.resume();
+                
+                // 播放三連和弦慶祝音效
+                const now = audioCtx.currentTime;
+                [523.25, 659.25, 783.99, 1046.50].forEach((freq, idx) => {
+                    const osc = audioCtx.createOscillator();
+                    const gain = audioCtx.createGain();
+                    osc.frequency.setValueAtTime(freq, now + idx * 0.12);
+                    gain.gain.setValueAtTime(0.3, now + idx * 0.12);
+                    gain.gain.exponentialRampToValueAtTime(0.001, now + idx * 0.12 + 0.3);
+                    osc.connect(gain);
+                    gain.connect(audioCtx.destination);
+                    osc.start(now + idx * 0.12);
+                    osc.stop(now + idx * 0.12 + 0.3);
+                });
+            } catch (e) {
+                console.log('Audio error', e);
+            }
+        }
+
+        // 全局應用程式狀態
+        let state = {
+            customShapes: [],
+            currentShape: null,
+            shapeAngle: 0,
+            lineAngle: 90,
+            axisOffsetX: 0,
+            axisOffsetY: 0,
+            isDraggingCenter: false,
+            dragStartX: 0,
+            dragStartY: 0,
+            initOffsetX: 0,
+            initOffsetY: 0,
+            foldProgress: 0,
+            showGhost: true,
+            showFoldLine: true,
+            showCenterLine: false, // 預設隱藏中心線
+            showAllAxes: false,     // 預設不顯示所有對稱軸
+            foundAxes: [],
+            isFolding: false,
+            foldAnimationId: null
+        };
+
+        // 10 種漸層彩虹線段顏色標記
+        const AXIS_COLORS = [
+            '#ef4444', '#f97316', '#eab308', '#84cc16', '#15803d',
+            '#06b6d4', '#6366f1', '#a855f7', '#ec4899', '#78350f'
+        ];
+
+        // 正多邊形繪製輔助函式 (支援旋轉角度偏移)
+        function drawRegularPolygon(ctx, cx, cy, radius, sides, offsetDeg = 0) {
+            ctx.beginPath();
+            const offsetRad = (offsetDeg * Math.PI) / 180;
+            for (let i = 0; i < sides; i++) {
+                const angle = (i * 2 * Math.PI / sides) - Math.PI / 2 + offsetRad;
+                const x = cx + radius * Math.cos(angle);
+                const y = cy + radius * Math.sin(angle);
+                if (i === 0) ctx.moveTo(x, y);
+                else ctx.lineTo(x, y);
+            }
+            ctx.closePath();
+        }
+
+        // 幾何圖形定義 (依據附件圖一、圖二、圖三配置專屬顏色與方位)
+        const GEOMETRIC_SHAPES = [
+            {
+                id: 'equilateral-triangle', name: '正三角形', category: '幾何圖形', isSymmetric: true, axesCount: 3,
+                fillColor: 'rgba(218, 200, 231, 0.88)', foldFillColor: 'rgba(202, 182, 219, 0.96)', strokeColor: '#b499c9',
+                draw: (ctx, w, h) => {
+                    const r = w * 0.42, cx = w / 2, cy = h / 2;
+                    ctx.beginPath();
+                    for (let i = 0; i < 3; i++) {
+                        const angle = (i * 2 * Math.PI / 3) - Math.PI / 2;
+                        const x = cx + r * Math.cos(angle);
+                        const y = cy + r * Math.sin(angle);
+                        if (i === 0) ctx.moveTo(x, y);
+                        else ctx.lineTo(x, y);
+                    }
+                    ctx.closePath();
+                }
+            },
+            {
+                id: 'square', name: '正方形', category: '幾何圖形', isSymmetric: true, axesCount: 4,
+                fillColor: 'rgba(249, 244, 152, 0.88)', foldFillColor: 'rgba(242, 236, 128, 0.96)', strokeColor: '#c5bc48',
+                draw: (ctx, w, h) => {
+                    const side = w * 0.7;
+                    ctx.beginPath();
+                    ctx.rect((w - side) / 2, (h - side) / 2, side, side);
+                }
+            },
+            {
+                id: 'rectangle', name: '長方形', category: '幾何圖形', isSymmetric: true, axesCount: 2, axesAngles: [0, 90],
+                fillColor: 'rgba(219, 255, 153, 0.88)', foldFillColor: 'rgba(205, 242, 138, 0.96)', strokeColor: '#9ec452',
+                draw: (ctx, w, h) => {
+                    ctx.beginPath();
+                    ctx.rect(w * 0.1, h * 0.25, w * 0.8, h * 0.5);
+                }
+            },
+            {
+                id: 'pentagon', name: '正五邊形', category: '幾何圖形', isSymmetric: true, axesCount: 5,
+                fillColor: 'rgba(248, 187, 132, 0.88)', foldFillColor: 'rgba(242, 173, 112, 0.96)', strokeColor: '#cc8345',
+                draw: (ctx, w, h) => { drawRegularPolygon(ctx, w / 2, h / 2, w * 0.42, 5); }
+            },
+            {
+                id: 'hexagon', name: '正六邊形', category: '幾何圖形', isSymmetric: true, axesCount: 6,
+                fillColor: 'rgba(177, 222, 194, 0.88)', foldFillColor: 'rgba(157, 210, 177, 0.96)', strokeColor: '#66a982',
+                draw: (ctx, w, h) => { drawRegularPolygon(ctx, w / 2, h / 2, w * 0.42, 6, 30); }
+            },
+            {
+                id: 'octagon', name: '正八邊形', category: '幾何圖形', isSymmetric: true, axesCount: 8,
+                fillColor: 'rgba(213, 238, 253, 0.92)', foldFillColor: 'rgba(192, 227, 250, 0.97)', strokeColor: '#526575',
+                draw: (ctx, w, h) => { drawRegularPolygon(ctx, w / 2, h / 2, w * 0.42, 8, 22); }
+            },
+            {
+                id: 'kite', name: '箏形', category: '幾何圖形', isSymmetric: true, axesCount: 1,
+                fillColor: 'rgba(180, 215, 245, 0.88)', foldFillColor: 'rgba(160, 198, 235, 0.96)', strokeColor: '#5a96d4',
+                draw: (ctx, w, h) => {
+                    ctx.beginPath();
+                    ctx.moveTo(w / 2, h * 0.1);
+                    ctx.lineTo(w * 0.85, h * 0.45);
+                    ctx.lineTo(w / 2, h * 0.9);
+                    ctx.lineTo(w * 0.15, h * 0.45);
+                    ctx.closePath();
+                }
+            },
+            {
+                id: 'rhombus', name: '菱形', category: '幾何圖形', isSymmetric: true, axesCount: 2,
+                fillColor: 'rgba(176, 224, 224, 0.88)', foldFillColor: 'rgba(156, 212, 212, 0.96)', strokeColor: '#5ea7a8',
+                draw: (ctx, w, h) => {
+                    ctx.beginPath();
+                    ctx.moveTo(w / 2, h * 0.02);
+                    ctx.lineTo(w * 0.9, h / 2);
+                    ctx.lineTo(w / 2, h * 0.98);
+                    ctx.lineTo(w * 0.1, h / 2);
+                    ctx.closePath();
+                }
+            },
+            {
+                id: 'parallelogram', name: '平行四邊形', category: '幾何圖形', isSymmetric: false, axesCount: 0,
+                fillColor: 'rgba(176, 224, 224, 0.88)', foldFillColor: 'rgba(156, 212, 212, 0.96)', strokeColor: '#5ea7a8',
+                draw: (ctx, w, h) => {
+                    ctx.beginPath();
+                    ctx.moveTo(w * 0.35, h * 0.1);
+                    ctx.lineTo(w * 0.95, h * 0.1);
+                    ctx.lineTo(w * 0.65, h * 0.9);
+                    ctx.lineTo(w * 0.05, h * 0.9);
+                    ctx.closePath();
+                }
+            },
+            {
+                id: 'trapezoid', name: '等腰梯形', category: '幾何圖形', isSymmetric: true, axesCount: 1,
+                fillColor: 'rgba(180, 215, 245, 0.88)', foldFillColor: 'rgba(160, 198, 235, 0.96)', strokeColor: '#5a96d4',
+                draw: (ctx, w, h) => {
+                    ctx.beginPath();
+                    ctx.moveTo(w * 0.25, h * 0.2);
+                    ctx.lineTo(w * 0.75, h * 0.2);
+                    ctx.lineTo(w * 0.9, h * 0.8);
+                    ctx.lineTo(w * 0.1, h * 0.8);
+                    ctx.closePath();
+                }
+            },
+            {
+                id: 'sector-270', name: '270°扇形', category: '幾何圖形', isSymmetric: true, axesCount: 1,
+                fillColor: 'rgba(176, 224, 224, 0.88)', foldFillColor: 'rgba(156, 212, 212, 0.96)', strokeColor: '#5ea7a8',
+                draw: (ctx, w, h) => {
+                    ctx.beginPath();
+                    ctx.moveTo(w / 2, h / 2);
+                    ctx.arc(w / 2, h / 2, w * 0.4, 0, Math.PI * 1.5);
+                    ctx.closePath();
+                }
+            },
+            {
+                id: 'circle', name: '圓形', category: '幾何圖形', isSymmetric: true, axesCount: '無限多',
+                fillColor: 'rgba(176, 224, 224, 0.88)', foldFillColor: 'rgba(156, 212, 212, 0.96)', strokeColor: '#5ea7a8',
+                draw: (ctx, w, h) => {
+                    ctx.beginPath();
+                    ctx.arc(w / 2, h / 2, w * 0.4, 0, Math.PI * 2);
+                }
+            },
+            {
+                id: 'isosceles-triangle', name: '等腰三角形', category: '幾何圖形', isSymmetric: true, axesCount: 1,
+                fillColor: 'rgba(247, 202, 218, 0.88)', foldFillColor: 'rgba(235, 185, 205, 0.96)', strokeColor: '#d483a5',
+                draw: (ctx, w, h) => {
+                    ctx.beginPath();
+                    ctx.moveTo(w / 2, h * 0.1);
+                    ctx.lineTo(w * 0.9, h * 0.9);
+                    ctx.lineTo(w * 0.1, h * 0.9);
+                    ctx.closePath();
+                }
+            },
+            {
+                id: 'heart-geo', name: '心形', category: '幾何圖形', isSymmetric: true, axesCount: 1, axesAngles: [90],
+                fillColor: 'rgba(247, 202, 218, 0.88)', foldFillColor: 'rgba(235, 185, 205, 0.96)', strokeColor: '#d483a5',
+                draw: (ctx, w, h) => {
+                    const cx = w / 2, topY = h * 0.30, bottomY = h * 0.88;
+                    ctx.beginPath();
+                    ctx.moveTo(cx, topY);
+                    ctx.bezierCurveTo(cx - w * 0.14, h * 0.08, w * 0.06, h * 0.22, w * 0.12, h * 0.48);
+                    ctx.bezierCurveTo(w * 0.16, h * 0.66, cx - w * 0.12, h * 0.78, cx, bottomY);
+                    ctx.bezierCurveTo(cx + w * 0.12, h * 0.78, w * 0.84, h * 0.66, w * 0.88, h * 0.48);
+                    ctx.bezierCurveTo(w * 0.94, h * 0.22, cx + w * 0.14, h * 0.08, cx, topY);
+                    ctx.closePath();
+                }
+            },
+            {
+                id: 'plum-blossom', name: '梅花形', category: '幾何圖形', isSymmetric: true, axesCount: 5, axesAngles: [18, 54, 90, 126, 162],
+                fillColor: 'rgba(247, 202, 218, 0.88)', foldFillColor: 'rgba(235, 185, 205, 0.96)', strokeColor: '#d483a5',
+                draw: (ctx, w, h) => {
+                    const cx = w / 2, cy = h / 2;
+                    // 使用 5 個外圍圓弧組成飽滿的梅花花瓣，並透過精確三角函數與小 R 角連接，完全避免內部重疊線段
+                    const d = w * 0.255;       // 花瓣圓心距離圖形中心的半徑
+                    const r = w * 0.215;       // 每片花瓣的圓弧半徑
+                    const filletR = w * 0.022; // 瓣間內凹處的小 R 角半徑
+                    const stepAngle = (Math.PI * 2) / 5; // 72°
+                    const halfStep = stepAngle / 2;      // 36°
+
+                    // 計算兩相鄰花瓣圓弧在瓣間谷底（36°方向）的交點距離 R_int
+                    const cos36 = Math.cos(halfStep);
+                    const sin36 = Math.sin(halfStep);
+                    const R_int = d * cos36 + Math.sqrt(r * r - Math.pow(d * sin36, 2));
+
+                    // 計算花瓣圓弧在交點處相對於自身圓心的角度（外圓弧跨度為 [petalAngle - beta, petalAngle + beta]）
+                    const beta = Math.acos((R_int * cos36 - d) / r);
+                    const trimAngle = (filletR * 1.3) / r; // 預留給小 R 角的弧度
+                    const R_fillet = R_int - filletR * 1.1; // 小 R 角控制點半徑
+
+                    ctx.beginPath();
+                    for (let i = 0; i < 5; i++) {
+                        const petalAngle = i * stepAngle - Math.PI / 2;
+                        const px = cx + d * Math.cos(petalAngle);
+                        const py = cy + d * Math.sin(petalAngle);
+
+                        // 僅繪製外側飽滿圓弧，絕不向內畫入圖形內部
+                        const startArc = petalAngle - beta + trimAngle;
+                        const endArc = petalAngle + beta - trimAngle;
+                        ctx.arc(px, py, r, startArc, endArc, false);
+
+                        // 繪製花瓣接縫處的小 R 角平滑過渡，連接至下一片花瓣的外弧起點
+                        const valleyAngle = petalAngle + halfStep;
+                        const vx = cx + R_fillet * Math.cos(valleyAngle);
+                        const vy = cy + R_fillet * Math.sin(valleyAngle);
+
+                        const nextPetalAngle = (i + 1) * stepAngle - Math.PI / 2;
+                        const npx = cx + d * Math.cos(nextPetalAngle);
+                        const npy = cy + d * Math.sin(nextPetalAngle);
+                        const nextStartArc = nextPetalAngle - beta + trimAngle;
+                        const nx = npx + r * Math.cos(nextStartArc);
+                        const ny = npy + r * Math.sin(nextStartArc);
+
+                        ctx.quadraticCurveTo(vx, vy, nx, ny);
+                    }
+                    ctx.closePath();
+                }
+            },
+            {
+                id: 'star-5', name: '五角星形', category: '幾何圖形', isSymmetric: true, axesCount: 5, axesAngles: [18, 54, 90, 126, 162],
+                fillColor: 'rgba(253, 224, 150, 0.88)', foldFillColor: 'rgba(245, 210, 130, 0.96)', strokeColor: '#d69e2e',
+                draw: (ctx, w, h) => {
+                    const cx = w / 2, cy = h / 2, outerR = w * 0.44, innerR = w * 0.18;
+                    ctx.beginPath();
+                    for (let i = 0; i < 10; i++) {
+                        const r = i % 2 === 0 ? outerR : innerR;
+                        const angle = (i * Math.PI / 5) - Math.PI / 2;
+                        const x = cx + r * Math.cos(angle);
+                        const y = cy + r * Math.sin(angle);
+                        if (i === 0) ctx.moveTo(x, y);
+                        else ctx.lineTo(x, y);
+                    }
+                    ctx.closePath();
+                }
+            },
+            {
+                id: 'star-6', name: '六角星形', category: '幾何圖形', isSymmetric: true, axesCount: 6, axesAngles: [0, 30, 60, 90, 120, 150],
+                fillColor: 'rgba(253, 224, 150, 0.88)', foldFillColor: 'rgba(245, 210, 130, 0.96)', strokeColor: '#d69e2e',
+                draw: (ctx, w, h) => {
+                    const cx = w / 2, cy = h / 2, outerR = w * 0.44, innerR = w * 0.24;
+                    ctx.beginPath();
+                    for (let i = 0; i < 12; i++) {
+                        const r = i % 2 === 0 ? outerR : innerR;
+                        const angle = (i * Math.PI / 6) - Math.PI / 2;
+                        const x = cx + r * Math.cos(angle);
+                        const y = cy + r * Math.sin(angle);
+                        if (i === 0) ctx.moveTo(x, y);
+                        else ctx.lineTo(x, y);
+                    }
+                    ctx.closePath();
+                }
+            },
+            {
+                id: 'crescent', name: '月牙形', category: '幾何圖形', isSymmetric: true, axesCount: 1, axesAngles: [0],
+                fillColor: 'rgba(253, 224, 150, 0.88)', foldFillColor: 'rgba(245, 210, 130, 0.96)', strokeColor: '#d69e2e',
+                draw: (ctx, w, h) => {
+                    const cx = w / 2, cy = h / 2, R = w * 0.42;
+                    ctx.beginPath();
+                    // 依據參考圖調整月牙比例：上下尖角向內包覆超過半圓，並置中對齊畫布中心
+                    const x1 = cx - R * 0.14, r1 = R;
+                    const x2 = cx - R * 0.42, r2 = R * 0.80;
+                    const d = x1 - x2;
+                    // 計算兩圓交點的 X 座標與對應圓心角（大於 90 度使月牙上下兩端向內勾起）
+                    const intersectX = x2 + (r2 * r2 - r1 * r1 + d * d) / (2 * d);
+                    const alpha1 = Math.acos((intersectX - x1) / r1);
+                    const alpha2 = Math.acos((intersectX - x2) / r2);
+
+                    ctx.lineJoin = 'round';
+                    // 繪製外圓弧（右側飽滿凸出）
+                    ctx.arc(x1, cy, r1, -alpha1, alpha1, false);
+                    // 繪製內圓弧（左側凹入，逆時針返回上交點）
+                    ctx.arc(x2, cy, r2, alpha2, -alpha2, true);
+                    ctx.closePath();
+                }
+            },
+            {
+                id: 'ellipse', name: '橢圓形', category: '幾何圖形', isSymmetric: true, axesCount: 2, axesAngles: [0, 90],
+                fillColor: 'rgba(248, 180, 180, 0.88)', foldFillColor: 'rgba(235, 160, 160, 0.96)', strokeColor: '#d9534f',
+                draw: (ctx, w, h) => {
+                    ctx.beginPath();
+                    ctx.ellipse(w / 2, h / 2, w * 0.42, h * 0.26, 0, 0, Math.PI * 2);
+                }
+            },
+            {
+                id: 'cross-geo', name: '十字形', category: '幾何圖形', isSymmetric: true, axesCount: 4, axesAngles: [0, 45, 90, 135],
+                fillColor: 'rgba(248, 180, 180, 0.88)', foldFillColor: 'rgba(235, 160, 160, 0.96)', strokeColor: '#d9534f',
+                draw: (ctx, w, h) => {
+                    const a = w * 0.14, b = w * 0.38, cx = w / 2, cy = h / 2;
+                    ctx.beginPath();
+                    ctx.moveTo(cx - a, cy - b);
+                    ctx.lineTo(cx + a, cy - b);
+                    ctx.lineTo(cx + a, cy - a);
+                    ctx.lineTo(cx + b, cy - a);
+                    ctx.lineTo(cx + b, cy + a);
+                    ctx.lineTo(cx + a, cy + a);
+                    ctx.lineTo(cx + a, cy + b);
+                    ctx.lineTo(cx - a, cy + b);
+                    ctx.lineTo(cx - a, cy + a);
+                    ctx.lineTo(cx - b, cy + a);
+                    ctx.lineTo(cx - b, cy - a);
+                    ctx.lineTo(cx - a, cy - a);
+                    ctx.closePath();
+                }
+            },
+            {
+                id: 'arrow-geo', name: '箭頭形', category: '幾何圖形', isSymmetric: true, axesCount: 1, axesAngles: [90],
+                fillColor: 'rgba(248, 180, 180, 0.88)', foldFillColor: 'rgba(235, 160, 160, 0.96)', strokeColor: '#d9534f',
+                draw: (ctx, w, h) => {
+                    const cx = w / 2;
+                    ctx.beginPath();
+                    ctx.moveTo(cx, h * 0.1);
+                    ctx.lineTo(w * 0.86, h * 0.5);
+                    ctx.lineTo(w * 0.65, h * 0.5);
+                    ctx.lineTo(w * 0.65, h * 0.9);
+                    ctx.lineTo(w * 0.35, h * 0.9);
+                    ctx.lineTo(w * 0.35, h * 0.5);
+                    ctx.lineTo(w * 0.14, h * 0.5);
+                    ctx.closePath();
+                }
+            }
+        ];
+
+        // 生活與具象對稱圖形定義
+        const LIFE_SHAPES = [
+            // 1. 服飾衣物類
+            { id: 't-shirt', name: '上衣', emoji: '👕', category: '服飾衣物類', isSymmetric: true, axesCount: 1, axesAngles: [90] },
+            { id: 'jeans', name: '褲子', emoji: '👖', category: '服飾衣物類', isSymmetric: true, axesCount: 1, axesAngles: [90] },
+            { id: 'glasses', name: '眼鏡', emoji: '👓', category: '服飾衣物類', isSymmetric: true, axesCount: 1, axesAngles: [90] },
+            { id: 'backpack', name: '書包', emoji: '🎒', category: '服飾衣物類', isSymmetric: true, axesCount: 1, axesAngles: [90] },
+            { id: 'ribbon', name: '蝴蝶結', emoji: '🎀', category: '服飾衣物類', isSymmetric: true, axesCount: 1, axesAngles: [90] },
+            { id: 'diamond-gem', name: '鑽石', emoji: '💎', category: '服飾衣物類', isSymmetric: true, axesCount: 1, axesAngles: [90] },
+            { id: 'top-hat', name: '禮帽', emoji: '🎩', category: '服飾衣物類', isSymmetric: true, axesCount: 1, axesAngles: [90] },
+            { id: 'handbag', name: '手提包', emoji: '👜', category: '服飾衣物類', isSymmetric: true, axesCount: 1, axesAngles: [90] },
+            { id: 'crown', name: '皇冠', emoji: '👑', category: '服飾衣物類', isSymmetric: true, axesCount: 1, axesAngles: [90] },
+
+            // 2. 文具與用品 (剪刀~滑鼠移至磁鐵前)
+            { id: 'scissors', name: '剪刀', emoji: '✂️', category: '文具與用品', isSymmetric: true, axesCount: 1, axesAngles: [90] },
+            { id: 'set-square', name: '三角板', emoji: '📐', category: '文具與用品', isSymmetric: true, axesCount: 1, axesAngles: [45] },
+            { id: 'ruler', name: '直尺', emoji: '📏', category: '文具與用品', isSymmetric: true, axesCount: 1, axesAngles: [45] },
+            { id: 'book', name: '書本', emoji: '📖', category: '文具與用品', isSymmetric: true, axesCount: 1, axesAngles: [90] },
+            { id: 'display', name: '螢幕', emoji: '🖥️', category: '文具與用品', isSymmetric: true, axesCount: 1, axesAngles: [90] },
+            { id: 'mouse', name: '滑鼠', emoji: '🖱️', category: '文具與用品', isSymmetric: true, axesCount: 1, axesAngles: [90] },
+            { id: 'magnet', name: '磁鐵', emoji: '🧲', category: '文具與用品', isSymmetric: true, axesCount: 1, axesAngles: [90] },
+            { id: 'bell', name: '鈴鐺', emoji: '🔔', category: '文具與用品', isSymmetric: true, axesCount: 1, axesAngles: [90] },
+            { id: 'gift', name: '禮物', emoji: '🎁', category: '文具與用品', isSymmetric: true, axesCount: 1, axesAngles: [90] },
+            { id: 'magnifier', name: '放大鏡', emoji: '🔎', category: '文具與用品', isSymmetric: true, axesCount: 1, axesAngles: [45] },
+            { id: 'bulb', name: '燈泡', emoji: '💡', category: '文具與用品', isSymmetric: true, axesCount: 1, axesAngles: [90] },
+            { id: 'electric-plug', name: '插頭', emoji: '🔌', category: '文具與用品', isSymmetric: true, axesCount: 1, axesAngles: [90] },
+
+            // 3. 動物與昆蟲 (依序排列)
+            { id: 'person', name: '人體', emoji: '🧍', category: '動物與昆蟲', isSymmetric: true, axesCount: 1, axesAngles: [90] },
+            { id: 'penguin', name: '企鵝', emoji: '🐧', category: '動物與昆蟲', isSymmetric: true, axesCount: 1, axesAngles: [90] },
+            { id: 'hatching-chick', name: '小雞', emoji: '🐣', category: '動物與昆蟲', isSymmetric: true, axesCount: 1, axesAngles: [90] },
+            { id: 'dog', name: '狗狗', emoji: '🐶', category: '動物與昆蟲', isSymmetric: true, axesCount: 1, axesAngles: [90] },
+            { id: 'cat', name: '貓咪', emoji: '🐱', category: '動物與昆蟲', isSymmetric: true, axesCount: 1, axesAngles: [90] },
+            { id: 'mouse-face', name: '老鼠', emoji: '🐭', category: '動物與昆蟲', isSymmetric: true, axesCount: 1, axesAngles: [90] },
+            { id: 'bear', name: '熊熊', emoji: '🐻', category: '動物與昆蟲', isSymmetric: true, axesCount: 1, axesAngles: [90] },
+            { id: 'panda-face', name: '熊貓', emoji: '🐼', category: '動物與昆蟲', isSymmetric: true, axesCount: 1, axesAngles: [90] },
+            { id: 'rabbit', name: '兔子', emoji: '🐰', category: '動物與昆蟲', isSymmetric: true, axesCount: 1, axesAngles: [90] },
+            { id: 'butterfly', name: '蝴蝶', emoji: '🦋', category: '動物與昆蟲', isSymmetric: true, axesCount: 1, axesAngles: [90] },
+            { id: 'ladybug', name: '瓢蟲', emoji: '🐞', category: '動物與昆蟲', isSymmetric: true, axesCount: 1, axesAngles: [90] },
+            { id: 'crab', name: '螃蟹', emoji: '🦀', category: '動物與昆蟲', isSymmetric: true, axesCount: 1, axesAngles: [90] },
+
+            // 4. 大自然與建築 (依新順序排列)
+            { id: 'water-drop', name: '水滴', emoji: '💧', category: '大自然與建築', isSymmetric: true, axesCount: 1, axesAngles: [90] },
+            { id: 'snowflake', name: '雪花', emoji: '❄️', category: '大自然與建築', isSymmetric: true, axesCount: 6, axesAngles: [0, 30, 60, 90, 120, 150] },
+            { id: 'sun', name: '太陽', emoji: '☀️', category: '大自然與建築', isSymmetric: true, axesCount: 12, axesAngles: [0, 15, 30, 45, 60, 75, 90, 105, 120, 135, 150, 165] },
+            { id: 'rainbow', name: '彩虹', emoji: '🌈', category: '大自然與建築', isSymmetric: true, axesCount: 1, axesAngles: [45] },
+            { id: 'leaf', name: '楓葉', emoji: '🍁', category: '大自然與建築', isSymmetric: true, axesCount: 1, axesAngles: [90] },
+            { id: 'cherry-blossom', name: '櫻花', emoji: '🌸', category: '大自然與建築', isSymmetric: true, axesCount: 5, axesAngles: [18, 54, 90, 126, 162] },
+            { id: 'evergreen', name: '松樹', emoji: '🌲', category: '大自然與建築', isSymmetric: true, axesCount: 1, axesAngles: [90] },
+            { id: 'tokyo-tower', name: '鐵塔', emoji: '🗼', category: '大自然與建築', isSymmetric: true, axesCount: 1, axesAngles: [90] },
+            { id: 'ferris-wheel', name: '摩天輪', emoji: '🎡', category: '大自然與建築', isSymmetric: true, axesCount: 1, axesAngles: [90] },
+            { id: 'window', name: '窗戶', emoji: '🪟', category: '大自然與建築', isSymmetric: true, axesCount: 4, axesAngles: [0, 45, 90, 135] },
+            { id: 'church', name: '教堂', emoji: '⛪', category: '大自然與建築', isSymmetric: true, axesCount: 1, axesAngles: [90] },
+            { id: 'shinto-shrine', name: '鳥居', emoji: '⛩️', category: '大自然與建築', isSymmetric: true, axesCount: 1, axesAngles: [90] },
+
+            // 5. 交通與安全標誌 (依新順序排列)
+            { id: 'car-front', name: '汽車', emoji: '🚘', category: '交通與安全標誌', isSymmetric: true, axesCount: 1, axesAngles: [90] },
+            { id: 'arrow-up', name: '向下箭頭', emoji: '⬇️', category: '交通與安全標誌', isSymmetric: true, axesCount: 1, axesAngles: [90] },
+            { id: 'arrow-lr', name: '雙向箭頭', emoji: '↔️', category: '交通與安全標誌', isSymmetric: true, axesCount: 2, axesAngles: [0, 90] },
+            { id: 'warning', name: '警告標誌', emoji: '⚠️', category: '交通與安全標誌', isSymmetric: true, axesCount: 1, axesAngles: [90] },
+            { id: 'no-entry', name: '禁止進入', emoji: '⛔', category: '交通與安全標誌', isSymmetric: true, axesCount: 2, axesAngles: [0, 90] },
+            { id: 'prohibited', name: '禁止標誌', emoji: '🚫', category: '交通與安全標誌', isSymmetric: true, axesCount: 2, axesAngles: [45, 135] },
+
+            // 6. 其他圖形
+            { id: 'spade', name: '黑桃', emoji: '♠️', category: '其他圖形', isSymmetric: true, axesCount: 1, axesAngles: [90] },
+            { id: 'diamond-poker', name: '方塊', emoji: '♦️', category: '其他圖形', isSymmetric: true, axesCount: 2, axesAngles: [0, 90] },
+            { id: 'club-poker', name: '梅花', emoji: '♣️', category: '其他圖形', isSymmetric: true, axesCount: 1, axesAngles: [90] }
+        ];
+
+        // 動態調整 Canvas 畫布尺寸
+        function resizeCanvas() {
+            if (!canvasWrapper || !canvas) return;
+            canvas.width = canvasWrapper.clientWidth;
+            canvas.height = canvasWrapper.clientHeight;
+            requestAnimationFrame(render);
+        }
+
+        // 生成左側圖例清單 (按 3 欄正方形卡片結構生成)
+        function renderGallery() {
+            galleryContainer.innerHTML = '';
+
+            if (state.customShapes.length > 0) {
+                appendCategoryHeader('自訂上傳圖庫');
+                appendCategoryGrid(state.customShapes);
+            }
+
+            appendCategoryHeader('幾何圖形');
+            appendCategoryGrid(GEOMETRIC_SHAPES);
+
+            const categories = [
+                '服飾衣物類', '文具與用品', '動物與昆蟲', '大自然與建築', '交通與安全標誌', '其他圖形'
+            ];
+
+            categories.forEach(catName => {
+                const catItems = LIFE_SHAPES.filter(s => s.category === catName);
+                if (catItems.length > 0) {
+                    appendCategoryHeader(catName);
+                    appendCategoryGrid(catItems);
+                }
+            });
+        }
+
+        function appendCategoryHeader(title) {
+            const header = document.createElement('div');
+            header.className = 'text-[11px] font-bold text-slate-400 uppercase tracking-wider px-0.5 pt-2 pb-1 border-b border-slate-100 mb-1.5';
+            header.textContent = title;
+            galleryContainer.appendChild(header);
+        }
+
+        function appendCategoryGrid(items) {
+            const grid = document.createElement('div');
+            grid.className = 'grid grid-cols-3 gap-1.5 mb-2';
+
+            items.forEach(shape => {
+                const btn = document.createElement('button');
+                btn.className = 'shape-item aspect-square bg-slate-50 hover:bg-indigo-50 border border-slate-200 hover:border-indigo-300 rounded-lg p-1 transition flex flex-col items-center justify-center group overflow-hidden shadow-sm';
+
+                let previewHTML = '';
+                if (shape.emoji) {
+                    previewHTML = `<div class="text-xl leading-none flex items-center justify-center">${shape.emoji}</div>`;
+                } else if (shape.isText) {
+                    previewHTML = `<div class="text-sm font-bold text-indigo-600 flex items-center justify-center truncate w-full">${shape.text}</div>`;
+                } else {
+                    const previewCanvas = document.createElement('canvas');
+                    previewCanvas.width = 32;
+                    previewCanvas.height = 32;
+                    const pCtx = previewCanvas.getContext('2d');
+
+                    if (shape.isCustom && shape.imgElement) {
+                        // 保持原圖長寬比例置中繪製於 32x32 縮圖畫布中
+                        const img = shape.imgElement;
+                        const imgAspect = img.width / img.height;
+                        let drawW = 32;
+                        let drawH = 32;
+                        if (imgAspect > 1) {
+                            drawH = 32 / imgAspect;
+                        } else {
+                            drawW = 32 * imgAspect;
+                        }
+                        pCtx.drawImage(img, (32 - drawW) / 2, (32 - drawH) / 2, drawW, drawH);
+                    } else if (shape.draw) {
+                        pCtx.fillStyle = shape.fillColor || '#6366f1';
+                        pCtx.strokeStyle = shape.strokeColor || '#4338ca';
+                        pCtx.lineWidth = 2;
+                        shape.draw(pCtx, 32, 32);
+                        pCtx.fill();
+                        pCtx.stroke();
+                    }
+                    previewHTML = `<img src="${previewCanvas.toDataURL()}" class="w-6 h-6 object-contain" alt="${shape.name}">`;
+                }
+
+                btn.innerHTML = `
+                    <div class="flex-1 flex items-center justify-center">
+                        ${previewHTML}
+                    </div>
+                    <span class="text-[10px] text-slate-600 group-hover:text-indigo-600 font-medium truncate w-full text-center">${shape.name}</span>
+                `;
+
+                btn.addEventListener('click', () => selectShape(shape));
+                grid.appendChild(btn);
+            });
+
+            galleryContainer.appendChild(grid);
+        }
+
+        // 選擇指定圖形
+        function selectShape(shape) {
+            state.currentShape = shape;
+            state.foldProgress = 0;
+            state.shapeAngle = 0;
+            state.foundAxes = [];
+            state.showAllAxes = false; // 切換圖形時重置為預設未顯示所有對稱軸
+
+            // 點選 Emoji 圖形或上傳圖片時預設「顯示中心線」，點選幾何圖形時預設「隱藏中心線」
+            if (shape.emoji || shape.isCustom) {
+                state.showCenterLine = true;
+            } else if (shape.category === '幾何圖形') {
+                state.showCenterLine = false;
+            }
+            const centerLineBtnText = document.getElementById('centerLineBtnText');
+            const centerLineIcon = document.getElementById('centerLineIcon');
+            if (centerLineBtnText && centerLineIcon) {
+                centerLineBtnText.textContent = state.showCenterLine ? '隱藏中心線' : '顯示中心線';
+                centerLineIcon.className = state.showCenterLine ? 'fa-solid fa-eye' : 'fa-solid fa-eye-slash';
+            }
+
+            foldSlider.value = 0;
+            foldProgressText.textContent = '0%';
+            if (shapeTitleDisplay) {
+                const spanEl = shapeTitleDisplay.querySelector('span');
+                if (spanEl) {
+                    spanEl.textContent = shape.name;
+                } else {
+                    shapeTitleDisplay.textContent = shape.name;
+                }
+            }
+            hideResultCard();
+            requestAnimationFrame(render);
+        }
+
+        // 綁定 DOM 事件
+        function bindEvents() {
+            imageUpload.addEventListener('change', (e) => {
+                const file = e.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = (event) => {
+                        const img = new Image();
+                        img.onload = () => {
+                            const newCustomShape = {
+                                id: 'custom-' + Date.now(),
+                                name: file.name.split('.')[0] || '自訂圖片',
+                                isCustom: true,
+                                imgElement: img
+                            };
+                            state.customShapes.unshift(newCustomShape);
+                            renderGallery();
+                            selectShape(newCustomShape);
+                        };
+                        img.src = event.target.result;
+                    };
+                    reader.readAsDataURL(file);
+                }
+            });
+
+            // 綁定文字輸入加入寶庫按鈕與 Enter 事件
+            const textInput = document.getElementById('textInput');
+            const addTextBtn = document.getElementById('addTextBtn');
+
+            const handleAddText = () => {
+                const textVal = textInput.value.trim();
+                if (!textVal) return;
+
+                const newTextShape = {
+                    id: 'text-' + Date.now(),
+                    name: textVal,
+                    isText: true,
+                    text: textVal
+                };
+                state.customShapes.unshift(newTextShape);
+                renderGallery();
+                selectShape(newTextShape);
+                textInput.value = '';
+            };
+
+            addTextBtn.addEventListener('click', handleAddText);
+            textInput.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') handleAddText();
+            });
+
+            document.querySelectorAll('.line-preset-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    document.querySelectorAll('.line-preset-btn').forEach(b => {
+                        b.classList.remove('active', 'bg-indigo-50', 'border-indigo-500', 'text-indigo-700');
+                        b.classList.add('bg-slate-50', 'border-slate-200', 'text-slate-600');
+                    });
+                    const target = e.currentTarget;
+                    target.classList.add('active', 'bg-indigo-50', 'border-indigo-500', 'text-indigo-700');
+                    target.classList.remove('bg-slate-50', 'border-slate-200', 'text-slate-600');
+
+                    const angle = parseInt(target.getAttribute('data-angle'));
+                    state.lineAngle = angle;
+                    angleSlider.value = angle;
+                    angleValue.textContent = `${angle}°`;
+                    hideResultCard();
+                    requestAnimationFrame(render);
+                });
+            });
+
+            angleSlider.addEventListener('input', (e) => {
+                state.lineAngle = parseInt(e.target.value);
+                angleValue.textContent = `${state.lineAngle}°`;
+                hideResultCard();
+                requestAnimationFrame(render);
+            });
+
+            // 對摺角度 +/- 1° 微調按鈕
+            const angleStepDownBtn = document.getElementById('angleStepDownBtn');
+            const angleStepUpBtn = document.getElementById('angleStepUpBtn');
+
+            if (angleStepDownBtn && angleStepUpBtn) {
+                angleStepDownBtn.addEventListener('click', () => {
+                    if (state.lineAngle > 0) {
+                        state.lineAngle -= 1;
+                        angleSlider.value = state.lineAngle;
+                        angleValue.textContent = `${state.lineAngle}°`;
+                        hideResultCard();
+                        requestAnimationFrame(render);
+                    }
+                });
+
+                angleStepUpBtn.addEventListener('click', () => {
+                    if (state.lineAngle < 180) {
+                        state.lineAngle += 1;
+                        angleSlider.value = state.lineAngle;
+                        angleValue.textContent = `${state.lineAngle}°`;
+                        hideResultCard();
+                        requestAnimationFrame(render);
+                    }
+                });
+            }
+
+            foldSlider.addEventListener('input', (e) => {
+                if (stopAutoPlayFn) stopAutoPlayFn();
+                state.foldProgress = parseInt(e.target.value) / 100;
+                foldProgressText.textContent = `${e.target.value}%`;
+                hideResultCard();
+                requestAnimationFrame(render);
+            });
+
+            // 整合為「對摺/展開」切換按鈕
+            toggleFoldBtn.addEventListener('click', () => {
+                if (stopAutoPlayFn) stopAutoPlayFn();
+                const target = state.foldProgress < 0.5 ? 1 : 0;
+                startFoldAnimation(target);
+            });
+
+            // 恢復畫布中[重設]按鈕的功能
+            resetCanvasBtn.addEventListener('click', () => {
+                if (stopAutoPlayFn) stopAutoPlayFn();
+                state.foldProgress = 0;
+                state.shapeAngle = 0;
+                state.lineAngle = 90;
+                state.axisOffsetX = 0;
+                state.axisOffsetY = 0;
+                state.foundAxes = [];
+                state.showAllAxes = false;
+                
+                if (angleSlider) angleSlider.value = 90;
+                if (angleValue) angleValue.textContent = '90°';
+                if (foldSlider) foldSlider.value = 0;
+                if (foldProgressText) foldProgressText.textContent = '0°%';
+                if (foldProgressText) foldProgressText.textContent = '0%';
+
+                // 重置控制台角度按鈕樣式
+                document.querySelectorAll('.line-preset-btn').forEach(b => {
+                    const angle = b.getAttribute('data-angle');
+                    if (angle === '90') {
+                        b.classList.add('active', 'bg-indigo-50', 'border-indigo-500', 'text-indigo-700');
+                        b.classList.remove('bg-slate-50', 'border-slate-200', 'text-slate-600');
+                    } else {
+                        b.classList.remove('active', 'bg-indigo-50', 'border-indigo-500', 'text-indigo-700');
+                        b.classList.add('bg-slate-50', 'border-slate-200', 'text-slate-600');
+                    }
+                });
+
+                hideResultCard();
+                requestAnimationFrame(render);
+            });
+
+            // 自動對摺與展開循環播放按鈕（播放對摺）
+            let isAutoPlaying = false;
+            let autoPlayTimer = null;
+            const togglePlayFoldBtn = document.getElementById('togglePlayFoldBtn');
+            const playFoldIcon = document.getElementById('playFoldIcon');
+            const playFoldText = document.getElementById('playFoldText');
+
+            const stopAutoPlay = () => {
+                isAutoPlaying = false;
+                if (autoPlayTimer) clearTimeout(autoPlayTimer);
+                if (state.isFolding) cancelAnimationFrame(state.foldAnimationId);
+                state.isFolding = false;
+                playFoldIcon.className = 'fa-solid fa-play';
+                playFoldText.textContent = '播放對摺';
+                togglePlayFoldBtn.classList.remove('bg-rose-500', 'hover:bg-rose-600');
+                togglePlayFoldBtn.classList.add('bg-indigo-500', 'hover:bg-indigo-600');
+            };
+            stopAutoPlayFn = stopAutoPlay;
+
+            const startAutoPlaySequence = () => {
+                if (isAutoPlaying) {
+                    stopAutoPlay();
+                    return;
+                }
+                isAutoPlaying = true;
+                playFoldIcon.className = 'fa-solid fa-stop';
+                playFoldText.textContent = '停止播放';
+                togglePlayFoldBtn.classList.remove('bg-indigo-500', 'hover:bg-indigo-600');
+                togglePlayFoldBtn.classList.add('bg-rose-500', 'hover:bg-rose-600');
+
+                // 步驟 1: 從當前位置對摺到 100%
+                const animateTo = (target, duration, callback) => {
+                    const startProg = state.foldProgress;
+                    const startTime = performance.now();
+
+                    const step = (currentTime) => {
+                        if (!isAutoPlaying) return;
+                        const elapsed = currentTime - startTime;
+                        const progress = Math.min(elapsed / duration, 1);
+                        // 使用平滑緩動函式
+                        const ease = progress < 0.5 ? 2 * progress * progress : 1 - Math.pow(-2 * progress + 2, 2) / 2;
+                        
+                        state.foldProgress = startProg + (target - startProg) * ease;
+                        foldSlider.value = state.foldProgress * 100;
+                        foldProgressText.textContent = `${Math.round(state.foldProgress * 100)}%`;
+                        requestAnimationFrame(render);
+
+                        if (progress < 1) {
+                            state.foldAnimationId = requestAnimationFrame(step);
+                        } else if (callback) {
+                            callback();
+                        }
+                    };
+                    state.foldAnimationId = requestAnimationFrame(step);
+                };
+
+                // 開始執行：對摺 -> 停留 1 秒 -> 展開 -> 循環
+                animateTo(1, 1400, () => {
+                    if (!isAutoPlaying) return;
+                    autoPlayTimer = setTimeout(() => {
+                        if (!isAutoPlaying) return;
+                        animateTo(0, 1400, () => {
+                            if (!isAutoPlaying) return;
+                            autoPlayTimer = setTimeout(() => {
+                                if (isAutoPlaying) startAutoPlaySequence();
+                            }, 800);
+                        });
+                    }, 1000);
+                });
+            };
+
+            togglePlayFoldBtn.addEventListener('click', startAutoPlaySequence);
+
+            // 復原「標記對稱軸」按鈕的點擊事件功能
+            checkSymmetryBtn.addEventListener('click', () => {
+                checkAndMarkSymmetry(true);
+            });
+
+            toggleGhostBtn.addEventListener('click', () => {
+                state.showGhost = !state.showGhost;
+                ghostBtnText.textContent = state.showGhost ? '隱藏原本輪廓' : '顯示原本輪廓';
+                requestAnimationFrame(render);
+            });
+
+            toggleFoldLineBtn.addEventListener('click', () => {
+                state.showFoldLine = !state.showFoldLine;
+                foldLineBtnText.textContent = state.showFoldLine ? '隱藏摺線' : '顯示摺線';
+                foldLineIcon.className = state.showFoldLine ? 'fa-solid fa-eye-slash text-slate-400' : 'fa-solid fa-eye text-indigo-500';
+                requestAnimationFrame(render);
+            });
+
+            document.getElementById('toggleCenterLineBtn').addEventListener('click', () => {
+                state.showCenterLine = !state.showCenterLine;
+                document.getElementById('centerLineBtnText').textContent = state.showCenterLine ? '隱藏中心線' : '顯示中心線';
+                document.getElementById('centerLineIcon').className = state.showCenterLine ? 'fa-solid fa-eye' : 'fa-solid fa-eye-slash';
+                requestAnimationFrame(render);
+            });
+
+            document.getElementById('showAllAxesBtn').addEventListener('click', () => {
+                const shape = state.currentShape;
+                if (!shape) return;
+
+                const isGeometric = shape.category === '幾何圖形';
+                if (!isGeometric) {
+                    showResultCard(false, '不支援', '非幾何圖形無法顯示預設對稱軸，請依據手動摺線進行標記！');
+                    return;
+                }
+
+                state.showAllAxes = true;
+                requestAnimationFrame(render);
+            });
+
+            document.getElementById('clearAllAxesBtn').addEventListener('click', () => {
+                state.showAllAxes = false;
+                state.foundAxes = [];
+                requestAnimationFrame(render);
+            });
+
+            // 計時器互動綁定
+            timerBtn.addEventListener('click', () => {
+                timerModal.classList.remove('hidden');
+                setTimeout(() => {
+                    timerModal.classList.remove('opacity-0');
+                    document.getElementById('timerModalContent').classList.remove('scale-95');
+                }, 10);
+            });
+
+            const closeTimerModal = () => {
+                timerModal.classList.add('opacity-0');
+                document.getElementById('timerModalContent').classList.add('scale-95');
+                setTimeout(() => {
+                    timerModal.classList.add('hidden');
+                    resetTimerState();
+                }, 200);
+            };
+
+            closeTimerModalBtn.addEventListener('click', closeTimerModal);
+
+            startTimerBtn.addEventListener('click', () => {
+                const mins = parseInt(timerMinutesInput.value) || 0;
+                const secs = parseInt(timerSecondsInput.value) || 0;
+                totalTimerSeconds = mins * 60 + secs;
+                if (totalTimerSeconds <= 0) return;
+
+                currentTimerRemaining = totalTimerSeconds;
+                isTimerRunning = true;
+                isTimerPaused = false;
+
+                timerSetupView.classList.add('hidden');
+                timerRunningView.classList.remove('hidden');
+                pauseTimerBtn.textContent = '暫停';
+                alarmEmoji.classList.remove('animate-alarm');
+
+                updateTimerDisplay();
+
+                if (timerInterval) clearInterval(timerInterval);
+                timerInterval = setInterval(() => {
+                    if (!isTimerPaused && isTimerRunning) {
+                        currentTimerRemaining--;
+                        updateTimerDisplay();
+
+                        // 倒數從 10 秒開始節拍音效
+                        if (currentTimerRemaining > 0 && currentTimerRemaining <= 10) {
+                            playCountdownTickSound();
+                        }
+
+                        if (currentTimerRemaining <= 0) {
+                            clearInterval(timerInterval);
+                            isTimerRunning = false;
+                            playTimeUpSound();
+                            timerBigDisplay.textContent = "時間到";
+                            timerBigDisplay.className = "text-5xl font-black text-rose-600 tracking-wider"; // 改為紅色
+                            alarmEmoji.classList.add('animate-alarm');
+                        }
+                    }
+                }, 1000);
+            });
+
+            pauseTimerBtn.addEventListener('click', () => {
+                isTimerPaused = !isTimerPaused;
+                pauseTimerBtn.textContent = isTimerPaused ? '繼續' : '暫停';
+                pauseTimerBtn.className = isTimerPaused 
+                    ? 'bg-emerald-500 hover:bg-emerald-600 text-white py-2 px-1 rounded-lg text-xs font-semibold transition shadow flex items-center justify-center'
+                    : 'bg-amber-500 hover:bg-amber-600 text-white py-2 px-1 rounded-lg text-xs font-semibold transition shadow flex items-center justify-center';
+            });
+
+            // 重新計時按鈕：重新從初始時間開始倒數
+            resetTimerBtn.addEventListener('click', () => {
+                if (timerInterval) clearInterval(timerInterval);
+                isTimerRunning = true;
+                isTimerPaused = false;
+                currentTimerRemaining = totalTimerSeconds;
+                alarmEmoji.classList.remove('animate-alarm');
+                timerBigDisplay.className = "text-5xl font-black text-indigo-600 tracking-wider";
+                updateTimerDisplay();
+                pauseTimerBtn.textContent = '暫停';
+                pauseTimerBtn.className = 'bg-amber-500 hover:bg-amber-600 text-white py-2 px-1 rounded-lg text-xs font-semibold transition shadow flex items-center justify-center';
+                
+                timerInterval = setInterval(() => {
+                    if (!isTimerPaused && isTimerRunning) {
+                        currentTimerRemaining--;
+                        updateTimerDisplay();
+                        if (currentTimerRemaining > 0 && currentTimerRemaining <= 10) {
+                            playCountdownTickSound();
+                        }
+                        if (currentTimerRemaining <= 0) {
+                            clearInterval(timerInterval);
+                            isTimerRunning = false;
+                            playTimeUpSound();
+                            timerBigDisplay.textContent = "時間到";
+                            timerBigDisplay.className = "text-5xl font-black text-rose-600 tracking-wider";
+                            alarmEmoji.classList.add('animate-alarm');
+                        }
+                    }
+                }, 1000);
+            });
+
+            // 重設按鈕：重設到計時時間畫面，但不關閉彈跳視窗
+            stopTimerBtn.addEventListener('click', () => {
+                if (timerInterval) clearInterval(timerInterval);
+                isTimerRunning = false;
+                isTimerPaused = false;
+                currentTimerRemaining = totalTimerSeconds;
+                if (alarmEmoji) alarmEmoji.classList.remove('animate-alarm');
+                if (timerBigDisplay) {
+                    timerBigDisplay.textContent = `${String(Math.floor(totalTimerSeconds / 60)).padStart(2, '0')}:${String(totalTimerSeconds % 60).padStart(2, '0')}`;
+                    timerBigDisplay.className = "text-5xl font-black text-indigo-600 tracking-wider";
+                }
+                updateTimerDisplay();
+                if (pauseTimerBtn) {
+                    pauseTimerBtn.textContent = '暫停';
+                    pauseTimerBtn.className = 'bg-amber-500 hover:bg-amber-600 text-white py-2 px-1 rounded-lg text-xs font-semibold transition shadow flex items-center justify-center';
+                }
+                timerRunningView.classList.add('hidden');
+                timerSetupView.classList.remove('hidden');
+            });
+
+            // 綁定對稱軸數量氣球按鈕
+            showAxesCountBtn.addEventListener('click', spawnAxesCountBalloon);
+
+            helpBtn.addEventListener('click', () => {
+                helpModal.classList.remove('hidden');
+                setTimeout(() => {
+                    helpModal.classList.remove('opacity-0');
+                    document.getElementById('helpModalContent').classList.remove('scale-95');
+                }, 10);
+            });
+            const closeHelp = () => {
+                helpModal.classList.add('opacity-0');
+                document.getElementById('helpModalContent').classList.add('scale-95');
+                setTimeout(() => helpModal.classList.add('hidden'), 200);
+            };
+            closeHelpBtn.addEventListener('click', closeHelp);
+            confirmHelpBtn.addEventListener('click', closeHelp);
+
+            // 恢復右下角「中心點微調」方向鍵功能
+            const moveUpBtn = document.getElementById('moveUpBtn');
+            const moveDownBtn = document.getElementById('moveDownBtn');
+            const moveLeftBtn = document.getElementById('moveLeftBtn');
+            const moveRightBtn = document.getElementById('moveRightBtn');
+            const nudgeStep = 2; // 每次微調移動 2px
+
+            if (moveUpBtn) {
+                moveUpBtn.addEventListener('click', () => {
+                    state.axisOffsetY -= nudgeStep;
+                    requestAnimationFrame(render);
+                });
+            }
+            if (moveDownBtn) {
+                moveDownBtn.addEventListener('click', () => {
+                    state.axisOffsetY += nudgeStep;
+                    requestAnimationFrame(render);
+                });
+            }
+            if (moveLeftBtn) {
+                moveLeftBtn.addEventListener('click', () => {
+                    state.axisOffsetX -= nudgeStep;
+                    requestAnimationFrame(render);
+                });
+            }
+            if (moveRightBtn) {
+                moveRightBtn.addEventListener('click', () => {
+                    state.axisOffsetX += nudgeStep;
+                    requestAnimationFrame(render);
+                });
+            }
+
+            setupCenterDragInteraction();
+        }
+
+        // 設置中心點拖曳互動
+        function setupCenterDragInteraction() {
+            const wrapper = document.getElementById('canvasWrapper');
+
+            const getEventPos = (e) => {
+                const rect = canvas.getBoundingClientRect();
+                const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+                const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+                return {
+                    x: clientX - rect.left,
+                    y: clientY - rect.top
+                };
+            };
+
+            const onStart = (e) => {
+                const pos = getEventPos(e);
+                const shapeCx = canvas.width / 2;
+                const shapeCy = canvas.height / 2;
+                const foldCx = shapeCx + state.axisOffsetX;
+                const foldCy = shapeCy + state.axisOffsetY;
+
+                // 判斷是否點擊在中心點圓環附近 (半徑 25px 內方便觸控)
+                const dist = Math.hypot(pos.x - foldCx, pos.y - foldCy);
+                if (dist < 30) {
+                    state.isDraggingCenter = true;
+                    state.dragStartX = pos.x;
+                    state.dragStartY = pos.y;
+                    state.initOffsetX = state.axisOffsetX;
+                    state.initOffsetY = state.axisOffsetY;
+                    e.preventDefault();
+                }
+            };
+
+            const onMove = (e) => {
+                if (!state.isDraggingCenter) return;
+                const pos = getEventPos(e);
+                const dx = pos.x - state.dragStartX;
+                const dy = pos.y - state.dragStartY;
+
+                state.axisOffsetX = state.initOffsetX + dx;
+                state.axisOffsetY = state.initOffsetY + dy;
+                requestAnimationFrame(render);
+                e.preventDefault();
+            };
+
+            const onEnd = () => {
+                state.isDraggingCenter = false;
+            };
+
+            canvas.addEventListener('mousedown', onStart);
+            window.addEventListener('mousemove', onMove);
+            window.addEventListener('mouseup', onEnd);
+
+            canvas.addEventListener('touchstart', onStart, { passive: false });
+            window.addEventListener('touchmove', onMove, { passive: false });
+            window.addEventListener('touchend', onEnd);
+        }
+
+        // 對摺動畫控制 (移除 100% 自動標記)
+        function startFoldAnimation(targetProgress) {
+            if (state.isFolding) cancelAnimationFrame(state.foldAnimationId);
+            state.isFolding = true;
+
+            function animate() {
+                const diff = targetProgress - state.foldProgress;
+                if (Math.abs(diff) < 0.01) {
+                    state.foldProgress = targetProgress;
+                    state.isFolding = false;
+                    foldSlider.value = targetProgress * 100;
+                    foldProgressText.textContent = `${Math.round(targetProgress * 100)}%`;
+                    render();
+                    return;
+                }
+                state.foldProgress += diff * 0.15;
+                foldSlider.value = state.foldProgress * 100;
+                foldProgressText.textContent = `${Math.round(state.foldProgress * 100)}%`;
+                render();
+                state.foldAnimationId = requestAnimationFrame(animate);
+            }
+            animate();
+        }
+
+        // 核心 Canvas 渲染邏輯
+        function render() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            if (!state.currentShape) return;
+
+            const shapeCx = canvas.width / 2;
+            const shapeCy = canvas.height / 2;
+            const foldCx = shapeCx + state.axisOffsetX;
+            const foldCy = shapeCy + state.axisOffsetY;
+
+            // 將展示圖形放大至畫布短邊的 78%
+            const size = Math.min(canvas.width, canvas.height) * 0.78;
+
+            ctx.save();
+            const rad = (state.lineAngle * Math.PI) / 180;
+
+            // 1. 繪製底部半透明原始輪廓
+            if (state.showGhost && state.foldProgress > 0) {
+                ctx.save();
+                ctx.translate(shapeCx, shapeCy);
+                ctx.globalAlpha = 0.25;
+                ctx.rotate((state.shapeAngle * Math.PI) / 180);
+                drawRawShape(ctx, size);
+                ctx.restore();
+            }
+
+            // 2. 繪製非對摺側 (基底)
+            ctx.save();
+            ctx.translate(foldCx, foldCy);
+            ctx.rotate(rad);
+
+            ctx.save();
+            ctx.beginPath();
+            ctx.rect(-size * 4, 0, size * 8, size * 4);
+            ctx.clip();
+
+            ctx.rotate(-rad);
+            ctx.translate(shapeCx - foldCx, shapeCy - foldCy);
+            ctx.rotate((state.shapeAngle * Math.PI) / 180);
+            drawRawShape(ctx, size);
+            ctx.restore();
+
+            // 3. 繪製對摺翻轉側
+            ctx.save();
+            const foldScale = Math.cos(state.foldProgress * Math.PI);
+            ctx.scale(1, foldScale);
+
+            ctx.beginPath();
+            ctx.rect(-size * 4, -size * 4, size * 8, size * 4);
+            ctx.clip();
+
+            ctx.rotate(-rad);
+            ctx.translate(shapeCx - foldCx, shapeCy - foldCy);
+            ctx.rotate((state.shapeAngle * Math.PI) / 180);
+            drawRawShape(ctx, size, true);
+            ctx.restore();
+
+            ctx.restore();
+
+            // 4. 繪製灰色對摺虛線
+            if (state.showFoldLine) {
+                ctx.save();
+                ctx.translate(foldCx, foldCy);
+                ctx.rotate(rad);
+
+                ctx.beginPath();
+                ctx.setLineDash([6, 6]);
+                ctx.strokeStyle = '#64748b';
+                ctx.lineWidth = 1.5;
+                ctx.moveTo(-size * 2.5, 0);
+                ctx.lineTo(size * 2.5, 0);
+                ctx.stroke();
+                ctx.setLineDash([]);
+
+                ctx.restore();
+            }
+
+            // 5. 繪製所有對稱軸
+            if (state.showAllAxes && state.currentShape) {
+                drawAllCorrectAxes(ctx, shapeCx, shapeCy, size);
+            }
+
+            // 6. 繪製已找到的正確對稱軸標記 (錨定於圖形幾何中心)
+            if (state.foundAxes.length > 0) {
+                state.foundAxes.forEach((axisInfo, idx) => {
+                    const angle = axisInfo.angle;
+                    const offsetX = axisInfo.offsetX !== undefined ? axisInfo.offsetX : 0;
+                    const offsetY = axisInfo.offsetY !== undefined ? axisInfo.offsetY : 0;
+
+                    ctx.save();
+                    // 修正：必須加上使用者操作的中心點偏移量 (foldCx, foldCy 或 shapeCx + offsetX)
+                    ctx.translate(shapeCx + offsetX, shapeCy + offsetY);
+                    ctx.rotate((angle * Math.PI) / 180);
+
+                    const color = AXIS_COLORS[idx % AXIS_COLORS.length];
+                    ctx.beginPath();
+                    ctx.setLineDash([8, 4]);
+                    ctx.strokeStyle = color;
+                    ctx.lineWidth = 3;
+                    ctx.moveTo(-size * 1.5, 0);
+                    ctx.lineTo(size * 1.5, 0);
+                    ctx.stroke();
+
+                    // 端點小圓圈標記
+                    ctx.beginPath();
+                    ctx.setLineDash([]);
+                    ctx.fillStyle = color;
+                    ctx.arc(-size * 1.5, 0, 5, 0, Math.PI * 2);
+                    ctx.arc(size * 1.5, 0, 5, 0, Math.PI * 2);
+                    ctx.fill();
+
+                    ctx.restore();
+                });
+            }
+
+            // 7. 繪製極細淺灰色圓環 + 貫穿全畫面的大十字虛線 (最上層)
+            drawCenterCrosshairHandle(ctx, foldCx, foldCy);
+
+            ctx.restore();
+        }
+
+        // 繪製原始基礎圖形
+        function drawRawShape(ctx, size, isTopFold = false) {
+            const shape = state.currentShape;
+            if (!shape) return;
+
+            if (shape.emoji) {
+                ctx.save();
+                // 針對部分 Emoji 符號在字型中的垂直基準偏置進行精準校正補償
+                let yOffset = 0;
+                if (['no-entry', 'arrow-lr', 'window'].includes(shape.id)) {
+                    yOffset = size * 0.05; // 稍微向下微調置中
+                }
+                ctx.translate(0, yOffset);
+                ctx.font = `${size * 0.75}px "Segoe UI Emoji", "Apple Color Emoji", sans-serif`;
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+                ctx.fillText(shape.emoji, 0, 0);
+                ctx.restore();
+            } else if (shape.isText) {
+                // 繪製自訂輸入的文字（採用先外描邊後內填色技術，消除筆畫接縫處的內部重疊線段）
+                ctx.save();
+                ctx.font = `bold ${size * 0.7}px "Inter", "Microsoft JhengHei", sans-serif`;
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+                ctx.lineJoin = 'round';
+                ctx.lineCap = 'round';
+
+                // 1. 先繪製外框描邊（線寬加倍，因為內半部會被填色遮蓋）
+                ctx.strokeStyle = '#3730a3';
+                ctx.lineWidth = 6;
+                ctx.strokeText(shape.text, 0, 0);
+
+                // 2. 再繪製實心文字填滿內部，完整遮蔽字型筆畫交接處的內部重疊線段
+                ctx.fillStyle = isTopFold ? '#4f46e5' : '#6366f1';
+                ctx.fillText(shape.text, 0, 0);
+                ctx.restore();
+            } else if (shape.isCustom && shape.imgElement) {
+                // 保持原圖長寬比例計算 (Aspect Ratio)
+                const img = shape.imgElement;
+                const imgAspect = img.width / img.height;
+                let drawWidth = size;
+                let drawHeight = size;
+
+                if (imgAspect > 1) {
+                    drawHeight = size / imgAspect;
+                } else {
+                    drawWidth = size * imgAspect;
+                }
+
+                ctx.drawImage(img, -drawWidth / 2, -drawHeight / 2, drawWidth, drawHeight);
+            } else if (shape.draw) {
+                ctx.fillStyle = isTopFold
+                    ? (shape.foldFillColor || 'rgba(99, 102, 241, 0.85)')
+                    : (shape.fillColor || 'rgba(99, 102, 241, 0.7)');
+                ctx.strokeStyle = shape.strokeColor || '#3730a3';
+                ctx.lineWidth = 3;
+                
+                // 平移矩陣，讓繪製函式內的 (size/2, size/2) 精確與畫布中心 (0,0) 重合
+                ctx.save();
+                ctx.translate(-size / 2, -size / 2);
+                shape.draw(ctx, size, size);
+                ctx.fill();
+                ctx.stroke();
+                ctx.restore();
+            }
+        }
+
+        // 繪製可拖曳的小圓環 (極細、淺灰色、極小尺寸) + 貫穿全畫面的淺灰色大十字虛線
+        function drawCenterCrosshairHandle(ctx, cx, cy) {
+            if (!state.showCenterLine) return;
+            ctx.save();
+
+            // 1. 貫穿整個中間畫面的極細淺灰色大十字虛線 (1px)
+            ctx.beginPath();
+            ctx.setLineDash([4, 4]);
+            ctx.strokeStyle = '#cbd5e1'; // 淺灰色 Slate-300
+            ctx.lineWidth = 1;
+
+            // 貫穿水平線
+            ctx.moveTo(0, cy);
+            ctx.lineTo(canvas.width, cy);
+            // 貫穿垂直線
+            ctx.moveTo(cx, 0);
+            ctx.lineTo(cx, canvas.height);
+            ctx.stroke();
+
+            // 2. 更小、更細的淺灰色中心圓環 (半徑 6px, 1px 寬)
+            const ringRadius = 6; 
+
+            ctx.beginPath();
+            ctx.setLineDash([]); 
+            ctx.strokeStyle = '#94a3b8'; // Slate-400 淺灰色
+            ctx.lineWidth = 1;
+            ctx.arc(cx, cy, ringRadius, 0, Math.PI * 2);
+            ctx.stroke();
+
+            // 中心小圓點
+            ctx.beginPath();
+            ctx.fillStyle = '#94a3b8';
+            ctx.arc(cx, cy, 2, 0, Math.PI * 2);
+            ctx.fill();
+
+            ctx.restore();
+        }
+
+        // 繪製當前圖形的所有正確對稱軸 (防重複：若已經有手動標記，則不再重複顯示)
+        function drawAllCorrectAxes(ctx, cx, cy, size) {
+            const shape = state.currentShape;
+            let angles = [];
+
+            if (shape.axesAngles) {
+                angles = shape.axesAngles;
+            } else if (shape.isSymmetric) {
+                if (shape.id === 'equilateral-triangle') angles = [30, 90, 150];
+                else if (shape.id === 'isosceles-triangle' || shape.id === 'trapezoid' || shape.id === 'sector-90' || shape.id === 'kite') angles = [90];
+                else if (shape.id === 'sector-270') angles = [135];
+                else if (shape.id === 'square' || shape.id === 'rhombus') angles = [0, 45, 90, 135];
+                else if (shape.id === 'pentagon') angles = [18, 54, 90, 126, 162];
+                else if (shape.id === 'hexagon') angles = [0, 30, 60, 90, 120, 150];
+                else if (shape.id === 'octagon') angles = [0, 22.5, 45, 67.5, 90, 112.5, 135, 157.5];
+                else if (shape.id === 'circle') angles = [0, 30, 60, 90, 120, 150];
+            }
+
+            // 過濾掉已經手動標記過的對稱軸角度 (考量中心點偏移)，避免重複標記
+            const unmarkAngles = angles.filter(angle => {
+                const normalizedAngle = (angle % 180 + 180) % 180;
+                return !state.foundAxes.some(found => 
+                    Math.abs(found.angle - normalizedAngle) < 3 &&
+                    Math.abs(found.offsetX) < 3 &&
+                    Math.abs(found.offsetY) < 3
+                );
+            });
+
+            unmarkAngles.forEach((angle, idx) => {
+                ctx.save();
+                ctx.translate(cx, cy);
+                ctx.rotate((angle * Math.PI) / 180);
+                const color = AXIS_COLORS[idx % AXIS_COLORS.length];
+                ctx.beginPath();
+                ctx.setLineDash([6, 4]);
+                ctx.strokeStyle = color;
+                ctx.lineWidth = 2;
+                ctx.moveTo(-size * 1.5, 0);
+                ctx.lineTo(size * 1.5, 0);
+                ctx.stroke();
+                ctx.restore();
+            });
+        }
+
+        // 標記對稱軸按鈕邏輯：幾何圖形只能標記正確的對稱軸，非幾何圖形則依據摺線做手動標記
+        function checkAndMarkSymmetry(showMessage = true) {
+            const shape = state.currentShape;
+            if (!shape) return;
+
+            let currentLineAngle = (state.lineAngle % 180 + 180) % 180;
+            const isGeometric = shape.category === '幾何圖形';
+            let isCorrect = false;
+
+            if (isGeometric) {
+                let validAngles = [];
+                if (shape.axesAngles) {
+                    validAngles = shape.axesAngles;
+                } else if (shape.isSymmetric) {
+                    if (shape.id === 'equilateral-triangle') validAngles = [30, 90, 150];
+                    else if (shape.id === 'isosceles-triangle' || shape.id === 'trapezoid' || shape.id === 'sector-90' || shape.id === 'kite') validAngles = [90];
+                    else if (shape.id === 'sector-270') validAngles = [135];
+                    else if (shape.id === 'square' || shape.id === 'rhombus') validAngles = [0, 45, 90, 135];
+                    else if (shape.id === 'pentagon') validAngles = [18, 54, 90, 126, 162];
+                    else if (shape.id === 'hexagon') validAngles = [0, 30, 60, 90, 120, 150];
+                    else if (shape.id === 'octagon') validAngles = [0, 22.5, 45, 67.5, 90, 112.5, 135, 157.5];
+                    else if (shape.id === 'circle') isCorrect = true;
+                }
+
+                // 檢查角度是否吻合
+                if (!isCorrect && validAngles.length > 0) {
+                    isCorrect = validAngles.some(a => {
+                        const normA = (a % 180 + 180) % 180;
+                        return Math.abs(normA - currentLineAngle) < 3;
+                    });
+                }
+
+                // 幾何圖形的對稱軸必須經過中心點（即 axisOffsetX 與 axisOffsetY 必須貼近 0，容許 15px 內的微調容錯）
+                const isCenterCorrect = Math.abs(state.axisOffsetX) < 15 && Math.abs(state.axisOffsetY) < 15;
+
+                if (!isCorrect || !isCenterCorrect) {
+                    return; // 嚴格限制：非正確位置或非圖形中心則無法標記（不顯示彈跳視窗）
+                }
+            } else {
+                // Emoji、文字與自訂上傳圖片：依據當前摺線直接手動標記對稱軸（不顯示彈跳視窗）
+                isCorrect = true;
+            }
+
+            if (isCorrect) {
+                const exists = state.foundAxes.some(item => 
+                    Math.abs(item.angle - currentLineAngle) < 2 &&
+                    Math.abs(item.offsetX - state.axisOffsetX) < 5 &&
+                    Math.abs(item.offsetY - state.axisOffsetY) < 5
+                );
+
+                if (!exists) {
+                    state.foundAxes.push({
+                        angle: currentLineAngle,
+                        offsetX: state.axisOffsetX,
+                        offsetY: state.axisOffsetY
+                    });
+                }
+            }
+            requestAnimationFrame(render);
+        }
+
+        // 產生對稱軸數量氣球 🎈 動畫
+        function spawnAxesCountBalloon() {
+            const shape = state.currentShape;
+            if (!shape) return;
+
+            let countText = '0';
+            let unitText = '條';
+            let isUnknown = false;
+
+            // 如果是自訂圖片或自訂輸入文字，顯示三行的「無可 / 奉告 / 😎」
+            if (shape.isCustom || shape.isText) {
+                countText = '<div class="text-3xl font-black text-white leading-tight tracking-widest text-center">無可<br>奉告</div><div class="text-2xl mt-1 leading-none">😎</div>';
+                unitText = '';
+                isUnknown = true;
+            } else if (shape.axesCount !== undefined) {
+                countText = String(shape.axesCount);
+            } else if (shape.axesAngles) {
+                countText = String(shape.axesAngles.length);
+            } else if (!shape.isSymmetric) {
+                countText = '0';
+            } else {
+                countText = '1';
+            }
+
+            // 建立氣球 DOM 元素
+            const balloon = document.createElement('div');
+            balloon.className = 'absolute left-1/2 bottom-1/4 -translate-x-1/2 pointer-events-none z-30 flex flex-col items-center animate-balloon';
+
+            // 若對稱軸數量為「無限多」或「無限」，字體大小設為 text-2xl / text-3xl 並拉開上下間距 my-1
+            const isInfinite = countText === '無限多' || countText === '無限';
+            const fontSizeClass = isUnknown 
+                ? '' 
+                : (isInfinite 
+                    ? 'text-2xl font-black text-white drop-shadow-md tracking-wider text-center leading-none my-1.5' 
+                    : 'text-5xl font-black text-white drop-shadow-md tracking-wider text-center leading-none my-0.5');
+
+            balloon.innerHTML = `
+                <div class="relative flex flex-col items-center">
+                    <!-- 氣球本體 (加大寬度與高度) -->
+                    <div class="w-32 h-36 min-w-[8rem] min-h-[9rem] bg-gradient-to-tr from-pink-500 via-rose-400 to-amber-300 rounded-[50%_50%_50%_50%/40%_40%_60%_60%] shadow-xl border-2 border-white/70 flex flex-col items-center justify-center relative overflow-hidden p-3 gap-0.5">
+                        <!-- 反光高光線 -->
+                        <div class="absolute top-2.5 left-3.5 w-5 h-9 bg-white/45 rounded-full -rotate-12"></div>
+                        ${!isUnknown ? '<span class="text-xs text-white/90 font-bold mb-0.5">對稱軸</span>' : ''}
+                        ${isUnknown ? countText : `<span class="${fontSizeClass}">${countText}</span>`}
+                        ${unitText ? `<span class="text-sm text-white/90 font-bold mt-0.5">${unitText}</span>` : ''}
+                    </div>
+                    <!-- 氣球結 -->
+                    <div class="w-0 h-0 border-l-[7px] border-l-transparent border-r-[7px] border-r-transparent border-b-[9px] border-b-rose-600 -mt-0.5"></div>
+                    <!-- 氣球線 -->
+                    <div class="w-0.5 h-14 bg-slate-300/80 rounded-full"></div>
+                </div>
+            `;
+
+            const container = document.getElementById('canvasContainer');
+            container.appendChild(balloon);
+
+            // 動態完畢後自動移除 DOM
+            setTimeout(() => {
+                if (balloon && balloon.parentNode) {
+                    balloon.parentNode.removeChild(balloon);
+                }
+            }, 3000);
+        }
+
+        // 顯示結果通知卡片
+        function showResultCard(isSuccess, title, desc) {
+            resultTitle.textContent = title;
+            resultDesc.textContent = desc;
+
+            if (isSuccess) {
+                resultIcon.className = 'w-8 h-8 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center font-bold text-lg';
+                resultIcon.innerHTML = '<i class="fa-solid fa-check"></i>';
+            } else {
+                resultIcon.className = 'w-8 h-8 rounded-full bg-rose-100 text-rose-600 flex items-center justify-center font-bold text-lg';
+                resultIcon.innerHTML = '<i class="fa-solid fa-xmark"></i>';
+            }
+
+            resultCard.classList.remove('opacity-0', 'translate-y-8', 'pointer-events-none');
+            resultCard.classList.add('opacity-100', 'translate-y-0');
+
+            setTimeout(hideResultCard, 3500);
+        }
+
+        // 隱藏結果通知卡片
+        function hideResultCard() {
+            resultCard.classList.add('opacity-0', 'translate-y-8', 'pointer-events-none');
+            resultCard.classList.remove('opacity-100', 'translate-y-0');
+        }
+
+        // 頁面初始化載入
+        window.onload = function () {
+            canvas = document.getElementById('mainCanvas');
+            ctx = canvas.getContext('2d');
+            canvasWrapper = document.getElementById('canvasWrapper');
+            galleryContainer = document.getElementById('galleryContainer');
+            imageUpload = document.getElementById('imageUpload');
+
+            angleSlider = document.getElementById('angleSlider');
+            angleValue = document.getElementById('angleValue');
+
+            foldSlider = document.getElementById('foldSlider');
+            foldProgressText = document.getElementById('foldProgressText');
+
+            toggleFoldBtn = document.getElementById('toggleFoldBtn');
+
+            toggleGhostBtn = document.getElementById('toggleGhostBtn');
+            ghostBtnText = document.getElementById('ghostBtnText');
+            toggleFoldLineBtn = document.getElementById('toggleFoldLineBtn');
+            foldLineBtnText = document.getElementById('foldLineBtnText');
+            foldLineIcon = document.getElementById('foldLineIcon');
+
+            checkSymmetryBtn = document.getElementById('checkSymmetryBtn');
+            showAxesCountBtn = document.getElementById('showAxesCountBtn');
+            shapeTitleDisplay = document.getElementById('shapeTitleDisplay');
+
+            resultCard = document.getElementById('resultCard');
+            resultIcon = document.getElementById('resultIcon');
+            resultTitle = document.getElementById('resultTitle');
+            resultDesc = document.getElementById('resultDesc');
+
+            helpBtn = document.getElementById('helpBtn');
+            helpModal = document.getElementById('helpModal');
+            closeHelpBtn = document.getElementById('closeHelpBtn');
+            confirmHelpBtn = document.getElementById('confirmHelpBtn');
+            resetCanvasBtn = document.getElementById('resetCanvasBtn');
+
+            // 計時器 DOM 元素初始化
+            timerBtn = document.getElementById('timerBtn');
+            timerDisplay = document.getElementById('timerDisplay');
+            timerModal = document.getElementById('timerModal');
+            closeTimerModalBtn = document.getElementById('closeTimerModalBtn');
+            timerSetupView = document.getElementById('timerSetupView');
+            timerRunningView = document.getElementById('timerRunningView');
+            timerMinutesInput = document.getElementById('timerMinutesInput');
+            timerSecondsInput = document.getElementById('timerSecondsInput');
+            startTimerBtn = document.getElementById('startTimerBtn');
+            pauseTimerBtn = document.getElementById('pauseTimerBtn');
+            resetTimerBtn = document.getElementById('resetTimerBtn');
+            stopTimerBtn = document.getElementById('stopTimerBtn');
+            timerBigDisplay = document.getElementById('timerBigDisplay');
+            alarmEmoji = document.getElementById('alarmEmoji');
+
+            resizeCanvas();
+            window.addEventListener('resize', resizeCanvas);
+
+            renderGallery();
+            bindEvents();
+
+            // 預設選擇第一個圖形（正三角形）
+            if (GEOMETRIC_SHAPES.length > 0) {
+                selectShape(GEOMETRIC_SHAPES[0]);
+            }
+        };
+
+        function updateTimerDisplay() {
+            const m = Math.floor(currentTimerRemaining / 60);
+            const s = currentTimerRemaining % 60;
+            const timeStr = `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
+            if (isTimerRunning || currentTimerRemaining > 0) {
+                timerBigDisplay.textContent = timeStr;
+                timerBigDisplay.className = "text-5xl font-black text-indigo-600 tracking-wider";
+            }
+            timerDisplay.textContent = timeStr;
+        }
+
+        function resetTimerState() {
+            if (timerInterval) clearInterval(timerInterval);
+            isTimerRunning = false;
+            isTimerPaused = false;
+            if (alarmEmoji) alarmEmoji.classList.remove('animate-alarm');
+            if (timerBigDisplay) timerBigDisplay.className = "text-5xl font-black text-indigo-600 tracking-wider";
+            timerRunningView.classList.add('hidden');
+            timerSetupView.classList.remove('hidden');
+            timerDisplay.textContent = '計時器';
+            if (pauseTimerBtn) {
+                pauseTimerBtn.textContent = '暫停';
+                pauseTimerBtn.className = 'bg-amber-500 hover:bg-amber-600 text-white py-2 rounded-xl text-xs font-semibold transition shadow';
+            }
+        }
+    </script>
+</body>
+</html>
