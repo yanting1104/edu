@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>線對稱圖形摺摺看</title>
+    <title>國小數學 - 線對稱圖形摺摺看</title>
     <!-- 設置網站瀏覽器分頁小圖示 (Favicon) -->
     <link class="favicon" rel="icon" type="image/png" href="貓臉logo1.png">
     <!-- Tailwind CSS CDN -->
@@ -137,9 +137,9 @@
         <!-- 中間：主要工作畫布區 -->
         <section class="flex-1 bg-white rounded-xl shadow-lg relative flex flex-col overflow-hidden border border-slate-200 grid-bg" id="canvasContainer">
             
-            <!-- 頂部狀態顯示與控制列 -->
-                <!-- 右上控制按鈕列 -->
-                <div class="flex items-center gap-2 pointer-events-auto">
+            <!-- 頂部狀態顯示與置中控制列 -->
+            <div class="w-full pt-3 px-4 flex justify-center items-center z-10 pointer-events-none">
+                <div class="flex flex-wrap justify-center items-center gap-2 pointer-events-auto">
                     <button id="toggleGhostBtn" class="bg-white/90 hover:bg-white text-slate-700 px-3 py-1.5 rounded-lg shadow border border-slate-200 text-xs font-semibold transition flex items-center gap-1">
                         <i class="fa-solid fa-ghost text-indigo-500"></i>
                         <span id="ghostBtnText">隱藏原本輪廓</span>
@@ -170,6 +170,12 @@
             <!-- Canvas 核心區 -->
             <div class="flex-1 w-full h-full relative cursor-crosshair overflow-hidden" id="canvasWrapper">
                 <canvas id="mainCanvas" class="w-full h-full block"></canvas>
+
+                <!-- 左下角圖形名稱標籤 -->
+                <div id="shapeTitleDisplay" class="absolute bottom-4 left-4 bg-white/90 backdrop-blur-md px-3.5 py-2 rounded-xl shadow-md border border-slate-200 text-sm font-bold text-slate-700 flex items-center gap-2 z-10 pointer-events-none">
+                    <i class="fa-solid fa-tag text-indigo-500"></i>
+                    <span>正三角形</span>
+                </div>
 
                 <!-- 右下角中心點微調方向鍵 -->
                 <div class="absolute bottom-4 right-4 bg-white/80 backdrop-blur-md p-2 rounded-xl shadow-md border border-slate-200 flex flex-col items-center gap-1 z-10 pointer-events-auto">
@@ -537,7 +543,7 @@
             // 2. 文具與用品
             { id: 'scissors', name: '剪刀', emoji: '✂️', category: '文具與用品', isSymmetric: true, axesCount: 1, axesAngles: [90] },
             { id: 'set-square', name: '三角板', emoji: '📐', category: '文具與用品', isSymmetric: true, axesCount: 1, axesAngles: [45] },
-            { id: 'ruler', name: '直尺', emoji: '📏', category: '文具與用品', isSymmetric: true, axesCount: 2, axesAngles: [0, 90] },
+            { id: 'ruler', name: '直尺', emoji: '📏', category: '文具與用品', isSymmetric: true, axesCount: 1, axesAngles: [45] },
             { id: 'book', name: '書本', emoji: '📖', category: '文具與用品', isSymmetric: true, axesCount: 1, axesAngles: [90] },
             { id: 'display', name: '螢幕', emoji: '🖥️', category: '文具與用品', isSymmetric: true, axesCount: 1, axesAngles: [90] },
             { id: 'mouse', name: '滑鼠', emoji: '🖱️', category: '文具與用品', isSymmetric: true, axesCount: 1, axesAngles: [90] },
@@ -683,7 +689,12 @@
             foldSlider.value = 0;
             foldProgressText.textContent = '0%';
             if (shapeTitleDisplay) {
-                shapeTitleDisplay.textContent = `當前圖形：${shape.name}`;
+                const spanEl = shapeTitleDisplay.querySelector('span');
+                if (spanEl) {
+                    spanEl.textContent = shape.name;
+                } else {
+                    shapeTitleDisplay.textContent = shape.name;
+                }
             }
             hideResultCard();
             requestAnimationFrame(render);
@@ -1019,7 +1030,8 @@
             const foldCx = shapeCx + state.axisOffsetX;
             const foldCy = shapeCy + state.axisOffsetY;
 
-            const size = Math.min(canvas.width, canvas.height) * 0.55;
+            // 將展示圖形放大至畫布短邊的 78%
+            const size = Math.min(canvas.width, canvas.height) * 0.78;
 
             ctx.save();
             const rad = (state.lineAngle * Math.PI) / 180;
@@ -1439,6 +1451,7 @@
 
             checkSymmetryBtn = document.getElementById('checkSymmetryBtn');
             showAxesCountBtn = document.getElementById('showAxesCountBtn');
+            shapeTitleDisplay = document.getElementById('shapeTitleDisplay');
 
             resultCard = document.getElementById('resultCard');
             resultIcon = document.getElementById('resultIcon');
