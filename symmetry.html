@@ -172,7 +172,7 @@
         </section>
 
         <!-- 中間：工具與對摺設定區 -->
-        <aside class="w-72 bg-white rounded-xl shadow-lg flex flex-col border border-slate-200 shrink-0">
+        <aside class="w-64 bg-white rounded-xl shadow-lg flex flex-col overflow-hidden border border-slate-200 shrink-0">
             <div class="p-3 bg-slate-50 border-b border-slate-200">
                 <h2 class="font-bold text-slate-700 flex items-center gap-2 text-sm">
                     <i class="fa-solid fa-sliders text-indigo-500"></i> 控制台
@@ -184,7 +184,7 @@
                 <div class="bg-slate-50 p-2.5 rounded-xl border border-slate-200 space-y-1.5">
                     <div class="flex justify-between items-center">
                         <label class="text-[11px] font-bold text-slate-700 uppercase tracking-wider flex items-center gap-1">
-                            <i class="fa-solid fa-compass text-indigo-500"></i> 1. 對摺角度
+                            <i class="fa-solid fa-compass text-indigo-500"></i>對摺角度
                         </label>
                         <div class="flex items-center gap-1">
                             <button id="angleStepDownBtn" class="w-5 h-5 bg-white hover:bg-slate-100 border border-slate-300 text-slate-700 rounded flex items-center justify-center text-[10px] font-bold shadow-sm transition">
@@ -240,7 +240,7 @@
                 <div class="bg-slate-50 p-2.5 rounded-xl border border-slate-200 space-y-1.5">
                     <div class="flex justify-between items-center">
                         <label class="text-[11px] font-bold text-slate-700 uppercase tracking-wider flex items-center gap-1">
-                            <i class="fa-solid fa-book-open text-indigo-500"></i> 2. 對摺示範
+                            <i class="fa-solid fa-book-open text-indigo-500"></i>對摺示範
                         </label>
                         <span id="foldProgressText" class="text-xs font-bold text-indigo-600 bg-indigo-100 px-1.5 py-0.5 rounded">0%</span>
                     </div>
@@ -248,15 +248,15 @@
                     <input type="range" id="foldSlider" min="0" max="100" value="0" class="w-full accent-indigo-600 h-1.5 bg-slate-200 rounded-lg appearance-none cursor-pointer">
                     
                     <div class="space-y-1.5 pt-0.5">
-                        <!-- 對摺 / 展開 按鈕 -->
+                        <!-- 對摺/展開 與 播放對摺 按鈕 -->
                         <div class="grid grid-cols-2 gap-1.5">
-                            <button id="doFoldBtn" class="bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-1.5 px-2 rounded-md shadow-sm transition flex items-center justify-center gap-1 text-xs">
-                                <i class="fa-solid fa-book-open"></i>
-                                <span>對摺</span>
+                            <button id="toggleFoldBtn" class="bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-1.5 px-2 rounded-md shadow-sm transition flex items-center justify-center gap-1 text-xs">
+                                <i class="fa-solid fa-book-open" id="toggleFoldIcon"></i>
+                                <span id="toggleFoldText">對摺/展開</span>
                             </button>
-                            <button id="doUnfoldBtn" class="bg-indigo-500 hover:bg-indigo-600 text-white font-semibold py-1.5 px-2 rounded-md shadow-sm transition flex items-center justify-center gap-1 text-xs">
-                                <i class="fa-solid fa-book"></i>
-                                <span>展開</span>
+                            <button id="togglePlayFoldBtn" class="bg-indigo-500 hover:bg-indigo-600 text-white font-semibold py-1.5 px-2 rounded-md shadow-sm transition flex items-center justify-center gap-1 text-xs">
+                                <i class="fa-solid fa-play" id="playFoldIcon"></i>
+                                <span id="playFoldText">播放對摺</span>
                             </button>
                         </div>
 
@@ -276,8 +276,8 @@
             </div>
         </aside>
 
-        <!-- 右側：圖檔選擇區 (縮窄至 w-60) -->
-        <aside class="w-60 bg-white rounded-xl shadow-lg flex flex-col overflow-hidden border border-slate-200 shrink-0">
+        <!-- 右側：圖檔選擇區 -->
+        <aside class="w-64 bg-white rounded-xl shadow-lg flex flex-col overflow-hidden border border-slate-200 shrink-0">
             <div class="p-3 bg-slate-50 border-b border-slate-200 flex justify-between items-center">
                 <h2 class="font-bold text-slate-700 flex items-center gap-2 text-sm">
                     <i class="fa-solid fa-folder-open text-indigo-500"></i> 圖形寶庫
@@ -344,11 +344,11 @@
         let canvas, ctx, canvasWrapper, galleryContainer, imageUpload;
         let angleSlider, angleValue;
         let foldSlider, foldProgressText;
-        let doFoldBtn, doUnfoldBtn;
+        let toggleFoldBtn;
         let toggleGhostBtn, ghostBtnText, toggleFoldLineBtn, foldLineBtnText, foldLineIcon;
         let checkSymmetryBtn, showAxesCountBtn, resultCard, resultIcon, resultTitle, resultDesc, shapeTitleDisplay, foundAxesBadge;
         let helpBtn, helpModal, closeHelpBtn, confirmHelpBtn, resetCanvasBtn;
-
+        let stopAutoPlayFn = null;
         // 全局應用程式狀態
         let state = {
             customShapes: [],
@@ -777,14 +777,92 @@
             }
 
             foldSlider.addEventListener('input', (e) => {
+                if (stopAutoPlayFn) stopAutoPlayFn();
                 state.foldProgress = parseInt(e.target.value) / 100;
                 foldProgressText.textContent = `${e.target.value}%`;
                 hideResultCard();
                 requestAnimationFrame(render);
             });
 
-            doFoldBtn.addEventListener('click', () => startFoldAnimation(1));
-            doUnfoldBtn.addEventListener('click', () => startFoldAnimation(0));
+            // 整合為「對摺/展開」切換按鈕
+            toggleFoldBtn.addEventListener('click', () => {
+                if (stopAutoPlayFn) stopAutoPlayFn();
+                const target = state.foldProgress < 0.5 ? 1 : 0;
+                startFoldAnimation(target);
+            });
+
+            // 自動對摺與展開循環播放按鈕（播放對摺）
+            let isAutoPlaying = false;
+            let autoPlayTimer = null;
+            const togglePlayFoldBtn = document.getElementById('togglePlayFoldBtn');
+            const playFoldIcon = document.getElementById('playFoldIcon');
+            const playFoldText = document.getElementById('playFoldText');
+
+            const stopAutoPlay = () => {
+                isAutoPlaying = false;
+                if (autoPlayTimer) clearTimeout(autoPlayTimer);
+                if (state.isFolding) cancelAnimationFrame(state.foldAnimationId);
+                state.isFolding = false;
+                playFoldIcon.className = 'fa-solid fa-play';
+                playFoldText.textContent = '播放對摺';
+                togglePlayFoldBtn.classList.remove('bg-rose-500', 'hover:bg-rose-600');
+                togglePlayFoldBtn.classList.add('bg-indigo-500', 'hover:bg-indigo-600');
+            };
+            stopAutoPlayFn = stopAutoPlay;
+
+            const startAutoPlaySequence = () => {
+                if (isAutoPlaying) {
+                    stopAutoPlay();
+                    return;
+                }
+                isAutoPlaying = true;
+                playFoldIcon.className = 'fa-solid fa-stop';
+                playFoldText.textContent = '停止播放';
+                togglePlayFoldBtn.classList.remove('bg-indigo-500', 'hover:bg-indigo-600');
+                togglePlayFoldBtn.classList.add('bg-rose-500', 'hover:bg-rose-600');
+
+                // 步驟 1: 從當前位置對摺到 100%
+                const animateTo = (target, duration, callback) => {
+                    const startProg = state.foldProgress;
+                    const startTime = performance.now();
+
+                    const step = (currentTime) => {
+                        if (!isAutoPlaying) return;
+                        const elapsed = currentTime - startTime;
+                        const progress = Math.min(elapsed / duration, 1);
+                        // 使用平滑緩動函式
+                        const ease = progress < 0.5 ? 2 * progress * progress : 1 - Math.pow(-2 * progress + 2, 2) / 2;
+                        
+                        state.foldProgress = startProg + (target - startProg) * ease;
+                        foldSlider.value = state.foldProgress * 100;
+                        foldProgressText.textContent = `${Math.round(state.foldProgress * 100)}%`;
+                        requestAnimationFrame(render);
+
+                        if (progress < 1) {
+                            state.foldAnimationId = requestAnimationFrame(step);
+                        } else if (callback) {
+                            callback();
+                        }
+                    };
+                    state.foldAnimationId = requestAnimationFrame(step);
+                };
+
+                // 開始執行：對摺 -> 停留 1 秒 -> 展開 -> 循環
+                animateTo(1, 1400, () => {
+                    if (!isAutoPlaying) return;
+                    autoPlayTimer = setTimeout(() => {
+                        if (!isAutoPlaying) return;
+                        animateTo(0, 1400, () => {
+                            if (!isAutoPlaying) return;
+                            autoPlayTimer = setTimeout(() => {
+                                if (isAutoPlaying) startAutoPlaySequence();
+                            }, 800);
+                        });
+                    }, 1000);
+                });
+            };
+
+            togglePlayFoldBtn.addEventListener('click', startAutoPlaySequence);
 
             toggleGhostBtn.addEventListener('click', () => {
                 state.showGhost = !state.showGhost;
@@ -847,6 +925,7 @@
 
             // 重設按鈕
             resetCanvasBtn.addEventListener('click', () => {
+                if (stopAutoPlayFn) stopAutoPlayFn();
                 state.shapeAngle = 0;
                 state.lineAngle = 90;
                 state.foldProgress = 0;
@@ -1384,8 +1463,7 @@
             foldSlider = document.getElementById('foldSlider');
             foldProgressText = document.getElementById('foldProgressText');
 
-            doFoldBtn = document.getElementById('doFoldBtn');
-            doUnfoldBtn = document.getElementById('doUnfoldBtn');
+            toggleFoldBtn = document.getElementById('toggleFoldBtn');
 
             toggleGhostBtn = document.getElementById('toggleGhostBtn');
             ghostBtnText = document.getElementById('ghostBtnText');
